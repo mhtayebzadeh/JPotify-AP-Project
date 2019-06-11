@@ -1,5 +1,10 @@
 package JPotifyGUI;
 
-public class CenterPanel {
-    //TODO:
+import javax.swing.*;
+
+public class CenterPanel extends JPanel {
+    public CenterPanel()
+    {
+        super();
+    }
 }
