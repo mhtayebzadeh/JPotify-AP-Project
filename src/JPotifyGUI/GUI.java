@@ -1,4 +1,8 @@
 package JPotifyGUI;
 
-public class GUI {
+import javax.swing.*;
+
+public class GUI extends JFrame {
+    JFrame frame = new JFrame("JPotify");
+
 }
