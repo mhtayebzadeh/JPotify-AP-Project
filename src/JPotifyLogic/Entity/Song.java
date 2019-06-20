@@ -12,10 +12,7 @@ import java.time.LocalTime;
 
 public class Song extends Entity {
     private String address;
-    private String title;
-    private String artist;
     private String album;
-    private byte[] imageData;
     private String lastPlayed;
 
     private Mp3File mp3;
@@ -56,10 +53,8 @@ public class Song extends Entity {
         this.playThread.stop();
     }
 
-    public String getTitle() { return title; }
-    public String getArtist() { return artist; }
+    public String getArtist() { return super.getCaption(); }
     public String getAlbum() { return album; }
-    public byte[] getImageData() { return imageData; }
     public String getLastPlayed() { return lastPlayed; }
 
     private class MyRunnable implements Runnable {
