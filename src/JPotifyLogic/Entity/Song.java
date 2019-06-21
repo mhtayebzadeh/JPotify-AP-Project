@@ -15,62 +15,85 @@ public class Song extends Entity {
     private String album;
     private String lastPlayed;
 
+    private boolean repeat;
+    private boolean paused;
+    private long pauseLocation;
+    private long totalSongLength;
+    private FileInputStream fis;
+
     private Mp3File mp3;
     private AdvancedPlayer player;
     private Thread playThread;
 
     public Song(String address) {
         this.address = address;
-        FileInputStream fis;
+
         try {
             fis = new FileInputStream(this.address);
             this.mp3 = new Mp3File(address);
             this.player = new AdvancedPlayer(fis);
+            this.totalSongLength = fis.available();
         } catch (IOException | UnsupportedTagException | InvalidDataException | JavaLayerException e) {
             e.printStackTrace();
         }
 
+
+
         // TODO: bonus not implemented
         this.album = this.mp3.getId3v1Tag().getAlbum();
-        this.playThread = new Thread(new MyRunnable(this.player));
 
         this.setTitle(this.mp3.getId3v1Tag().getTitle());
         this.setCaption(this.mp3.getId3v1Tag().getArtist());
         this.setImageData(this.mp3.getId3v2Tag().getAlbumImage());
     }
 
-    public void play() {
-        int hour = LocalTime.now().getHour();
-        int minute = LocalTime.now().getMinute();
-        String hourStr = hour / 10 == 0 ? "0" + hour : "" + hour;
-        String minuteStr = minute / 10 == 0 ? "0" + minute : "" + minute;
-        this.lastPlayed = hourStr + ":" + minuteStr;
-        this.playThread.start();
-    }
 
-    // TODO: using deprecated thread stop method
-    public void stop() {
-        this.playThread.stop();
+    public void setLastPlayed(String lastPlayed) {
+        this.lastPlayed = lastPlayed;
     }
-
     public String getArtist() { return super.getCaption(); }
     public String getAlbum() { return album; }
     public String getLastPlayed() { return lastPlayed; }
 
-    private class MyRunnable implements Runnable {
-        private AdvancedPlayer player;
+    public AdvancedPlayer getPlayer() {
+        return player;
+    }
 
-        public MyRunnable(AdvancedPlayer player) {
-            this.player = player;
+    public FileInputStream getFis() {
+        try {
+            fis = new FileInputStream(this.address);
+            this.mp3 = new Mp3File(address);
+            this.player = new AdvancedPlayer(fis);
+            this.totalSongLength = fis.available();
+        } catch (IOException | UnsupportedTagException | InvalidDataException | JavaLayerException e) {
+            e.printStackTrace();
         }
+        return fis;
+    }
 
-        @Override
-        public void run() {
-            try {
-                this.player.play();
-            } catch (JavaLayerException e) {
-                e.printStackTrace();
-            }
-        }
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+    public boolean getPaused()
+    {
+        return paused;
+    }
+
+    public void setRepeat(boolean repeat) {
+        this.repeat = repeat;
+    }
+    public boolean getRepeat()
+    {return repeat; }
+
+    public long getPauseLocation() {
+        return pauseLocation;
+    }
+
+    public void setPauseLocation(long pauseLocation) {
+        this.pauseLocation = pauseLocation;
+    }
+
+    public long getTotalSongLength() {
+        return totalSongLength;
     }
 }

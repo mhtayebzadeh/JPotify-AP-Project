@@ -16,4 +16,8 @@ public class Playlist extends Entity {
 
     public void addSong(Song song) {this.songs.add(song); }
     public void removeSong(Song song) { this.songs.remove(song); }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
 }
