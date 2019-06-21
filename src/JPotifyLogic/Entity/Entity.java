@@ -5,6 +5,8 @@ public abstract class Entity {
     private String caption;
     private byte[] imageData;
 
+    public void play() {};
+
     public String getTitle() { return title; }
     public String getCaption() { return caption; }
     public byte[] getImageData() { return imageData; }
