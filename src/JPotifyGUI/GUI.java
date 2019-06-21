@@ -1,6 +1,6 @@
 package JPotifyGUI;
 
-import com.sun.media.sound.RIFFInvalidDataException;
+//import com.sun.media.sound.RIFFInvalidDataException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,7 +24,7 @@ public class GUI{
         frame = new JFrame("JPotify");
         frame.setSize(600,300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setIconImage(new ImageIcon("./src/JPotifyGUI/images/jpotify_icon.png").getImage());
+        frame.setIconImage(new ImageIcon("src/JPotifyGUI/images/jpotify_icon.png").getImage());
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -46,6 +46,7 @@ public class GUI{
         frame.add(centerPanel,BorderLayout.CENTER);
         frame.add(leftPanel , BorderLayout.WEST);
         frame.add(rightPanel,BorderLayout.EAST);
+
         frame.setVisible(true);
     }
 

@@ -13,7 +13,6 @@ public class CenterPanel extends JPanel {
         super();
         this.setLayout(new GridLayout(0,3));
         this.setBackground(Color.BLACK);
-        this.setVisible(true);
     }
 
     public void setSongs(ArrayList<SongPanel> songs) {

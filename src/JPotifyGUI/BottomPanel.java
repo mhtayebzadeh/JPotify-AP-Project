@@ -18,8 +18,6 @@ public class BottomPanel extends JPanel {
                 System.out.println("play pressed at " + e.getWhen());
             }
         });
-        this.setVisible(true);
-
     }
 
 
