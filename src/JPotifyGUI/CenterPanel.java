@@ -17,7 +17,6 @@ public class CenterPanel extends JPanel {
         // this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         this.setLayout(new GridLayout(2, 3));
-
     }
 
     /*public void setSongs(ArrayList<SongPanel> songs) {
