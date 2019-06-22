@@ -2,6 +2,8 @@ package JPotifyLogic;
 
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Entity.SongMinimumData;
+import JPotifyLogic.Playlist.Album;
+import JPotifyLogic.Playlist.Artist;
 import JPotifyLogic.Playlist.PlayListMinData;
 import JPotifyLogic.Playlist.Playlist;
 
@@ -13,6 +15,9 @@ public class FileManager implements Serializable {
     private ArrayList<SongMinimumData> songsMinData = new ArrayList<SongMinimumData>();
     private ArrayList<PlayListMinData> playListsMinData = new ArrayList<PlayListMinData>();
     private ArrayList<Playlist> playlists = new ArrayList<Playlist>();
+    private ArrayList<Playlist> albums = new ArrayList<Playlist>();
+    private ArrayList<Playlist> artists = new ArrayList<Playlist>();
+
     private String defaultSaveDir = "savedData";
 
     public FileManager() {
@@ -28,7 +33,7 @@ public class FileManager implements Serializable {
             this.songsMinData = (ArrayList<SongMinimumData>) ois.readObject();
             ois.close();
             songs = new ArrayList<Song>();
-            for(SongMinimumData s:songsMinData)
+            for (SongMinimumData s : songsMinData)
                 songs.add(new Song(s));
 
             fis = new FileInputStream(dataDirectory + "\\" + "playlists.ser");
@@ -36,7 +41,7 @@ public class FileManager implements Serializable {
             this.playListsMinData = ((ArrayList<PlayListMinData>) ois.readObject());
             ois.close();
             playlists = new ArrayList<Playlist>();
-            for(PlayListMinData p : playListsMinData)
+            for (PlayListMinData p : playListsMinData)
                 playlists.add(new Playlist(p));
 
         } catch (FileNotFoundException e) {
@@ -57,7 +62,7 @@ public class FileManager implements Serializable {
     public void saveData(String dataDirectory) {
         try {
             songsMinData = new ArrayList<SongMinimumData>();
-            for (Song s: songs)
+            for (Song s : songs)
                 songsMinData.add(s.getSongMinimumData());
             FileOutputStream fos = new FileOutputStream(dataDirectory + "\\" + "songs.ser");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -101,5 +106,51 @@ public class FileManager implements Serializable {
 
     public ArrayList<Playlist> getPlaylists() {
         return this.playlists;
+    }
+
+    public void updateArtists()
+    {
+        ArrayList<String> artistName = new ArrayList<>();
+        for(Song s : songs)
+            if(!artistName.contains(s.getArtist()))
+                artistName.add(s.getArtist());
+
+        Artist a;
+        for(String artist_ : artistName)
+        {
+            a = new Artist(artist_);
+            for(Song s:songs)
+                if(s.getArtist().equals(artist_))
+                    a.addSong(s);
+
+            artists.add(a);
+        }
+    }
+
+    public void updateAlbums()
+    {
+        ArrayList<String> albumsName = new ArrayList<String>();
+        for(Song s : songs)
+            if(!albumsName.contains(s.getAlbum()))
+                albumsName.add(s.getAlbum());
+
+        Album a;
+        for(String album_ : albumsName)
+        {
+            a = new Album(album_);
+            for(Song s:songs)
+                if(s.getAlbum().equals(album_))
+                    a.addSong(s);
+
+            albums.add(a);
+        }
+    }
+
+    public ArrayList<Playlist> getAlbums() {
+        return albums;
+    }
+
+    public ArrayList<Playlist> getArtists() {
+        return artists;
     }
 }
