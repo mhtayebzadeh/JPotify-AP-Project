@@ -9,6 +9,7 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.Iterator;
 
@@ -101,6 +102,9 @@ public class Player extends Thread{
             String hourStr = hour / 10 == 0 ? "0" + hour : "" + hour;
             String minuteStr = minute / 10 == 0 ? "0" + minute : "" + minute;
             song.setLastPlayed(hourStr + ":" + minuteStr);
+            Instant instant = Instant.now();
+            long timeStampMillis = instant.toEpochMilli();
+            song.setTimeStampLastPlayed(timeStampMillis);
         }
 
         @Override

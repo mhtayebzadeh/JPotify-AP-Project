@@ -33,6 +33,10 @@ public class Playlist extends Entity implements Serializable {
         return songs;
     }
 
+    public void setSongs(ArrayList<Song> songs) {
+        this.songs = songs;
+    }
+
     public PlayListMinData getPlayListMinData()
     {
         PlayListMinData p = new PlayListMinData(this.getTitle(),this.getCaption(),this.getImageData());

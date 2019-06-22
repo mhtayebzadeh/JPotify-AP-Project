@@ -7,4 +7,8 @@ public class Album extends Playlist {
         super();
         this.album = album;
     }
+
+    public String getAlbum() {
+        return album;
+    }
 }

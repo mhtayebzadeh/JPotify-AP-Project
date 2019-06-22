@@ -9,13 +9,14 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalTime;
 
 public class Song extends Entity implements Serializable {
     private String address;
     private String album;
     private String lastPlayed;
-
+    private long timeStampLastPlayed;
     private boolean repeat;
     private boolean paused;
     private long pauseLocation;
@@ -52,6 +53,7 @@ public class Song extends Entity implements Serializable {
         this(songMinData.getFileAddress());
         this.setPauseLocation(songMinData.getPauseLocation());
         this.setLastPlayed(songMinData.getLastPlayed());
+        this.timeStampLastPlayed = songMinData.getTimeStampLastPlayed();
     }
 
     public void setLastPlayed(String lastPlayed) {
@@ -105,6 +107,14 @@ public class Song extends Entity implements Serializable {
 
     public SongMinimumData getSongMinimumData()
     {
-        return new SongMinimumData(address,lastPlayed,pauseLocation);
+        return new SongMinimumData(address,lastPlayed,pauseLocation,timeStampLastPlayed);
+    }
+
+    public void setTimeStampLastPlayed(long timeStampLastPlayed) {
+        this.timeStampLastPlayed = timeStampLastPlayed;
+    }
+
+    public long getTimeStampLastPlayed() {
+        return timeStampLastPlayed;
     }
 }
