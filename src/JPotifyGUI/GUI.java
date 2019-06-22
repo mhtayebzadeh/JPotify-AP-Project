@@ -2,7 +2,8 @@ package JPotifyGUI;
 
 //import com.sun.media.sound.RIFFInvalidDataException;
 
-import JPotifyLogic.Library.Songs;
+import JPotifyGUI.LeftPanel.LeftPanel;
+import JPotifyLogic.LogicData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,15 +17,15 @@ public class GUI {
     private JFrame frame;
 
     // fields from logic
-    private Songs songs;
+    private LogicData logicData;
 
     public GUI() {
-        this.songs = new Songs();
+        this.logicData = new LogicData();
 
-        frame = new JFrame("JPotify");
-        frame.setSize(600, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setIconImage(new ImageIcon("src/JPotifyGUI/images/jpotify_icon.png").getImage());
+        this.frame = new JFrame("JPotify");
+        this.frame.setSize(800, 500);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setIconImage(new ImageIcon("src/JPotifyGUI/images/jpotify_icon.png").getImage());
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -33,21 +34,21 @@ public class GUI {
         }
         //set initial position of frame in center of screen
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
-        frame.setBackground(Color.BLACK);
+        this.frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
+        this.frame.setBackground(Color.BLACK);
 
-        bottomPanel = new BottomPanel();
-        centerPanel = new CenterPanel();
-        leftPanel = new LeftPanel(songs);
-        rightPanel = new RightPanel();
+        this.bottomPanel = new BottomPanel();
+        this.centerPanel = new CenterPanel();
+        this.leftPanel = new LeftPanel(this.logicData, this.centerPanel);
+        this.rightPanel = new RightPanel();
 
-        frame.setLayout(new BorderLayout());
-        frame.add(bottomPanel, BorderLayout.SOUTH);
-        frame.add(centerPanel, BorderLayout.CENTER);
-        frame.add(leftPanel, BorderLayout.WEST);
-        frame.add(rightPanel, BorderLayout.EAST);
+        this.frame.setLayout(new BorderLayout());
+        this.frame.add(this.bottomPanel, BorderLayout.SOUTH);
+        this.frame.add(this.centerPanel, BorderLayout.CENTER);
+        this.frame.add(this.leftPanel, BorderLayout.WEST);
+        this.frame.add(this.rightPanel, BorderLayout.EAST);
 
-        frame.setVisible(true);
+        this.frame.setVisible(true);
     }
 
 //    public void setSongsPanel(ArrayList<SongPanel> songs) {

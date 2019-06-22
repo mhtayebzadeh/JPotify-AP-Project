@@ -6,6 +6,7 @@ public class SongMinimumData implements Serializable {
     private String fileAddress;
     private String lastPlayed;
     private long pauseLocation;
+
     private long timeStampLastPlayed;
     public SongMinimumData(String fileAddress,String lastPlayed,long pauseLocation,long timeStampLastPlayed)
     {

@@ -1,6 +1,7 @@
 package JPotifyLogic;
 
 import JPotifyLogic.Entity.Song;
+
 import JPotifyLogic.Library.Playlists;
 import JPotifyLogic.Library.Songs;
 import JPotifyLogic.Playlist.Album;
@@ -45,6 +46,7 @@ public class LogicTest {
 //  Load data
 
         fileManager.loadData();
+
         fileManager.updateAlbums();
         fileManager.updateArtists();
         for(Album a : fileManager.getAlbums())
@@ -60,6 +62,7 @@ public class LogicTest {
         System.out.println(song4.getLastPlayed());
 
         player.setSong(song);
+
         Thread.sleep(5000);
         player.stop_();
 

@@ -31,14 +31,13 @@ public class Song extends Entity implements Serializable {
         this.address = address;
 
         try {
-            fis = new FileInputStream(this.address);
+            this.fis = new FileInputStream(this.address);
             this.mp3 = new Mp3File(address);
             this.player = new AdvancedPlayer(fis);
             this.totalSongLength = fis.available();
         } catch (IOException | UnsupportedTagException | InvalidDataException | JavaLayerException e) {
             e.printStackTrace();
         }
-
 
 
         // TODO: bonus not implemented
@@ -48,20 +47,29 @@ public class Song extends Entity implements Serializable {
         this.setCaption(this.mp3.getId3v1Tag().getArtist());
         this.setImageData(this.mp3.getId3v2Tag().getAlbumImage());
     }
-    public Song(SongMinimumData songMinData)
-    {
+
+    public Song(SongMinimumData songMinData) {
         this(songMinData.getFileAddress());
         this.setPauseLocation(songMinData.getPauseLocation());
         this.setLastPlayed(songMinData.getLastPlayed());
         this.timeStampLastPlayed = songMinData.getTimeStampLastPlayed();
     }
 
+    public String getArtist() {
+        return super.getCaption();
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public String getLastPlayed() {
+        return lastPlayed;
+    }
+
     public void setLastPlayed(String lastPlayed) {
         this.lastPlayed = lastPlayed;
     }
-    public String getArtist() { return super.getCaption(); }
-    public String getAlbum() { return album; }
-    public String getLastPlayed() { return lastPlayed; }
 
     public AdvancedPlayer getPlayer() {
         return player;
@@ -69,7 +77,7 @@ public class Song extends Entity implements Serializable {
 
     public FileInputStream getFis() {
         try {
-            fis = new FileInputStream(this.address);
+            this.fis = new FileInputStream(this.address);
             this.mp3 = new Mp3File(address);
             this.player = new AdvancedPlayer(fis);
             this.totalSongLength = fis.available();
@@ -79,19 +87,21 @@ public class Song extends Entity implements Serializable {
         return fis;
     }
 
+    public boolean getPaused() {
+        return paused;
+    }
+
     public void setPaused(boolean paused) {
         this.paused = paused;
     }
-    public boolean getPaused()
-    {
-        return paused;
+
+    public boolean getRepeat() {
+        return repeat;
     }
 
     public void setRepeat(boolean repeat) {
         this.repeat = repeat;
     }
-    public boolean getRepeat()
-    {return repeat; }
 
     public long getPauseLocation() {
         return pauseLocation;
@@ -104,6 +114,7 @@ public class Song extends Entity implements Serializable {
     public long getTotalSongLength() {
         return totalSongLength;
     }
+
 
     public SongMinimumData getSongMinimumData()
     {
