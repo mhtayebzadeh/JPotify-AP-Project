@@ -8,9 +8,10 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class Song extends Entity {
+public class Song extends Entity implements Serializable {
     private String address;
     private String album;
     private String lastPlayed;
@@ -23,7 +24,7 @@ public class Song extends Entity {
 
     private Mp3File mp3;
     private AdvancedPlayer player;
-    private Thread playThread;
+
 
     public Song(String address) {
         this.address = address;
@@ -46,7 +47,12 @@ public class Song extends Entity {
         this.setCaption(this.mp3.getId3v1Tag().getArtist());
         this.setImageData(this.mp3.getId3v2Tag().getAlbumImage());
     }
-
+    public Song(SongMinimumData songMinData)
+    {
+        this(songMinData.getFileAddress());
+        this.setPauseLocation(songMinData.getPauseLocation());
+        this.setLastPlayed(songMinData.getLastPlayed());
+    }
 
     public void setLastPlayed(String lastPlayed) {
         this.lastPlayed = lastPlayed;
@@ -95,5 +101,10 @@ public class Song extends Entity {
 
     public long getTotalSongLength() {
         return totalSongLength;
+    }
+
+    public SongMinimumData getSongMinimumData()
+    {
+        return new SongMinimumData(address,lastPlayed,pauseLocation);
     }
 }
