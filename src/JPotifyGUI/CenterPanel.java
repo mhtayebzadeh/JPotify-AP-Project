@@ -32,7 +32,6 @@ public class CenterPanel extends JPanel {
     public void paint() {
         this.removeAll();
         for (Entity entity : this.library) {
-            System.out.println(entity.getTitle());
             SongPanel songPanel = new SongPanel(entity.getTitle(), entity.getCaption());
             this.add(songPanel);
         }

@@ -1,18 +1,18 @@
 package JPotifyGUI.LeftPanel;
 
 import JPotifyGUI.CenterPanel;
-import JPotifyLogic.LogicData;
+import JPotifyLogic.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class LeftPanel extends JPanel {
-    private LogicData logicData;
+    private FileManager fileManager;
     private CenterPanel centerPanel;
 
-    public LeftPanel(LogicData logicData, CenterPanel centerPanel) {
+    public LeftPanel(FileManager fileManager, CenterPanel centerPanel) {
         super();
-        this.logicData = logicData;
+        this.fileManager = fileManager;
         this.centerPanel = centerPanel;
 //        this.setSize(new Dimension(100,200));
 //        this.setMinimumSize(new Dimension(100,300));
@@ -20,7 +20,7 @@ public class LeftPanel extends JPanel {
         this.setBackground(Color.RED);
         this.setLayout(new GridLayout(4, 1));
 
-        this.add(new LeftPanelsAddPanel(logicData, centerPanel));
-        this.add(new LeftPanelsLibraryPanel(logicData, centerPanel));
+        this.add(new LeftPanelsAddPanel(fileManager, centerPanel));
+        this.add(new LeftPanelsLibraryPanel(fileManager, centerPanel));
     }
 }

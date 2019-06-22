@@ -2,7 +2,7 @@ package JPotifyGUI.LeftPanel;
 
 import JPotifyGUI.CenterPanel;
 import JPotifyLogic.Entity.Song;
-import JPotifyLogic.LogicData;
+import JPotifyLogic.FileManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,13 +13,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class LeftPanelsAddPanel extends JPanel {
-    private LogicData logicData;
+    private FileManager fileManager;
     private CenterPanel centerPanel;
 
     // TODO: NewPlaylistMouseListener not implemented
-    public LeftPanelsAddPanel(LogicData logicData, CenterPanel centerPanel) {
+    public LeftPanelsAddPanel(FileManager fileManager, CenterPanel centerPanel) {
         super();
-        this.logicData = logicData;
+        this.fileManager = fileManager;
         this.centerPanel = centerPanel;
 
         this.setLayout(new GridLayout(2, 1));
@@ -27,13 +27,13 @@ public class LeftPanelsAddPanel extends JPanel {
         JPanel newSongPanel = new JPanel();
         newSongPanel.setLayout(new GridLayout(1, 2));
         JButton newSongButton = new JButton();
-        newSongButton.addMouseListener(new NewSongMouseListener(this.logicData, centerPanel));
+        newSongButton.addMouseListener(new NewSongMouseListener(this.fileManager, centerPanel));
         JLabel newSongLabel = new JLabel("New Song");
 
         JPanel newPlaylistPanel = new JPanel();
         newPlaylistPanel.setLayout(new GridLayout(1, 2));
         JButton newPlaylistButton = new JButton();
-        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.logicData, centerPanel));
+        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.fileManager, centerPanel));
         JLabel newPlaylistLabel = new JLabel("New Playlist");
 
         newSongPanel.add(newSongButton);
@@ -55,25 +55,26 @@ public class LeftPanelsAddPanel extends JPanel {
     }
 
     public class NewSongMouseListener implements MouseListener {
-        private LogicData logicData;
+        private FileManager fileManager;
         private CenterPanel centerPanel;
 
-        public NewSongMouseListener(LogicData logicData, CenterPanel centerPanel) {
-            this.logicData = logicData;
+        public NewSongMouseListener(FileManager fileManager, CenterPanel centerPanel) {
+            this.fileManager = fileManager;
             this.centerPanel = centerPanel;
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            JFileChooser fileChooser = new JFileChooser();
+            JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")
+                    + "/src/JPotifyLogic/Songs");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int res = fileChooser.showOpenDialog(new Frame());
             if (res == JFileChooser.CANCEL_OPTION)
                 return;
             File file = fileChooser.getSelectedFile();
             Song song = new Song(file.getAbsolutePath());
-            this.logicData.addSong(song);
-            this.centerPanel.setLibraryFromSongs(this.logicData.getSongs());
+            this.fileManager.add2Songs(song);
+            this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
             this.centerPanel.paint();
         }
 
@@ -95,11 +96,11 @@ public class LeftPanelsAddPanel extends JPanel {
     }
 
     private class NewPlaylistMouseListener implements MouseListener {
-        private LogicData logicData;
+        private FileManager FileManager;
         private CenterPanel centerPanel;
 
-        public NewPlaylistMouseListener(LogicData logicData, CenterPanel centerPanel) {
-            this.logicData = logicData;
+        public NewPlaylistMouseListener(FileManager FileManager, CenterPanel centerPanel) {
+            this.FileManager = FileManager;
             this.centerPanel = centerPanel;
         }
 

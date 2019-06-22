@@ -9,18 +9,35 @@ import JPotifyLogic.Playlist.Playlist;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class FileManager implements Serializable {
-    private ArrayList<Song> songs = new ArrayList<Song>();
-    private ArrayList<SongMinimumData> songsMinData = new ArrayList<SongMinimumData>();
-    private ArrayList<PlayListMinData> playListsMinData = new ArrayList<PlayListMinData>();
-    private ArrayList<Playlist> playlists = new ArrayList<Playlist>();
-    private ArrayList<Album> albums = new ArrayList<Album>();
-    private ArrayList<Artist> artists = new ArrayList<Artist>();
+    private ArrayList<Song> songs = new ArrayList<>();
+    private ArrayList<SongMinimumData> songsMinData = new ArrayList<>();
+    private ArrayList<PlayListMinData> playListsMinData = new ArrayList<>();
+    private ArrayList<Playlist> playlists = new ArrayList<>();
+    private ArrayList<Album> albums = new ArrayList<>();
+    private ArrayList<Artist> artists = new ArrayList<>();
     private String defaultSaveDir = "savedData";
 
     public FileManager() {
+    }
+
+    public static Playlist sortByLastPlayed(Playlist playlist) {
+        ArrayList<Song> newSongs = new ArrayList<Song>();
+        Song smaller;
+        long last = 0;
+        for (Song s_ : playlist.getSongs()) {
+            smaller = s_;
+            for (Song s : playlist.getSongs()) {
+                if ((smaller.getTimeStampLastPlayed() > s.getTimeStampLastPlayed()) && (smaller.getTimeStampLastPlayed() > last))
+                    smaller = s;
+            }
+            last = smaller.getTimeStampLastPlayed();
+            newSongs.add(smaller);
+        }
+
+        playlist.setSongs(newSongs);
+        return playlist;
 
     }
 
@@ -104,22 +121,19 @@ public class FileManager implements Serializable {
         return this.playlists;
     }
 
-    public void updateArtists()
-    {
+    public void updateArtists() {
         artists = new ArrayList<Artist>();
         ArrayList<String> artistName = new ArrayList<>();
-        for(Song s : songs)
-            if(!artistName.contains(s.getArtist()))
+        for (Song s : songs)
+            if (!artistName.contains(s.getArtist()))
                 artistName.add(s.getArtist());
 
         Artist a;
-        for(String artist_ : artistName)
-        {
+        for (String artist_ : artistName) {
             a = new Artist(artist_);
             a.setTitle(artist_);
-            for(Song s:songs)
-                if(s.getArtist().equals(artist_))
-                {
+            for (Song s : songs)
+                if (s.getArtist().equals(artist_)) {
                     a.addSong(s);
                     a.setImageData(s.getImageData());
                     a.setCaption(s.getCaption());
@@ -129,22 +143,20 @@ public class FileManager implements Serializable {
         }
     }
 
-    public void updateAlbums()
-    {
+    public void updateAlbums() {
         albums = new ArrayList<Album>();
 
         ArrayList<String> albumsName = new ArrayList<String>();
-        for(Song s : songs)
-            if(!albumsName.contains(s.getAlbum()))
+        for (Song s : songs)
+            if (!albumsName.contains(s.getAlbum()))
                 albumsName.add(s.getAlbum());
 
         Album a;
-        for(String album_ : albumsName)
-        {
+        for (String album_ : albumsName) {
             a = new Album(album_);
             a.setTitle(album_);
-            for(Song s:songs)
-                if(s.getAlbum().equals(album_)) {
+            for (Song s : songs)
+                if (s.getAlbum().equals(album_)) {
                     a.addSong(s);
                     a.setImageData(s.getImageData());
                     a.setCaption(s.getCaption());
@@ -159,27 +171,5 @@ public class FileManager implements Serializable {
 
     public ArrayList<Artist> getArtists() {
         return artists;
-    }
-
-    public static Playlist sortByLastPlayed(Playlist playlist)
-    {
-        ArrayList<Song> newSongs = new ArrayList<Song>();
-        Song smaller;
-        long last = 0;
-        for(Song s_:playlist.getSongs())
-        {
-            smaller = s_;
-            for(Song s:playlist.getSongs())
-            {
-                if((smaller.getTimeStampLastPlayed() > s.getTimeStampLastPlayed()) && (smaller.getTimeStampLastPlayed() > last))
-                    smaller = s;
-            }
-            last = smaller.getTimeStampLastPlayed();
-            newSongs.add(smaller);
-        }
-
-        playlist.setSongs(newSongs);
-        return playlist;
-
     }
 }

@@ -1,7 +1,7 @@
 package JPotifyGUI.LeftPanel;
 
 import JPotifyGUI.CenterPanel;
-import JPotifyLogic.LogicData;
+import JPotifyLogic.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,19 +11,19 @@ import java.awt.event.MouseListener;
 public class LeftPanelsLibraryPanel extends JPanel {
     private JList<String> libraryList;
     private CenterPanel centerPanel;
-    private LogicData logicData;
+    private FileManager fileManager;
 
-    public LeftPanelsLibraryPanel(LogicData logicData, CenterPanel centerPanel) {
+    public LeftPanelsLibraryPanel(FileManager fileManager, CenterPanel centerPanel) {
         this.centerPanel = centerPanel;
-        this.logicData = logicData;
+        this.fileManager = fileManager;
 
         DefaultListModel<String> list = new DefaultListModel<>();
         list.addElement("Songs");
         list.addElement("Albums");
         list.addElement("Artists");
         this.libraryList = new JList<>(list);
-        this.libraryList.addMouseListener(new LibraryMouseListener(logicData, this.libraryList, centerPanel));
-        this.centerPanel.setLibraryFromSongs(this.logicData.getSongs());
+        this.libraryList.addMouseListener(new LibraryMouseListener(fileManager, this.libraryList, centerPanel));
+        this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
 
         this.setLayout(new GridLayout(1, 1));
         this.add(this.libraryList);
@@ -32,23 +32,23 @@ public class LeftPanelsLibraryPanel extends JPanel {
     public class LibraryMouseListener implements MouseListener {
         private JList<String> libraryList;
         private CenterPanel centerPanel;
-        private LogicData logicData;
+        private FileManager fileManager;
 
-        public LibraryMouseListener(LogicData logicData, JList<String> libraryList, CenterPanel centerPanel) {
+        public LibraryMouseListener(FileManager fileManager, JList<String> libraryList, CenterPanel centerPanel) {
             this.libraryList = libraryList;
             this.centerPanel = centerPanel;
-            this.logicData = logicData;
+            this.fileManager = fileManager;
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
             if (this.libraryList.getSelectedIndex() != -1) {
                 if (libraryList.getSelectedValue().equals("Songs"))
-                    this.centerPanel.setLibraryFromSongs(this.logicData.getSongs());
+                    this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
                 else if (libraryList.getSelectedValue().equals("Playlists"))
-                    this.centerPanel.setLibraryFromPlaylists(this.logicData.getPlaylists());
+                    this.centerPanel.setLibraryFromPlaylists(this.fileManager.getPlaylists());
             }
-            this.centerPanel.setLibraryFromSongs(this.logicData.getSongs());
+            this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
             this.centerPanel.paint();
         }
 

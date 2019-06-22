@@ -3,7 +3,7 @@ package JPotifyGUI;
 //import com.sun.media.sound.RIFFInvalidDataException;
 
 import JPotifyGUI.LeftPanel.LeftPanel;
-import JPotifyLogic.LogicData;
+import JPotifyLogic.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +17,10 @@ public class GUI {
     private JFrame frame;
 
     // fields from logic
-    private LogicData logicData;
+    private FileManager fileManager;
 
     public GUI() {
-        this.logicData = new LogicData();
+        this.fileManager = new FileManager();
 
         this.frame = new JFrame("JPotify");
         this.frame.setSize(800, 500);
@@ -39,7 +39,7 @@ public class GUI {
 
         this.bottomPanel = new BottomPanel();
         this.centerPanel = new CenterPanel();
-        this.leftPanel = new LeftPanel(this.logicData, this.centerPanel);
+        this.leftPanel = new LeftPanel(this.fileManager, this.centerPanel);
         this.rightPanel = new RightPanel();
 
         this.frame.setLayout(new BorderLayout());

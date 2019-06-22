@@ -2,8 +2,6 @@ package JPotifyLogic;
 
 import JPotifyLogic.Entity.Song;
 
-import JPotifyLogic.Library.Playlists;
-import JPotifyLogic.Library.Songs;
 import JPotifyLogic.Playlist.Album;
 import JPotifyLogic.Playlist.Playlist;
 
