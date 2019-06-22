@@ -65,10 +65,6 @@ public class LeftPanelsAddPanel extends JPanel {
             File file = fileChooser.getSelectedFile();
             Song song = new Song(file.getAbsolutePath());
             this.songs.addSong(song);
-            for (Entity s : this.songs.getSongs()) {
-                System.out.println(this.songs.getEntities().size());
-                s.play();
-            }
         }
 
         @Override

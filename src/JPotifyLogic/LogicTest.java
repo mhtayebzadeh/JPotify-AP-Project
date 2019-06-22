@@ -1,13 +1,6 @@
 package JPotifyLogic;
 
 import JPotifyLogic.Entity.Song;
-import JPotifyLogic.Library.Playlists;
-import JPotifyLogic.Library.Songs;
-import JPotifyLogic.Playlist.Playlist;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 
 public class LogicTest {
     public static void main(String[] args) throws InterruptedException {
@@ -28,7 +21,7 @@ public class LogicTest {
 
 //  Load data
         fileManager.loadData();
-        Song song2 = (Song)fileManager.getPlaylists().get(0).getSongs().get(1);
+        Song song2 = (Song) fileManager.getPlaylists().get(0).getSongs().get(1);
         player.setSong(song2);
         Thread.sleep(5000);
         player.stop_();

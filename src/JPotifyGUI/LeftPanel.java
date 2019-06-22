@@ -13,7 +13,7 @@ public class LeftPanel extends JPanel {
         this.songs = songs;
 //        this.setSize(new Dimension(100,200));
 //        this.setMinimumSize(new Dimension(100,300));
-        this.setPreferredSize(new Dimension(200, 200));
+        this.setPreferredSize(new Dimension(100, 200));
         this.setBackground(Color.RED);
         this.setLayout(new GridLayout(4,1));
 

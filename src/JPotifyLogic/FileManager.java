@@ -28,7 +28,7 @@ public class FileManager implements Serializable {
             this.songsMinData = (ArrayList<SongMinimumData>) ois.readObject();
             ois.close();
             songs = new ArrayList<Song>();
-            for(SongMinimumData s:songsMinData)
+            for (SongMinimumData s : songsMinData)
                 songs.add(new Song(s));
 
             fis = new FileInputStream(dataDirectory + "\\" + "playlists.ser");
@@ -36,7 +36,7 @@ public class FileManager implements Serializable {
             this.playListsMinData = ((ArrayList<PlayListMinData>) ois.readObject());
             ois.close();
             playlists = new ArrayList<Playlist>();
-            for(PlayListMinData p : playListsMinData)
+            for (PlayListMinData p : playListsMinData)
                 playlists.add(new Playlist(p));
 
         } catch (FileNotFoundException e) {
@@ -57,7 +57,7 @@ public class FileManager implements Serializable {
     public void saveData(String dataDirectory) {
         try {
             songsMinData = new ArrayList<SongMinimumData>();
-            for (Song s: songs)
+            for (Song s : songs)
                 songsMinData.add(s.getSongMinimumData());
             FileOutputStream fos = new FileOutputStream(dataDirectory + "\\" + "songs.ser");
             ObjectOutputStream oos = new ObjectOutputStream(fos);

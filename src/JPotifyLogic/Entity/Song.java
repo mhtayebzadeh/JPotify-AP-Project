@@ -30,7 +30,7 @@ public class Song extends Entity implements Serializable {
         this.address = address;
 
         try {
-            fis = new FileInputStream(this.address);
+            this.fis = new FileInputStream(this.address);
             this.mp3 = new Mp3File(address);
             this.player = new AdvancedPlayer(fis);
             this.totalSongLength = fis.available();
@@ -67,7 +67,7 @@ public class Song extends Entity implements Serializable {
 
     public FileInputStream getFis() {
         try {
-            fis = new FileInputStream(this.address);
+            this.fis = new FileInputStream(this.address);
             this.mp3 = new Mp3File(address);
             this.player = new AdvancedPlayer(fis);
             this.totalSongLength = fis.available();
