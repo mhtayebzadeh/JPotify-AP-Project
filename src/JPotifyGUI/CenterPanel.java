@@ -84,12 +84,9 @@ public class CenterPanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            System.out.println("naxabar?");
             if (e.getSource() == null)
                 return;
-            System.out.println(e.getX());
             EntityPanel entityPanel = (EntityPanel) e.getSource();
-            System.out.println(entityPanel.getIndex());
             this.player.setSong((Song) this.library.get(entityPanel.getIndex()));
         }
 

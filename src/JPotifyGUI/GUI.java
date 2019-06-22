@@ -26,7 +26,7 @@ public class GUI {
 
         this.frame = new JFrame("JPotify");
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.frame.setSize(dim.width/2, dim.height/2);
+        this.frame.setSize(3*dim.width/4, 3*dim.height/4);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setIconImage(new ImageIcon("src/JPotifyGUI/images/jpotify_icon.png").getImage());
 
