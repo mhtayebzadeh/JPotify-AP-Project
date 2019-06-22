@@ -8,15 +8,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Playlist extends Entity implements Serializable {
-    private ArrayList<Song> songs = new ArrayList<Song>();
+    private ArrayList<Song> songs;
 
     // TODO: caption and image not being set
     public Playlist() {
-        this.songs = new ArrayList<Song>();
+        this.songs = new ArrayList<>();
     }
 
     public Playlist(PlayListMinData playListMinData) {
-        songs = new ArrayList<Song>();
+        songs = new ArrayList<>();
         setTitle(playListMinData.getTitle());
         setCaption(playListMinData.getCaption());
         setImageData(playListMinData.getImageData());

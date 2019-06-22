@@ -17,8 +17,8 @@ public abstract class Entity implements Serializable {
         this.imageData = imageData;
     }
 
-    public void play() {
-    }
+    /*public void play() {
+    }*/
 
     public String getTitle() {
         return title;

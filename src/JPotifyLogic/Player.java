@@ -20,13 +20,13 @@ public class Player extends Thread {
         name = playerName;
     }
 
-    public void setPlayList(Playlist playlist) // start music from first of lib
-    {
+    // start music from first of lib
+    public void setPlayList(Playlist playlist) {
         //TODO:
     }
 
-    public void setPlayList(Playlist playlist, Song song) // start music from first of lib
-    {
+    // start music from first of lib
+    public void setPlayList(Playlist playlist, Song song) {
         Iterator<Song> it = playlist.getSongs().iterator();
         while (it.next() != song) ;
         this.song = song;
@@ -121,7 +121,6 @@ public class Player extends Thread {
                         } catch (Exception e) {
                         }
                     }
-
                 }
 //                if(repeat == true ) // repeat song
 
@@ -129,7 +128,6 @@ public class Player extends Thread {
             } catch (JavaLayerException e) {
                 e.printStackTrace();
             }
-
         }
     }
 }

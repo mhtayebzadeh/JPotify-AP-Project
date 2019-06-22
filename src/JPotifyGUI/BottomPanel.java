@@ -6,12 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BottomPanel extends JPanel {
-    public BottomPanel()
-    {
+    public BottomPanel() {
         super();
         JButton playButton = new JButton("play");
         this.setLayout(new BorderLayout());
-        this.add(playButton,BorderLayout.CENTER);
+        this.add(playButton, BorderLayout.CENTER);
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

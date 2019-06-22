@@ -9,7 +9,6 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.LocalTime;
 
 public class Song extends Entity implements Serializable {
     private String address;
@@ -39,7 +38,6 @@ public class Song extends Entity implements Serializable {
         }
 
 
-
         // TODO: bonus not implemented
         this.album = this.mp3.getId3v1Tag().getAlbum();
 
@@ -47,19 +45,28 @@ public class Song extends Entity implements Serializable {
         this.setCaption(this.mp3.getId3v1Tag().getArtist());
         this.setImageData(this.mp3.getId3v2Tag().getAlbumImage());
     }
-    public Song(SongMinimumData songMinData)
-    {
+
+    public Song(SongMinimumData songMinData) {
         this(songMinData.getFileAddress());
         this.setPauseLocation(songMinData.getPauseLocation());
         this.setLastPlayed(songMinData.getLastPlayed());
     }
 
+    public String getArtist() {
+        return super.getCaption();
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public String getLastPlayed() {
+        return lastPlayed;
+    }
+
     public void setLastPlayed(String lastPlayed) {
         this.lastPlayed = lastPlayed;
     }
-    public String getArtist() { return super.getCaption(); }
-    public String getAlbum() { return album; }
-    public String getLastPlayed() { return lastPlayed; }
 
     public AdvancedPlayer getPlayer() {
         return player;
@@ -77,19 +84,21 @@ public class Song extends Entity implements Serializable {
         return fis;
     }
 
+    public boolean getPaused() {
+        return paused;
+    }
+
     public void setPaused(boolean paused) {
         this.paused = paused;
     }
-    public boolean getPaused()
-    {
-        return paused;
+
+    public boolean getRepeat() {
+        return repeat;
     }
 
     public void setRepeat(boolean repeat) {
         this.repeat = repeat;
     }
-    public boolean getRepeat()
-    {return repeat; }
 
     public long getPauseLocation() {
         return pauseLocation;
@@ -103,8 +112,7 @@ public class Song extends Entity implements Serializable {
         return totalSongLength;
     }
 
-    public SongMinimumData getSongMinimumData()
-    {
-        return new SongMinimumData(address,lastPlayed,pauseLocation);
+    public SongMinimumData getSongMinimumData() {
+        return new SongMinimumData(address, lastPlayed, pauseLocation);
     }
 }

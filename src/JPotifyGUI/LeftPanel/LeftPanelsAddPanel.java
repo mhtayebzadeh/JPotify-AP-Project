@@ -1,8 +1,8 @@
-package JPotifyGUI;
+package JPotifyGUI.LeftPanel;
 
-import JPotifyLogic.Entity.Entity;
+import JPotifyGUI.CenterPanel;
 import JPotifyLogic.Entity.Song;
-import JPotifyLogic.Library.Songs;
+import JPotifyLogic.LogicData;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,25 +13,27 @@ import java.io.File;
 import java.io.IOException;
 
 public class LeftPanelsAddPanel extends JPanel {
-    private Songs songs;
+    private LogicData logicData;
+    private CenterPanel centerPanel;
 
     // TODO: NewPlaylistMouseListener not implemented
-    public LeftPanelsAddPanel(Songs songs) {
+    public LeftPanelsAddPanel(LogicData logicData, CenterPanel centerPanel) {
         super();
-        this.songs = songs;
+        this.logicData = logicData;
+        this.centerPanel = centerPanel;
 
         this.setLayout(new GridLayout(2, 1));
 
         JPanel newSongPanel = new JPanel();
         newSongPanel.setLayout(new GridLayout(1, 2));
         JButton newSongButton = new JButton();
-        newSongButton.addMouseListener(new NewSongMouseListener(this.songs));
+        newSongButton.addMouseListener(new NewSongMouseListener(this.logicData, centerPanel));
         JLabel newSongLabel = new JLabel("New Song");
 
         JPanel newPlaylistPanel = new JPanel();
         newPlaylistPanel.setLayout(new GridLayout(1, 2));
         JButton newPlaylistButton = new JButton();
-        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener());
+        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.logicData, centerPanel));
         JLabel newPlaylistLabel = new JLabel("New Playlist");
 
         newSongPanel.add(newSongButton);
@@ -53,54 +55,73 @@ public class LeftPanelsAddPanel extends JPanel {
     }
 
     public class NewSongMouseListener implements MouseListener {
-        private Songs songs;
+        private LogicData logicData;
+        private CenterPanel centerPanel;
 
-        public NewSongMouseListener(Songs songs) { this.songs = songs; }
+        public NewSongMouseListener(LogicData logicData, CenterPanel centerPanel) {
+            this.logicData = logicData;
+            this.centerPanel = centerPanel;
+        }
 
         @Override
         public void mouseClicked(MouseEvent e) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            fileChooser.showOpenDialog(new Frame());
+            int res = fileChooser.showOpenDialog(new Frame());
+            if (res == JFileChooser.CANCEL_OPTION)
+                return;
             File file = fileChooser.getSelectedFile();
             Song song = new Song(file.getAbsolutePath());
-            this.songs.addSong(song);
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) { }
-        @Override
-        public void mouseReleased(MouseEvent e) { }
-        @Override
-        public void mouseEntered(MouseEvent e) { }
-        @Override
-        public void mouseExited(MouseEvent e) { }
-    }
-
-    private class NewPlaylistMouseListener implements MouseListener {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-
+            this.logicData.addSong(song);
+            this.centerPanel.setLibraryFromSongs(this.logicData.getSongs());
+            this.centerPanel.paint();
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-
         }
 
         @Override
         public void mouseEntered(MouseEvent e) {
-
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
+        }
+    }
 
+    private class NewPlaylistMouseListener implements MouseListener {
+        private LogicData logicData;
+        private CenterPanel centerPanel;
+
+        public NewPlaylistMouseListener(LogicData logicData, CenterPanel centerPanel) {
+            this.logicData = logicData;
+            this.centerPanel = centerPanel;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            // TODO
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
         }
     }
 }
