@@ -16,7 +16,7 @@ public class CenterPanel extends JPanel {
         this.setBackground(Color.BLACK);
         // this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        this.setLayout(new GridLayout(2, 3));
+        this.setLayout(new GridLayout(0, 3));
     }
 
     /*public void setSongs(ArrayList<SongPanel> songs) {
@@ -32,7 +32,7 @@ public class CenterPanel extends JPanel {
     public void paint() {
         this.removeAll();
         for (Entity entity : this.library) {
-            SongPanel songPanel = new SongPanel(entity.getTitle(), entity.getCaption());
+            SongPanel songPanel = new SongPanel(entity.getTitle(), entity.getCaption(), entity.getImageData());
             this.add(songPanel);
         }
         this.revalidate();

@@ -39,12 +39,13 @@ public class GUI {
 
         this.bottomPanel = new BottomPanel();
         this.centerPanel = new CenterPanel();
+        JScrollPane jScrollPane = new JScrollPane(this.centerPanel);
         this.leftPanel = new LeftPanel(this.fileManager, this.centerPanel);
         this.rightPanel = new RightPanel();
 
         this.frame.setLayout(new BorderLayout());
         this.frame.add(this.bottomPanel, BorderLayout.SOUTH);
-        this.frame.add(this.centerPanel, BorderLayout.CENTER);
+        this.frame.add(jScrollPane, BorderLayout.CENTER);
         this.frame.add(this.leftPanel, BorderLayout.WEST);
         this.frame.add(this.rightPanel, BorderLayout.EAST);
 
