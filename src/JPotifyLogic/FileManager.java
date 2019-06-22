@@ -23,7 +23,7 @@ public class FileManager implements Serializable {
     }
 
     public static Playlist sortByLastPlayed(Playlist playlist) {
-        ArrayList<Song> newSongs = new ArrayList<Song>();
+        ArrayList<Song> newSongs = new ArrayList<>();
         Song smaller;
         long last = 0;
         for (Song s_ : playlist.getSongs()) {
@@ -51,7 +51,7 @@ public class FileManager implements Serializable {
             ois.close();
 
             this.songs = new ArrayList<>();
-            for (SongMinimumData s : songsMinData)
+            for (SongMinimumData s : this.songsMinData)
                 this.songs.add(new Song(s));
 
             fis = new FileInputStream(dataDirectory + "\\" + "playlists.ser");
@@ -60,8 +60,8 @@ public class FileManager implements Serializable {
             ois.close();
 
             this.playlists = new ArrayList<>();
-            for (PlayListMinData p : playListsMinData)
-                playlists.add(new Playlist(p));
+            for (PlayListMinData p : this.playListsMinData)
+                this.playlists.add(new Playlist(p));
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -77,7 +77,7 @@ public class FileManager implements Serializable {
     public void saveData(String dataDirectory) {
         try {
             this.songsMinData = new ArrayList<>();
-            for (Song s : songs)
+            for (Song s : this.songs)
                 this.songsMinData.add(s.getSongMinimumData());
 
             FileOutputStream fos = new FileOutputStream(dataDirectory + "\\" + "songs.ser");
@@ -98,7 +98,6 @@ public class FileManager implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void saveData() {
@@ -106,6 +105,9 @@ public class FileManager implements Serializable {
     }
 
     public void add2Songs(Song song) {
+        for (Song s : this.songs)
+            if (song.getTitle().equals(s.getTitle()))
+                return;
         this.songs.add(song);
     }
 
@@ -122,7 +124,7 @@ public class FileManager implements Serializable {
     }
 
     public void updateArtists() {
-        artists = new ArrayList<Artist>();
+        this.artists = new ArrayList<>();
         ArrayList<String> artistName = new ArrayList<>();
         for (Song s : songs)
             if (!artistName.contains(s.getArtist()))
@@ -139,15 +141,15 @@ public class FileManager implements Serializable {
                     a.setCaption(s.getCaption());
                 }
 
-            artists.add(a);
+            this.artists.add(a);
         }
     }
 
     public void updateAlbums() {
-        albums = new ArrayList<Album>();
+        this.albums = new ArrayList<>();
 
         ArrayList<String> albumsName = new ArrayList<String>();
-        for (Song s : songs)
+        for (Song s : this.songs)
             if (!albumsName.contains(s.getAlbum()))
                 albumsName.add(s.getAlbum());
 
@@ -155,13 +157,13 @@ public class FileManager implements Serializable {
         for (String album_ : albumsName) {
             a = new Album(album_);
             a.setTitle(album_);
-            for (Song s : songs)
+            for (Song s : this.songs)
                 if (s.getAlbum().equals(album_)) {
                     a.addSong(s);
                     a.setImageData(s.getImageData());
                     a.setCaption(s.getCaption());
                 }
-            albums.add(a);
+            this.albums.add(a);
         }
     }
 

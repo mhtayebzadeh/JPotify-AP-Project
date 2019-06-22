@@ -4,6 +4,7 @@ package JPotifyGUI;
 
 import JPotifyGUI.LeftPanel.LeftPanel;
 import JPotifyLogic.FileManager;
+import JPotifyLogic.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,12 +19,14 @@ public class GUI {
 
     // fields from logic
     private FileManager fileManager;
+    private Player player;
 
     public GUI() {
         this.fileManager = new FileManager();
 
         this.frame = new JFrame("JPotify");
-        this.frame.setSize(800, 500);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.frame.setSize(dim.width/2, dim.height/2);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setIconImage(new ImageIcon("src/JPotifyGUI/images/jpotify_icon.png").getImage());
 
@@ -33,12 +36,11 @@ public class GUI {
             e.printStackTrace();
         }
         //set initial position of frame in center of screen
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
         this.frame.setBackground(Color.BLACK);
 
         this.bottomPanel = new BottomPanel();
-        this.centerPanel = new CenterPanel();
+        this.centerPanel = new CenterPanel(this.player);
         JScrollPane jScrollPane = new JScrollPane(this.centerPanel);
         this.leftPanel = new LeftPanel(this.fileManager, this.centerPanel);
         this.rightPanel = new RightPanel();
@@ -52,7 +54,12 @@ public class GUI {
         this.frame.setVisible(true);
     }
 
-//    public void setSongsPanel(ArrayList<SongPanel> songs) {
+    public void setPlayer(Player player) {
+        this.player = player;
+        this.centerPanel.setPlayer(player);
+    }
+
+    //    public void setSongsPanel(ArrayList<SongPanel> songs) {
 //        centerPanel.setSongs(songs);
 //    }
 }
