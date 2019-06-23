@@ -25,6 +25,7 @@ public class LeftPanelsLibraryPanel extends JPanel {
         this.libraryList = new JList<>(list);
         this.libraryList.addMouseListener(new LibraryMouseListener(fileManager, this.libraryList, centerPanel));
         this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
+        this.centerPanel.paint();
 
         this.setLayout(new GridLayout(1, 1));
         this.add(this.libraryList);
@@ -44,13 +45,14 @@ public class LeftPanelsLibraryPanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (this.libraryList.getSelectedIndex() != -1) {
-                if (this.libraryList.getSelectedValue().equals("Songs"))
+                String selectedValue = this.libraryList.getSelectedValue();
+                if (selectedValue.equals("Songs"))
                     this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
-                else if (this.libraryList.getSelectedValue().equals("Playlists"))
+                else if (selectedValue.equals("Playlists"))
                     this.centerPanel.setLibraryFromPlaylists(this.fileManager.getPlaylists());
-                else if (this.libraryList.getSelectedValue().equals("Albums"))
+                else if (selectedValue.equals("Albums"))
                     this.centerPanel.setLibraryFromAlbums(this.fileManager.getAlbums());
-                else if (this.libraryList.getSelectedValue().equals("Artists"))
+                else if (selectedValue.equals("Artists"))
                     this.centerPanel.setLibraryFromArtists(this.fileManager.getArtists());
                 this.centerPanel.paint();
             }

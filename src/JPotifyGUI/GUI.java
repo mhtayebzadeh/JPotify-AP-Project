@@ -23,6 +23,7 @@ public class GUI {
 
     public GUI() {
         this.fileManager = new FileManager();
+        this.fileManager.loadData();
 
         this.frame = new JFrame("JPotify");
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -52,11 +53,25 @@ public class GUI {
         this.frame.add(this.rightPanel, BorderLayout.EAST);
 
         this.frame.setVisible(true);
+        //Runtime.getRuntime().addShutdownHook(new Thread(new ExitRunnable(fileManager)));
     }
 
     public void setPlayer(Player player) {
         this.player = player;
         this.centerPanel.setPlayer(player);
+    }
+
+    private class ExitRunnable implements Runnable {
+        private FileManager fileManager;
+
+        public ExitRunnable(FileManager fileManager) {
+            this.fileManager = fileManager;
+        }
+
+        @Override
+        public void run() {
+            this.fileManager.saveData();
+        }
     }
 
     //    public void setSongsPanel(ArrayList<SongPanel> songs) {

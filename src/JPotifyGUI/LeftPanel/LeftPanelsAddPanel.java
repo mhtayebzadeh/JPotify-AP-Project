@@ -65,8 +65,8 @@ public class LeftPanelsAddPanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")
-                    + "/src/JPotifyLogic/Songs");
+            JFileChooser fileChooser = new JFileChooser(
+                    System.getProperty("user.dir") + "/src/JPotifyLogic/Songs");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int res = fileChooser.showOpenDialog(new Frame());
             if (res == JFileChooser.CANCEL_OPTION)

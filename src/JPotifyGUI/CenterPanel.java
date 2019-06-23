@@ -22,6 +22,7 @@ public class CenterPanel extends JPanel {
         super();
         this.setBackground(Color.BLACK);
         this.entityPanels = new ArrayList<>();
+        this.library = new ArrayList<>();
         this.setLayout(new GridLayout(0, 4));
         this.player = player;
     }

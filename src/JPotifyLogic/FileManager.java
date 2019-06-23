@@ -10,17 +10,25 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class FileManager implements Serializable {
-    private ArrayList<Song> songs = new ArrayList<>();
-    private ArrayList<SongMinimumData> songsMinData = new ArrayList<>();
-    private ArrayList<PlayListMinData> playListsMinData = new ArrayList<>();
-    private ArrayList<Playlist> playlists = new ArrayList<>();
-    private ArrayList<Album> albums = new ArrayList<>();
-    private ArrayList<Artist> artists = new ArrayList<>();
-    private String defaultSaveDir = "savedData";
-    private SharedPlaylist sharedPlaylist = new SharedPlaylist();
-    private FavoritePlaylist favoritePlaylist = new FavoritePlaylist();
+    private ArrayList<Song> songs;
+    private ArrayList<SongMinimumData> songsMinData;
+    private ArrayList<PlayListMinData> playListsMinData;
+    private ArrayList<Playlist> playlists;
+    private ArrayList<Album> albums;
+    private ArrayList<Artist> artists;
+    private final String defaultSaveDir = "savedData";
+    private SharedPlaylist sharedPlaylist;
+    private FavoritePlaylist favoritePlaylist;
 
     public FileManager() {
+        this.songs = new ArrayList<>();
+        this.songsMinData = new ArrayList<>();
+        this.playListsMinData = new ArrayList<>();
+        this.playlists = new ArrayList<>();
+        this.albums = new ArrayList<>();
+        this.artists = new ArrayList<>();
+        this.sharedPlaylist = new SharedPlaylist();
+        this.favoritePlaylist = new FavoritePlaylist();
     }
 
     public static Playlist sortByLastPlayed(Playlist playlist) {
@@ -68,7 +76,7 @@ public class FileManager implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
+        this.update();
     }
 
     public void loadData() {
@@ -118,7 +126,7 @@ public class FileManager implements Serializable {
     }
 
     public ArrayList<Song> getSongs() {
-        return songs;
+        return this.songs;
     }
 
     public ArrayList<Playlist> getPlaylists() {
@@ -133,6 +141,7 @@ public class FileManager implements Serializable {
     private void updateArtists() {
         this.artists = new ArrayList<>();
         ArrayList<String> artistNames = new ArrayList<>();
+
         for (Song s : this.songs)
             if (!artistNames.contains(s.getArtist()))
                 artistNames.add(s.getArtist());
@@ -146,15 +155,14 @@ public class FileManager implements Serializable {
                     a.setImageData(s.getImageData());
                     a.setCaption(s.getCaption());
                 }
-
             this.artists.add(a);
         }
     }
 
     private void updateAlbums() {
         this.albums = new ArrayList<>();
-
         ArrayList<String> albumNames = new ArrayList<>();
+
         for (Song s : this.songs)
             if (!albumNames.contains(s.getAlbum()))
                 albumNames.add(s.getAlbum());
