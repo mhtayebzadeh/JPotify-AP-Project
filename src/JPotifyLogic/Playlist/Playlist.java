@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Playlist extends Entity implements Serializable {
     private ArrayList<Song> songs;
+    private String typeOfPlaylist = "normal";
 
     // TODO: caption and image not being set
     public Playlist() {
@@ -22,6 +23,7 @@ public class Playlist extends Entity implements Serializable {
         setImageData(playListMinData.getImageData());
         for (SongMinimumData s : playListMinData.getSongsMinData())
             songs.add(new Song(s));
+        setTypeOfPlaylist(playListMinData.getTypeOfPlaylist());
     }
 
     @Override
@@ -48,12 +50,18 @@ public class Playlist extends Entity implements Serializable {
 
     public PlayListMinData getPlayListMinData()
     {
-        PlayListMinData p = new PlayListMinData(this.getTitle(),this.getCaption(),this.getImageData());
+        PlayListMinData p = new PlayListMinData(this.getTitle(),this.getCaption(),this.getImageData(),this.typeOfPlaylist);
         for(Song s:songs)
             p.addSongsMinData(s.getSongMinimumData());
 
         return p;
     }
 
+    public String getTypeOfPlaylist() {
+        return typeOfPlaylist;
+    }
 
+    public void setTypeOfPlaylist(String typeOfPlaylist) {
+        this.typeOfPlaylist = typeOfPlaylist;
+    }
 }

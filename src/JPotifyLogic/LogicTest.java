@@ -5,6 +5,7 @@ import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Playlist.Album;
 import JPotifyLogic.Playlist.Playlist;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
@@ -16,10 +17,10 @@ public class LogicTest {
         FileManager fileManager = new FileManager();
 //  save Data
 
-//        Song song1 = new Song("src\\JPotifyLogic\\Songs\\Piano Concerto No 5 in E flat major.mp3");
-//        Song song2 = new Song("src\\JPotifyLogic\\Songs\\Mohammad_Motamedi_Koobaar.mp3");
-//        Song song3 = new Song("src\\JPotifyLogic\\Songs\\07-Ali_Zand_Vakili_Nemiayi.mp3");
-//        Song song4 = new Song("src\\JPotifyLogic\\Songs\\08-Ali_Zand_Vakili_Jananeh.mp3");
+//        Song song1 = new Song(Paths.get("src","JPotifyLogic","Songs","Piano Concerto No 5 in E flat major.mp3").toString());
+//        Song song2 = new Song(Paths.get("src","JPotifyLogic","Songs","Mohammad_Motamedi_Koobaar.mp3").toString());
+//        Song song3 = new Song(Paths.get("src","JPotifyLogic","Songs","07-Ali_Zand_Vakili_Nemiayi.mp3").toString());
+//        Song song4 = new Song(Paths.get("src","JPotifyLogic","Songs","08-Ali_Zand_Vakili_Jananeh.mp3").toString());
 //
 //        Playlist playlist1 = new Playlist();
 //        Playlist playlist2 = new Playlist();
@@ -27,7 +28,7 @@ public class LogicTest {
 //        playlist1.addSong(song2);
 //        playlist2.addSong(song3);
 //        playlist2.addSong(song4);
-//
+////
 //        fileManager.add2Songs(song1);
 //        fileManager.add2Songs(song2);
 //        fileManager.add2Songs(song3);
@@ -35,7 +36,7 @@ public class LogicTest {
 //
 //        player.setSong(song4);
 //        Thread.sleep(2000);
-//
+//        player.stop_();
 //        fileManager.add2PlayLists(playlist1);
 //        fileManager.add2PlayLists(playlist2);
 //        fileManager.saveData();
