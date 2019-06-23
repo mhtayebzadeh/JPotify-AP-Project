@@ -9,8 +9,6 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.LocalTime;
 
 public class Song extends Entity implements Serializable {
     private String address;
@@ -116,16 +114,15 @@ public class Song extends Entity implements Serializable {
     }
 
 
-    public SongMinimumData getSongMinimumData()
-    {
-        return new SongMinimumData(address,lastPlayed,pauseLocation,timeStampLastPlayed);
-    }
-
-    public void setTimeStampLastPlayed(long timeStampLastPlayed) {
-        this.timeStampLastPlayed = timeStampLastPlayed;
+    public SongMinimumData getSongMinimumData() {
+        return new SongMinimumData(address, lastPlayed, pauseLocation, timeStampLastPlayed);
     }
 
     public long getTimeStampLastPlayed() {
         return timeStampLastPlayed;
+    }
+
+    public void setTimeStampLastPlayed(long timeStampLastPlayed) {
+        this.timeStampLastPlayed = timeStampLastPlayed;
     }
 }

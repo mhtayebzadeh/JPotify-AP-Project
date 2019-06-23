@@ -10,17 +10,25 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class FileManager implements Serializable {
-    private ArrayList<Song> songs = new ArrayList<>();
-    private ArrayList<SongMinimumData> songsMinData = new ArrayList<>();
-    private ArrayList<PlayListMinData> playListsMinData = new ArrayList<>();
-    private ArrayList<Playlist> playlists = new ArrayList<>();
-    private ArrayList<Album> albums = new ArrayList<>();
-    private ArrayList<Artist> artists = new ArrayList<>();
-    private String defaultSaveDir = "savedData";
-    private SharedPlaylist sharedPlaylist = new SharedPlaylist();
-    private FavoritePlaylist favoritePlaylist = new FavoritePlaylist();
+    private ArrayList<Song> songs;
+    private ArrayList<SongMinimumData> songsMinData;
+    private ArrayList<PlayListMinData> playListsMinData;
+    private ArrayList<Playlist> playlists;
+    private ArrayList<Album> albums;
+    private ArrayList<Artist> artists;
+    private final String defaultSaveDir = "savedData";
+    private SharedPlaylist sharedPlaylist;
+    private FavoritePlaylist favoritePlaylist;
 
     public FileManager() {
+        this.songs = new ArrayList<>();
+        this.songsMinData = new ArrayList<>();
+        this.playListsMinData = new ArrayList<>();
+        this.playlists = new ArrayList<>();
+        this.albums = new ArrayList<>();
+        this.artists = new ArrayList<>();
+        this.sharedPlaylist = new SharedPlaylist();
+        this.favoritePlaylist = new FavoritePlaylist();
     }
 
     public static Playlist sortByLastPlayed(Playlist playlist) {
@@ -68,7 +76,7 @@ public class FileManager implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
+        this.update();
     }
 
     public void loadData() {
@@ -118,49 +126,52 @@ public class FileManager implements Serializable {
     }
 
     public ArrayList<Song> getSongs() {
-        return songs;
+        return this.songs;
     }
 
     public ArrayList<Playlist> getPlaylists() {
         return this.playlists;
     }
 
-    public void updateArtists() {
-        this.artists = new ArrayList<>();
-        ArrayList<String> artistName = new ArrayList<>();
-        for (Song s : songs)
-            if (!artistName.contains(s.getArtist()))
-                artistName.add(s.getArtist());
+    public void update() {
+        this.updateAlbums();
+        this.updateArtists();
+    }
 
-        Artist a;
-        for (String artist_ : artistName) {
-            a = new Artist(artist_);
-            a.setTitle(artist_);
-            for (Song s : songs)
-                if (s.getArtist().equals(artist_)) {
+    private void updateArtists() {
+        this.artists = new ArrayList<>();
+        ArrayList<String> artistNames = new ArrayList<>();
+
+        for (Song s : this.songs)
+            if (!artistNames.contains(s.getArtist()))
+                artistNames.add(s.getArtist());
+
+        for (String artistName : artistNames) {
+            Artist a = new Artist(artistName);
+            a.setTitle(artistName);
+            for (Song s : this.songs)
+                if (s.getArtist().equals(artistName)) {
                     a.addSong(s);
                     a.setImageData(s.getImageData());
                     a.setCaption(s.getCaption());
                 }
-
             this.artists.add(a);
         }
     }
 
-    public void updateAlbums() {
+    private void updateAlbums() {
         this.albums = new ArrayList<>();
+        ArrayList<String> albumNames = new ArrayList<>();
 
-        ArrayList<String> albumsName = new ArrayList<String>();
         for (Song s : this.songs)
-            if (!albumsName.contains(s.getAlbum()))
-                albumsName.add(s.getAlbum());
+            if (!albumNames.contains(s.getAlbum()))
+                albumNames.add(s.getAlbum());
 
-        Album a;
-        for (String album_ : albumsName) {
-            a = new Album(album_);
-            a.setTitle(album_);
+        for (String albumName : albumNames) {
+            Album a = new Album(albumName);
+            a.setTitle(albumName);
             for (Song s : this.songs)
-                if (s.getAlbum().equals(album_)) {
+                if (s.getAlbum().equals(albumName)) {
                     a.addSong(s);
                     a.setImageData(s.getImageData());
                     a.setCaption(s.getCaption());

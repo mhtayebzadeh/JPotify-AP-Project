@@ -23,10 +23,11 @@ public class GUI {
 
     public GUI() {
         this.fileManager = new FileManager();
+        this.fileManager.loadData();
 
         this.frame = new JFrame("JPotify");
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.frame.setSize(dim.width/2, dim.height/2);
+        this.frame.setSize(3*dim.width/4, 3*dim.height/4);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setIconImage(new ImageIcon("src/JPotifyGUI/images/jpotify_icon.png").getImage());
 
@@ -52,11 +53,25 @@ public class GUI {
         this.frame.add(this.rightPanel, BorderLayout.EAST);
 
         this.frame.setVisible(true);
+        //Runtime.getRuntime().addShutdownHook(new Thread(new ExitRunnable(fileManager)));
     }
 
     public void setPlayer(Player player) {
         this.player = player;
         this.centerPanel.setPlayer(player);
+    }
+
+    private class ExitRunnable implements Runnable {
+        private FileManager fileManager;
+
+        public ExitRunnable(FileManager fileManager) {
+            this.fileManager = fileManager;
+        }
+
+        @Override
+        public void run() {
+            this.fileManager.saveData();
+        }
     }
 
     //    public void setSongsPanel(ArrayList<SongPanel> songs) {
