@@ -13,12 +13,12 @@ import java.util.Iterator;
 
 public class Player extends Thread {
     private String name;
-    private Song song = null;
-    private Thread playThread = null;
+    private Song song;
+    private Thread playThread;
 
     public Player(String playerName) {
         super(playerName);
-        name = playerName;
+        this.name = playerName;
     }
 
     // start music from first of lib
@@ -40,6 +40,10 @@ public class Player extends Thread {
         //TODO: lastPlayed of all library songs not set
     }
 
+    public Song getSong() {
+        return song;
+    }
+
     public void setSong(Song song) {
         this.song = song;
         this.stop_();
@@ -47,7 +51,7 @@ public class Player extends Thread {
         this.playThread.start();
     }
 
-//    public void play() {
+    //    public void play() {
 
 //    }
 

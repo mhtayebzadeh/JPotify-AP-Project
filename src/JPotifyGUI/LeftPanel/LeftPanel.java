@@ -16,7 +16,8 @@ public class LeftPanel extends JPanel {
         this.centerPanel = centerPanel;
 //        this.setSize(new Dimension(100,200));
 //        this.setMinimumSize(new Dimension(100,300));
-        this.setPreferredSize(new Dimension(150, 200));
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setPreferredSize(new Dimension(dim.width/8, dim.height/8));
         this.setBackground(Color.RED);
         this.setLayout(new GridLayout(4, 1));
 

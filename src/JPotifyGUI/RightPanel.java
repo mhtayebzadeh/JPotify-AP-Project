@@ -9,7 +9,8 @@ public class RightPanel extends JPanel {
         super();
 //        this.setSize(200,300);
 //        this.setMinimumSize(new Dimension(200,300));
-        this.setPreferredSize(new Dimension(150, 300));
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setPreferredSize(new Dimension(dim.width/8, dim.height/8));
         this.setBackground(Color.CYAN);
     }
 }
