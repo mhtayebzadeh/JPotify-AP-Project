@@ -74,6 +74,7 @@ public class LeftPanelsAddPanel extends JPanel {
             File file = fileChooser.getSelectedFile();
             Song song = new Song(file.getAbsolutePath());
             this.fileManager.add2Songs(song);
+            this.fileManager.update();
             this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
             this.centerPanel.paint();
         }

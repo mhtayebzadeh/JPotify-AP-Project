@@ -52,9 +52,8 @@ public class LeftPanelsLibraryPanel extends JPanel {
                     this.centerPanel.setLibraryFromAlbums(this.fileManager.getAlbums());
                 else if (this.libraryList.getSelectedValue().equals("Artists"))
                     this.centerPanel.setLibraryFromArtists(this.fileManager.getArtists());
+                this.centerPanel.paint();
             }
-            this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
-            this.centerPanel.paint();
         }
 
         @Override

@@ -26,11 +26,6 @@ public class Playlist extends Entity implements Serializable {
         setTypeOfPlaylist(playListMinData.getTypeOfPlaylist());
     }
 
-    @Override
-    public void setTitle(String title) {
-        super.setTitle(title);
-    }
-
     public void addSong(Song song) {
         this.songs.add(song);
     }
@@ -43,17 +38,14 @@ public class Playlist extends Entity implements Serializable {
         return songs;
     }
 
-
     public void setSongs(ArrayList<Song> songs) {
         this.songs = songs;
     }
 
-    public PlayListMinData getPlayListMinData()
-    {
-        PlayListMinData p = new PlayListMinData(this.getTitle(),this.getCaption(),this.getImageData(),this.typeOfPlaylist);
-        for(Song s:songs)
+    public PlayListMinData getPlayListMinData() {
+        PlayListMinData p = new PlayListMinData(this.getTitle(), this.getCaption(), this.getImageData(), this.typeOfPlaylist);
+        for (Song s : this.songs)
             p.addSongsMinData(s.getSongMinimumData());
-
         return p;
     }
 

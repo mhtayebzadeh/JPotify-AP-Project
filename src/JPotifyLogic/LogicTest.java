@@ -46,8 +46,7 @@ public class LogicTest {
 
         fileManager.loadData();
 
-        fileManager.updateAlbums();
-        fileManager.updateArtists();
+        fileManager.update();
         for(Album a : fileManager.getAlbums())
             System.out.println(a.getAlbum());
         System.out.println("-----------------");

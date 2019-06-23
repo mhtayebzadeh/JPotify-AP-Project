@@ -14,13 +14,13 @@ public class EntityPanel extends JPanel {
         this.index = index;
         this.setLayout(new GridLayout(3, 1));
         this.setBackground(Color.ORANGE);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
         JLabel imageLabel = new JLabel();
         try {
             ImageIcon bImageIcon = new ImageIcon(ImageIO.read(bis));
             Image bImage = bImageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
             imageLabel.setIcon(new ImageIcon(bImage));
-            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
             imageLabel.setLocation(dim.width/3, dim.height/3);
         } catch (IOException e) {
             e.printStackTrace();

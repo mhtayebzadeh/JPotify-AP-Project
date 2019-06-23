@@ -125,19 +125,23 @@ public class FileManager implements Serializable {
         return this.playlists;
     }
 
-    public void updateArtists() {
-        this.artists = new ArrayList<>();
-        ArrayList<String> artistName = new ArrayList<>();
-        for (Song s : songs)
-            if (!artistName.contains(s.getArtist()))
-                artistName.add(s.getArtist());
+    public void update() {
+        this.updateAlbums();
+        this.updateArtists();
+    }
 
-        Artist a;
-        for (String artist_ : artistName) {
-            a = new Artist(artist_);
-            a.setTitle(artist_);
-            for (Song s : songs)
-                if (s.getArtist().equals(artist_)) {
+    private void updateArtists() {
+        this.artists = new ArrayList<>();
+        ArrayList<String> artistNames = new ArrayList<>();
+        for (Song s : this.songs)
+            if (!artistNames.contains(s.getArtist()))
+                artistNames.add(s.getArtist());
+
+        for (String artistName : artistNames) {
+            Artist a = new Artist(artistName);
+            a.setTitle(artistName);
+            for (Song s : this.songs)
+                if (s.getArtist().equals(artistName)) {
                     a.addSong(s);
                     a.setImageData(s.getImageData());
                     a.setCaption(s.getCaption());
@@ -147,20 +151,19 @@ public class FileManager implements Serializable {
         }
     }
 
-    public void updateAlbums() {
+    private void updateAlbums() {
         this.albums = new ArrayList<>();
 
-        ArrayList<String> albumsName = new ArrayList<String>();
+        ArrayList<String> albumNames = new ArrayList<>();
         for (Song s : this.songs)
-            if (!albumsName.contains(s.getAlbum()))
-                albumsName.add(s.getAlbum());
+            if (!albumNames.contains(s.getAlbum()))
+                albumNames.add(s.getAlbum());
 
-        Album a;
-        for (String album_ : albumsName) {
-            a = new Album(album_);
-            a.setTitle(album_);
+        for (String albumName : albumNames) {
+            Album a = new Album(albumName);
+            a.setTitle(albumName);
             for (Song s : this.songs)
-                if (s.getAlbum().equals(album_)) {
+                if (s.getAlbum().equals(albumName)) {
                     a.addSong(s);
                     a.setImageData(s.getImageData());
                     a.setCaption(s.getCaption());

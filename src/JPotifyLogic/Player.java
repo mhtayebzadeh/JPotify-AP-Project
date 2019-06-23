@@ -24,6 +24,7 @@ public class Player extends Thread {
     // start music from first of lib
     public void setPlayList(Playlist playlist) {
         //TODO:
+        this.setPlayList(playlist, playlist.getSongs().get(0));
     }
 
     // start music from first of lib

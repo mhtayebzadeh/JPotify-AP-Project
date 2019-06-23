@@ -22,7 +22,7 @@ public class CenterPanel extends JPanel {
         super();
         this.setBackground(Color.BLACK);
         this.entityPanels = new ArrayList<>();
-        this.setLayout(new GridLayout(0, 3));
+        this.setLayout(new GridLayout(0, 4));
         this.player = player;
     }
 
@@ -48,7 +48,7 @@ public class CenterPanel extends JPanel {
         }
         for (int i = 0; i < this.library.size(); i++)
             this.entityPanels.get(i).addMouseListener(
-                    new PlaySongMouseListener(this.library, this.player));
+                    new PlaySongMouseListener(this));
         this.revalidate();
     }
 
@@ -74,12 +74,10 @@ public class CenterPanel extends JPanel {
     }
 
     public class PlaySongMouseListener implements MouseListener {
-        private ArrayList<Entity> library;
-        private Player player;
+        private CenterPanel centerPanel;
 
-        public PlaySongMouseListener(ArrayList<Entity> library, Player player) {
-            this.library = library;
-            this.player = player;
+        public PlaySongMouseListener(CenterPanel centerPanel) {
+            this.centerPanel = centerPanel;
         }
 
         @Override
@@ -87,7 +85,20 @@ public class CenterPanel extends JPanel {
             if (e.getSource() == null)
                 return;
             EntityPanel entityPanel = (EntityPanel) e.getSource();
-            this.player.setSong((Song) this.library.get(entityPanel.getIndex()));
+            Entity entity = this.centerPanel.library.get(entityPanel.getIndex());
+            if (entity instanceof Song)
+                this.centerPanel.player.setSong((Song) entity);
+            else {
+                this.centerPanel.player.setPlayList((Playlist) entity);
+                this.centerPanel.library = new ArrayList<>();
+                if (entity instanceof Album)
+                    this.centerPanel.library.addAll(((Album) entity).getSongs());
+                else if (entity instanceof Artist)
+                    this.centerPanel.library.addAll(((Artist) entity).getSongs());
+                else
+                    this.centerPanel.library.addAll(((Playlist) entity).getSongs());
+                this.centerPanel.paint();
+            }
         }
 
         @Override
