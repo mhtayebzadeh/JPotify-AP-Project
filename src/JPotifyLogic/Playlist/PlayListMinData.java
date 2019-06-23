@@ -9,9 +9,10 @@ import java.util.ArrayList;
 public class PlayListMinData extends Entity implements Serializable {
 
     private ArrayList<SongMinimumData> songsMinData = new ArrayList<SongMinimumData>();
-
-    public PlayListMinData(String title, String caption, byte[] imageData) {
+    private String typeOfPlaylist;
+    public PlayListMinData(String title, String caption, byte[] imageData , String type) {
         super(title, caption, imageData);
+        typeOfPlaylist = type;
     }
 
     public void addSongsMinData(SongMinimumData songMinData) {
@@ -24,5 +25,9 @@ public class PlayListMinData extends Entity implements Serializable {
 
     public void setSongsMinData(ArrayList<SongMinimumData> songsMinData) {
         this.songsMinData = songsMinData;
+    }
+
+    public String getTypeOfPlaylist() {
+        return typeOfPlaylist;
     }
 }

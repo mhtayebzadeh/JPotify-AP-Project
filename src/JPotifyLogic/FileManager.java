@@ -2,10 +2,7 @@ package JPotifyLogic;
 
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Entity.SongMinimumData;
-import JPotifyLogic.Playlist.Album;
-import JPotifyLogic.Playlist.Artist;
-import JPotifyLogic.Playlist.PlayListMinData;
-import JPotifyLogic.Playlist.Playlist;
+import JPotifyLogic.Playlist.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,6 +15,8 @@ public class FileManager implements Serializable {
     private ArrayList<Album> albums = new ArrayList<>();
     private ArrayList<Artist> artists = new ArrayList<>();
     private String defaultSaveDir = "savedData";
+    private SharedPlaylist sharedPlaylist = new SharedPlaylist();
+    private FavoritePlaylist favoritePlaylist = new FavoritePlaylist();
 
     public FileManager() {
     }
@@ -173,5 +172,13 @@ public class FileManager implements Serializable {
 
     public ArrayList<Artist> getArtists() {
         return artists;
+    }
+
+    public FavoritePlaylist getFavoritePlaylist() {
+        return favoritePlaylist;
+    }
+
+    public SharedPlaylist getSharedPlaylist() {
+        return sharedPlaylist;
     }
 }
