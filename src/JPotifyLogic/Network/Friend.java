@@ -1,7 +1,6 @@
 package JPotifyLogic.Network;
 
 import JPotifyLogic.Entity.Artwork;
-import JPotifyLogic.Entity.Entity;
 
 import java.io.*;
 import java.net.InetAddress;
