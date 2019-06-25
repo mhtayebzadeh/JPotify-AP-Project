@@ -9,21 +9,20 @@ import JPotifyLogic.Playlist.Playlist;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class CenterPanel extends JPanel {
+    private static final Color bgColorBlack = new Color(43, 43, 43);
     private ArrayList<Entity> library;
     private ArrayList<EntityPanel> entityPanels;
     private Player player;
 
     public CenterPanel(Player player) {
         super();
-        this.setBackground(Color.BLACK);
+        this.setBackground(bgColorBlack);
         this.entityPanels = new ArrayList<>();
         this.library = new ArrayList<>();
-        this.setLayout(new GridLayout(0, 4));
+        this.setLayout(new GridLayout(0, 3));
         this.player = player;
     }
 
@@ -42,14 +41,11 @@ public class CenterPanel extends JPanel {
         this.entityPanels = new ArrayList<>();
         for (int i = 0; i < this.library.size(); i++) {
             Entity entity = this.library.get(i);
-            EntityPanel entityPanel = new EntityPanel(entity.getTitle(),
-                    entity.getCaption(), entity.getImageData(), i);
+            EntityPanel entityPanel = new EntityPanel(entity.getTitle(), entity.getCaption(),
+                    entity.getImageData(), this, entity);
             this.entityPanels.add(entityPanel);
             this.add(entityPanel);
         }
-        for (int i = 0; i < this.library.size(); i++)
-            this.entityPanels.get(i).addMouseListener(
-                    new PlaySongMouseListener(this));
         this.revalidate();
     }
 
@@ -74,49 +70,8 @@ public class CenterPanel extends JPanel {
         this.library.addAll(artists);
     }
 
-    public class PlaySongMouseListener implements MouseListener {
-        private CenterPanel centerPanel;
-
-        public PlaySongMouseListener(CenterPanel centerPanel) {
-            this.centerPanel = centerPanel;
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (e.getSource() == null)
-                return;
-            EntityPanel entityPanel = (EntityPanel) e.getSource();
-            Entity entity = this.centerPanel.library.get(entityPanel.getIndex());
-            if (entity instanceof Song)
-                this.centerPanel.player.setSong((Song) entity);
-            else {
-                this.centerPanel.player.setPlayList((Playlist) entity);
-                this.centerPanel.library = new ArrayList<>();
-                if (entity instanceof Album)
-                    this.centerPanel.library.addAll(((Album) entity).getSongs());
-                else if (entity instanceof Artist)
-                    this.centerPanel.library.addAll(((Artist) entity).getSongs());
-                else
-                    this.centerPanel.library.addAll(((Playlist) entity).getSongs());
-                this.centerPanel.paint();
-            }
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-        }
+    public Player getPlayer() {
+        return player;
     }
 
     public void setPlayer(Player player) {

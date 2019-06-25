@@ -12,6 +12,8 @@ public class LeftPanelsLibraryPanel extends JPanel {
     private JList<String> libraryList;
     private CenterPanel centerPanel;
     private FileManager fileManager;
+    private static final Color sideColorBlack = new Color(15, 15, 15);
+    private static final Color captionColorGrey = new Color(180, 180, 180);
 
     public LeftPanelsLibraryPanel(FileManager fileManager, CenterPanel centerPanel) {
         this.centerPanel = centerPanel;
@@ -24,6 +26,8 @@ public class LeftPanelsLibraryPanel extends JPanel {
         list.addElement("Playlists");
         this.libraryList = new JList<>(list);
         this.libraryList.addMouseListener(new LibraryMouseListener(fileManager, this.libraryList, centerPanel));
+        this.libraryList.setBackground(sideColorBlack);
+        this.libraryList.setForeground(captionColorGrey);
         this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
         this.centerPanel.paint();
 

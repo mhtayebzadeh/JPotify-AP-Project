@@ -1,38 +1,105 @@
 package JPotifyGUI;
 
+import JPotifyLogic.Entity.Entity;
+import JPotifyLogic.Entity.Song;
+import JPotifyLogic.Player;
+import JPotifyLogic.Playlist.Album;
+import JPotifyLogic.Playlist.Artist;
+import JPotifyLogic.Playlist.Playlist;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class EntityPanel extends JPanel {
-    private int index;
+    private JButton imageButton;
+    private CenterPanel centerPanel;
+    private Entity entity;
+    private static final Color bgColorBlack = new Color(43, 43, 43);
+    private static final Color captionColorGrey = new Color(180, 180, 180);
 
-    public EntityPanel(String title, String caption, byte[] imageData, int index) {
+    public EntityPanel(String title, String caption, byte[] imageData,
+                       CenterPanel centerPanel, Entity entity) {
         super();
-        this.index = index;
-        this.setLayout(new GridLayout(3, 1));
-        this.setBackground(Color.ORANGE);
+        this.centerPanel = centerPanel;
+        this.entity = entity;
+        this.setLayout(new BorderLayout());
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
-        JLabel imageLabel = new JLabel();
+        this.imageButton = new JButton();
         try {
             ImageIcon bImageIcon = new ImageIcon(ImageIO.read(bis));
-            Image bImage = bImageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-            imageLabel.setIcon(new ImageIcon(bImage));
-            imageLabel.setLocation(dim.width/3, dim.height/3);
+            Image bImage = bImageIcon.getImage().getScaledInstance(
+                    dim.width/8, dim.width/8, Image.SCALE_SMOOTH);
+            this.imageButton.setIcon(new ImageIcon(bImage));
+//            imageButton.setLocation(dim.width/3, dim.height/3);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.add(imageLabel);
-        this.add(new JLabel(title));
-        this.add(new JLabel(caption));
+        this.imageButton.setBackground(bgColorBlack);
+        this.imageButton.addMouseListener(new PlaySongMouseListener(this.centerPanel, this.entity));
+        this.add(this.imageButton, BorderLayout.CENTER);
+
+        JPanel labelPanel = new JPanel();
+        labelPanel.setLayout(new GridLayout(2, 1));
+        JLabel titleLabel = new JLabel(title);
+        JLabel captionLabel = new JLabel(caption);
+        titleLabel.setForeground(Color.WHITE);
+        captionLabel.setForeground(captionColorGrey);
+        labelPanel.add(titleLabel);
+        labelPanel.add(captionLabel);
+        labelPanel.setBackground(bgColorBlack);
+        this.add(labelPanel, BorderLayout.SOUTH);
 //        this.setMaximumSize(new Dimension(20, 30));
 //        this.setMinimumSize(new Dimension(10, 15));
     }
 
-    public int getIndex() {
-        return index;
+    public class PlaySongMouseListener implements MouseListener {
+        private CenterPanel centerPanel;
+        private Entity entity;
+
+        public PlaySongMouseListener(CenterPanel centerPanel, Entity entity) {
+            this.centerPanel = centerPanel;
+            this.entity = entity;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getSource() == null)
+                return;
+            JButton button = (JButton) e.getSource();
+            if (this.entity instanceof Song)
+                this.centerPanel.getPlayer().setSong((Song) entity);
+            else {
+                this.centerPanel.getPlayer().setPlayList((Playlist) entity);
+                if (this.entity instanceof Album)
+                    this.centerPanel.setLibraryFromSongs(((Album) entity).getSongs());
+                else if (this.entity instanceof Artist)
+                    this.centerPanel.setLibraryFromSongs(((Artist) entity).getSongs());
+                else
+                    this.centerPanel.setLibraryFromSongs(((Playlist) entity).getSongs());
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
     }
 }

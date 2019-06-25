@@ -53,7 +53,6 @@ public class FileManager implements Serializable {
     //TODO: Load date
     public void loadData(String dataDirectory) {
         try {
-
             FileInputStream fis = new FileInputStream(Paths.get(dataDirectory , "songs.ser").toString() );
             ObjectInputStream ois = new ObjectInputStream(fis);
             System.out.println(Paths.get(dataDirectory , "songs.ser").toString());

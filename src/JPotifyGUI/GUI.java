@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GUI {
-    public static final Color bg_color_black = new Color(43, 43, 43);
+    private static final Color bg_color_black = new Color(43, 43, 43);
     private BottomPanel bottomPanel;
     private CenterPanel centerPanel;
     private LeftPanel leftPanel;
@@ -54,7 +54,7 @@ public class GUI {
         this.frame.add(this.rightPanel, BorderLayout.EAST);
 
         this.frame.setVisible(true);
-        //Runtime.getRuntime().addShutdownHook(new Thread(new ExitRunnable(fileManager)));
+        Runtime.getRuntime().addShutdownHook(new Thread(new ExitRunnable(fileManager)));
     }
 
     public void setPlayer(Player player) {

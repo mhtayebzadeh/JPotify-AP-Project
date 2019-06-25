@@ -10,6 +10,7 @@ import java.io.IOException;
 
 public class BottomPanelsMusicControlPanel extends JPanel {
     private JButton[] controlButtons;
+    private static final Color bottomColorBlack = new Color(100, 100, 100);
 
     public BottomPanelsMusicControlPanel() {
         super();
@@ -27,6 +28,7 @@ public class BottomPanelsMusicControlPanel extends JPanel {
                 this.controlButtons[i] = new JButton();
                 this.controlButtons[i].setIcon(new ImageIcon(image));
                 this.controlButtons[i].addMouseListener(mouseListeners[i]);
+                this.controlButtons[i].setBackground(bottomColorBlack);
                 this.add(this.controlButtons[i]);
             } catch (
                     IOException e) {

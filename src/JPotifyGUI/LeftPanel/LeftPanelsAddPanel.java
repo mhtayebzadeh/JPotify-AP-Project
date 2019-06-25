@@ -15,6 +15,8 @@ import java.io.IOException;
 public class LeftPanelsAddPanel extends JPanel {
     private FileManager fileManager;
     private CenterPanel centerPanel;
+    private static final Color sideColorBlack = new Color(15, 15, 15);
+    private static final Color captionColorGrey = new Color(180, 180, 180);
 
     // TODO: NewPlaylistMouseListener not implemented
     public LeftPanelsAddPanel(FileManager fileManager, CenterPanel centerPanel) {
@@ -25,21 +27,25 @@ public class LeftPanelsAddPanel extends JPanel {
         this.setLayout(new GridLayout(2, 1));
 
         JPanel newSongPanel = new JPanel();
-        newSongPanel.setLayout(new GridLayout(1, 2));
+        newSongPanel.setBackground(sideColorBlack);
+        newSongPanel.setLayout(new BorderLayout());
         JButton newSongButton = new JButton();
         newSongButton.addMouseListener(new NewSongMouseListener(this.fileManager, centerPanel));
         JLabel newSongLabel = new JLabel("New Song");
+        newSongLabel.setForeground(captionColorGrey);
 
         JPanel newPlaylistPanel = new JPanel();
-        newPlaylistPanel.setLayout(new GridLayout(1, 2));
+        newPlaylistPanel.setBackground(sideColorBlack);
+        newPlaylistPanel.setLayout(new BorderLayout());
         JButton newPlaylistButton = new JButton();
         newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.fileManager, centerPanel));
         JLabel newPlaylistLabel = new JLabel("New Playlist");
+        newPlaylistLabel.setForeground(captionColorGrey);
 
-        newSongPanel.add(newSongButton);
-        newSongPanel.add(newSongLabel);
-        newPlaylistPanel.add(newPlaylistButton);
-        newPlaylistPanel.add(newPlaylistLabel);
+        newSongPanel.add(newSongButton, BorderLayout.WEST);
+        newSongPanel.add(newSongLabel, BorderLayout.CENTER);
+        newPlaylistPanel.add(newPlaylistButton, BorderLayout.WEST);
+        newPlaylistPanel.add(newPlaylistLabel, BorderLayout.CENTER);
         this.add(newSongPanel);
         this.add(newPlaylistPanel);
 
