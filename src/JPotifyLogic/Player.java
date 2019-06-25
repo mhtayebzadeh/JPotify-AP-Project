@@ -4,6 +4,8 @@ import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Playlist.Playlist;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,20 +15,28 @@ import java.util.Iterator;
 
 public class Player extends Thread {
     private String name;
-    private Song song;
+    private static Song song;
     private Thread playThread;
-
+    private static FileInputStream _fis_;
     public Player(String playerName) {
         super(playerName);
         this.name = playerName;
     }
 
+    public static void setCurrentSong(Song song_)
+    {
+        song = song_;
+    }
     // start music from first of lib
     public void setPlayList(Playlist playlist) {
         //TODO:
         this.setPlayList(playlist, playlist.getSongs().get(0));
     }
+    public static void setCurrent_fis_(FileInputStream fis)
+    {
+        _fis_ = fis;
 
+    }
     // start music from first of lib
     public void setPlayList(Playlist playlist, Song song) {
         Iterator<Song> it = playlist.getSongs().iterator();
@@ -49,6 +59,7 @@ public class Player extends Thread {
         this.stop_();
         this.playThread = new Thread(new MyRunnable(song));
         this.playThread.start();
+
     }
 
     //    public void play() {
@@ -57,11 +68,15 @@ public class Player extends Thread {
 
     // TODO: using deprecated thread stop method
     public void stop_() {
-        if (playThread != null)
+        if (playThread != null) {
+
             this.playThread.stop();
+
+        }
     }
 
     public void resume_() {
+        song.setPaused(false);
         try {
             this.song.setPaused(false);
             long skip = this.song.getTotalSongLength() - this.song.getPauseLocation();
@@ -70,6 +85,11 @@ public class Player extends Thread {
         }
     }
 
+    public void pause()
+    {
+        this.song.setPaused(true);
+        this.stop_();
+    }
     public void run() {
         while (true) {
             //TODO:
@@ -83,12 +103,16 @@ public class Player extends Thread {
         private Iterator<Song> it = null;
 
         public MyRunnable(Song song) {
+            if(!song.getPaused())
+                song.reNewSong();
             this.song = song;
             this.fis = song.getFis();
             this.player = song.getPlayer();
+
         }
 
         public MyRunnable(Song song, long skipFrame) {
+            song.reNewSong();
             this.song = song;
             try {
                 this.fis = song.getFis();
@@ -124,8 +148,13 @@ public class Player extends Thread {
                     while (it.hasNext()) {
                         try {
                             this.song = it.next();
-                            this.player = new AdvancedPlayer(this.song.getFis());
+                            if(! this.song.getPaused())
+                                this.song.reNewSong();
+                            FileInputStream f = this.song.getFis();
+                            this.player = new AdvancedPlayer(f);
                             this.setLastPlayed(this.song);
+                            Player.setCurrentSong(song);
+
                             this.player.play();
                         } catch (Exception e) {
                         }

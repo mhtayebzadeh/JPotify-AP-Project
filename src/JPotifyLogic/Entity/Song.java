@@ -74,6 +74,9 @@ public class Song extends Entity implements Serializable {
     }
 
     public FileInputStream getFis() {
+        return fis;
+    }
+    public void reNewSong(){
         try {
             this.fis = new FileInputStream(this.address);
             this.mp3 = new Mp3File(address);
@@ -82,7 +85,9 @@ public class Song extends Entity implements Serializable {
         } catch (IOException | UnsupportedTagException | InvalidDataException | JavaLayerException e) {
             e.printStackTrace();
         }
-        return fis;
+    }
+    public void setFis(FileInputStream fis) {
+        this.fis = fis;
     }
 
     public boolean getPaused() {
