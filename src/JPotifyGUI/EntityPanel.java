@@ -76,8 +76,8 @@ public class EntityPanel extends JPanel {
             JButton button = (JButton) e.getSource();
             if (this.entity instanceof Song) {
                 this.centerPanel.getPlayer().setSong((Song) entity);
-                this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().
-                        setPlayer(this.centerPanel.getPlayer());
+                this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().setPlayer(this.centerPanel.getPlayer());
+                this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().paint();
             }
             else {
                 this.centerPanel.getPlayer().setPlayList((Playlist) entity);

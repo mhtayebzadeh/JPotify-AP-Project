@@ -10,55 +10,63 @@ import java.awt.event.MouseListener;
 
 public class LeftPanelsLibraryPanel extends JPanel {
     private JList<String> libraryList;
-    private CenterPanel centerPanel;
-    private FileManager fileManager;
+    private LeftPanel leftPanel;
     private static final Color sideColorBlack = new Color(15, 15, 15);
     private static final Color captionColorGrey = new Color(180, 180, 180);
+    private static final Color bottomColorBlack = new Color(100, 100, 100);
 
-    public LeftPanelsLibraryPanel(FileManager fileManager, CenterPanel centerPanel) {
-        this.centerPanel = centerPanel;
-        this.fileManager = fileManager;
-
+    public LeftPanelsLibraryPanel(LeftPanel leftPanel) {
+        this.leftPanel = leftPanel;
+        this.setBackground(sideColorBlack);
         DefaultListModel<String> list = new DefaultListModel<>();
+
         list.addElement("Songs");
         list.addElement("Albums");
         list.addElement("Artists");
         list.addElement("Playlists");
         this.libraryList = new JList<>(list);
-        this.libraryList.addMouseListener(new LibraryMouseListener(fileManager, this.libraryList, centerPanel));
+        this.libraryList.addMouseListener(new LibraryMouseListener(this.leftPanel, this.libraryList));
         this.libraryList.setBackground(sideColorBlack);
         this.libraryList.setForeground(captionColorGrey);
-        this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
-        this.centerPanel.paint();
+        this.leftPanel.getCenterPanel().setLibraryFromSongs(this.leftPanel.getFileManager().getSongs());
+        this.leftPanel.getCenterPanel().paint();
 
-        this.setLayout(new GridLayout(1, 1));
-        this.add(this.libraryList);
+        this.setLayout(new BorderLayout());
+        JLabel label = new JLabel("Library");
+        label.setForeground(bottomColorBlack);
+        label.setPreferredSize(new Dimension(30, 30));
+        this.add(label, BorderLayout.NORTH);
+        this.add(this.libraryList, BorderLayout.CENTER);
     }
 
     public class LibraryMouseListener implements MouseListener {
         private JList<String> libraryList;
-        private CenterPanel centerPanel;
-        private FileManager fileManager;
+        private LeftPanel leftPanel;
 
-        public LibraryMouseListener(FileManager fileManager, JList<String> libraryList, CenterPanel centerPanel) {
+        public LibraryMouseListener(LeftPanel leftPanel, JList<String> libraryList) {
             this.libraryList = libraryList;
-            this.centerPanel = centerPanel;
-            this.fileManager = fileManager;
+            this.leftPanel = leftPanel;
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
             if (this.libraryList.getSelectedIndex() != -1) {
                 String selectedValue = this.libraryList.getSelectedValue();
-                if (selectedValue.equals("Songs"))
-                    this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
-                else if (selectedValue.equals("Playlists"))
-                    this.centerPanel.setLibraryFromPlaylists(this.fileManager.getPlaylists());
-                else if (selectedValue.equals("Albums"))
-                    this.centerPanel.setLibraryFromAlbums(this.fileManager.getAlbums());
-                else if (selectedValue.equals("Artists"))
-                    this.centerPanel.setLibraryFromArtists(this.fileManager.getArtists());
-                this.centerPanel.paint();
+                switch (selectedValue) {
+                    case "Songs":
+                        this.leftPanel.getCenterPanel().setLibraryFromSongs(this.leftPanel.getFileManager().getSongs());
+                        break;
+                    case "Playlists":
+                        this.leftPanel.getCenterPanel().setLibraryFromPlaylists(this.leftPanel.getFileManager().getPlaylists());
+                        break;
+                    case "Albums":
+                        this.leftPanel.getCenterPanel().setLibraryFromAlbums(this.leftPanel.getFileManager().getAlbums());
+                        break;
+                    case "Artists":
+                        this.leftPanel.getCenterPanel().setLibraryFromArtists(this.leftPanel.getFileManager().getArtists());
+                        break;
+                }
+                this.leftPanel.getCenterPanel().paint();
             }
         }
 
