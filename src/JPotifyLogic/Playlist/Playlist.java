@@ -8,11 +8,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Playlist extends Entity implements Serializable {
+    private String name;
     private ArrayList<Song> songs;
     private String typeOfPlaylist = "normal";
 
     // TODO: caption and image not being set
     public Playlist() {
+        this("");
+    }
+
+    public Playlist(String name) {
+        this.setTitle(name);
         this.songs = new ArrayList<>();
     }
 

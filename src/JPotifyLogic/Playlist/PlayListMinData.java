@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class PlayListMinData extends Entity implements Serializable {
 
-    private ArrayList<SongMinimumData> songsMinData = new ArrayList<SongMinimumData>();
+    private ArrayList<SongMinimumData> songsMinData = new ArrayList<>();
     private String typeOfPlaylist;
     public PlayListMinData(String title, String caption, byte[] imageData , String type) {
         super(title, caption, imageData);

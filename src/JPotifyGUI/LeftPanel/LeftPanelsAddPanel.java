@@ -3,6 +3,7 @@ package JPotifyGUI.LeftPanel;
 import JPotifyGUI.CenterPanel;
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.FileManager;
+import JPotifyLogic.Playlist.Playlist;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,16 +14,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class LeftPanelsAddPanel extends JPanel {
-    private FileManager fileManager;
-    private CenterPanel centerPanel;
+    private LeftPanel leftPanel;
     private static final Color sideColorBlack = new Color(15, 15, 15);
     private static final Color captionColorGrey = new Color(180, 180, 180);
 
     // TODO: NewPlaylistMouseListener not implemented
-    public LeftPanelsAddPanel(FileManager fileManager, CenterPanel centerPanel) {
+    public LeftPanelsAddPanel(LeftPanel leftPanel) {
         super();
-        this.fileManager = fileManager;
-        this.centerPanel = centerPanel;
+        this.leftPanel = leftPanel;
 
         this.setLayout(new GridLayout(2, 1));
 
@@ -30,7 +29,7 @@ public class LeftPanelsAddPanel extends JPanel {
         newSongPanel.setBackground(sideColorBlack);
         newSongPanel.setLayout(new BorderLayout());
         JButton newSongButton = new JButton();
-        newSongButton.addMouseListener(new NewSongMouseListener(this.fileManager, centerPanel));
+        newSongButton.addMouseListener(new NewSongMouseListener(this.leftPanel));
         JLabel newSongLabel = new JLabel("New Song");
         newSongLabel.setForeground(captionColorGrey);
 
@@ -38,7 +37,7 @@ public class LeftPanelsAddPanel extends JPanel {
         newPlaylistPanel.setBackground(sideColorBlack);
         newPlaylistPanel.setLayout(new BorderLayout());
         JButton newPlaylistButton = new JButton();
-        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.fileManager, centerPanel));
+        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.leftPanel));
         JLabel newPlaylistLabel = new JLabel("New Playlist");
         newPlaylistLabel.setForeground(captionColorGrey);
 
@@ -60,13 +59,11 @@ public class LeftPanelsAddPanel extends JPanel {
         }
     }
 
-    public class NewSongMouseListener implements MouseListener {
-        private FileManager fileManager;
-        private CenterPanel centerPanel;
+    private class NewSongMouseListener implements MouseListener {
+        private LeftPanel leftPanel;
 
-        public NewSongMouseListener(FileManager fileManager, CenterPanel centerPanel) {
-            this.fileManager = fileManager;
-            this.centerPanel = centerPanel;
+        public NewSongMouseListener(LeftPanel leftPanel) {
+            this.leftPanel = leftPanel;
         }
 
         @Override
@@ -79,10 +76,10 @@ public class LeftPanelsAddPanel extends JPanel {
                 return;
             File file = fileChooser.getSelectedFile();
             Song song = new Song(file.getAbsolutePath());
-            this.fileManager.add2Songs(song);
-            this.fileManager.update();
-            this.centerPanel.setLibraryFromSongs(this.fileManager.getSongs());
-            this.centerPanel.paint();
+            this.leftPanel.getFileManager().add2Songs(song);
+            this.leftPanel.getFileManager().update();
+            this.leftPanel.getCenterPanel().setLibraryFromSongs(this.leftPanel.getFileManager().getSongs());
+            this.leftPanel.getCenterPanel().paint();
         }
 
         @Override
@@ -103,17 +100,17 @@ public class LeftPanelsAddPanel extends JPanel {
     }
 
     private class NewPlaylistMouseListener implements MouseListener {
-        private FileManager FileManager;
-        private CenterPanel centerPanel;
+        private LeftPanel leftPanel;
 
-        public NewPlaylistMouseListener(FileManager FileManager, CenterPanel centerPanel) {
-            this.FileManager = FileManager;
-            this.centerPanel = centerPanel;
+        public NewPlaylistMouseListener(LeftPanel leftPanel) {
+            this.leftPanel = leftPanel;
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            // TODO
+            String name = JOptionPane.showInputDialog("Enter Playlist name");
+            this.leftPanel.getFileManager().add2PlayLists(new Playlist(name));
+            this.leftPanel.getLeftPanelsPlaylistsPanel().paint();
         }
 
         @Override
