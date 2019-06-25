@@ -1,5 +1,6 @@
 package JPotifyGUI;
 
+import JPotifyGUI.BottomPanel.BottomPanel;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Player;
@@ -16,14 +17,16 @@ public class CenterPanel extends JPanel {
     private ArrayList<Entity> library;
     private ArrayList<EntityPanel> entityPanels;
     private Player player;
+    private BottomPanel bottomPanel;
 
-    public CenterPanel(Player player) {
+    public CenterPanel(Player player, BottomPanel bottomPanel) {
         super();
         this.setBackground(bgColorBlack);
         this.entityPanels = new ArrayList<>();
         this.library = new ArrayList<>();
         this.setLayout(new GridLayout(0, 3));
         this.player = player;
+        this.bottomPanel = bottomPanel;
     }
 
     /*public void setSongs(ArrayList<SongPanel> songs) {
@@ -39,8 +42,7 @@ public class CenterPanel extends JPanel {
     public void paint() {
         this.removeAll();
         this.entityPanels = new ArrayList<>();
-        for (int i = 0; i < this.library.size(); i++) {
-            Entity entity = this.library.get(i);
+        for (Entity entity : this.library) {
             EntityPanel entityPanel = new EntityPanel(entity.getTitle(), entity.getCaption(),
                     entity.getImageData(), this, entity);
             this.entityPanels.add(entityPanel);
@@ -76,5 +78,9 @@ public class CenterPanel extends JPanel {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public BottomPanel getBottomPanel() {
+        return bottomPanel;
     }
 }

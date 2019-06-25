@@ -9,13 +9,15 @@ import java.awt.event.ActionListener;
 
 public class BottomPanel extends JPanel {
     private Player player;
+    private BottomPanelsCurrentMusicPanel bottomPanelsCurrentMusicPanel;
 
     public BottomPanel(Player player) {
         super();
         this.player = player;
         this.setLayout(new BorderLayout());
+        this.bottomPanelsCurrentMusicPanel = new BottomPanelsCurrentMusicPanel(player);
         this.add(new BottomPanelsMusicControlPanel(), BorderLayout.CENTER);
-        this.add(new BottomPanelsCurrentMusicPanel(player), BorderLayout.WEST);
+        this.add(this.bottomPanelsCurrentMusicPanel, BorderLayout.WEST);
 
         /*this.add(playButton, BorderLayout.CENTER);
         playButton.addActionListener(new ActionListener() {
@@ -26,5 +28,7 @@ public class BottomPanel extends JPanel {
         });*/
     }
 
-
+    public BottomPanelsCurrentMusicPanel getBottomPanelsCurrentMusicPanel() {
+        return bottomPanelsCurrentMusicPanel;
+    }
 }

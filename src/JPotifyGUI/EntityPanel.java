@@ -1,5 +1,6 @@
 package JPotifyGUI;
 
+import JPotifyGUI.BottomPanel.BottomPanel;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Player;
@@ -14,7 +15,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class EntityPanel extends JPanel {
     private JButton imageButton;
@@ -26,12 +26,13 @@ public class EntityPanel extends JPanel {
     public EntityPanel(String title, String caption, byte[] imageData,
                        CenterPanel centerPanel, Entity entity) {
         super();
+        this.imageButton = new JButton();
         this.centerPanel = centerPanel;
         this.entity = entity;
+
         this.setLayout(new BorderLayout());
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
-        this.imageButton = new JButton();
         try {
             ImageIcon bImageIcon = new ImageIcon(ImageIO.read(bis));
             Image bImage = bImageIcon.getImage().getScaledInstance(
@@ -73,8 +74,11 @@ public class EntityPanel extends JPanel {
             if (e.getSource() == null)
                 return;
             JButton button = (JButton) e.getSource();
-            if (this.entity instanceof Song)
+            if (this.entity instanceof Song) {
                 this.centerPanel.getPlayer().setSong((Song) entity);
+                this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().
+                        setPlayer(this.centerPanel.getPlayer());
+            }
             else {
                 this.centerPanel.getPlayer().setPlayList((Playlist) entity);
                 if (this.entity instanceof Album)
@@ -83,6 +87,7 @@ public class EntityPanel extends JPanel {
                     this.centerPanel.setLibraryFromSongs(((Artist) entity).getSongs());
                 else
                     this.centerPanel.setLibraryFromSongs(((Playlist) entity).getSongs());
+                this.centerPanel.paint();
             }
         }
 
