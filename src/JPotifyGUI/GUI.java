@@ -22,8 +22,8 @@ public class GUI {
     private FileManager fileManager;
     private Player player;
 
-    public GUI() {
-        this.fileManager = new FileManager();
+    public GUI(FileManager fileManager) {
+        this.fileManager = fileManager;
         this.fileManager.loadData();
 
         this.frame = new JFrame("JPotify");

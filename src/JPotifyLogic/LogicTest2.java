@@ -1,5 +1,6 @@
 package JPotifyLogic;
 
+import JPotifyGUI.GUI;
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Network.Friend;
 import JPotifyLogic.Playlist.Album;
@@ -10,22 +11,27 @@ import java.io.IOException;
 public class LogicTest2 {
     public static void main(String[] args) throws InterruptedException, IOException {
 
-        Player player = new Player("jpotify");
         FileManager fileManager = new FileManager();
-        fileManager.loadData();
         NetworkManager networkManager = new NetworkManager();
-        Friend f1 = new Friend("local");
-        Friend f2 = new Friend("hasan" , "172.20.0.1");
+        Player player = new Player("jpotify");
+        GUI gui = new GUI(fileManager);
+        System.out.println("JPotify Start ...");
+        gui.setPlayer(player);
 
-        if(fileManager.getPlaylists() != null)
-        {
-            fileManager.setSharedPlaylist(new SharedPlaylist(fileManager.getPlaylists().get(0)));
-            networkManager.setSharedPlaylist(fileManager.getSharedPlaylist());
-        }
-
+        Friend f1 = new Friend("me" , "localhost");
         networkManager.addFriend(f1);
-        networkManager.addFriend(f2);
-        networkManager.updateFriendsLastSong();
 
+        SharedPlaylist sharedPlaylist = new SharedPlaylist();
+        sharedPlaylist.setSongs(fileManager.getSongs());
+
+        fileManager.setSharedPlaylist(sharedPlaylist);
+        System.out.println(fileManager.getSongs().get(0).getArtwork().getTitle());
+
+        while(true)
+        {
+            Thread.sleep(2000);
+            networkManager.updateFriendsLastSong();
+            System.out.println(networkManager.getFriendsList().get(0).getLastArtwork().getTitle());
+        }
     }
 }

@@ -133,6 +133,8 @@ public class Song extends Entity implements Serializable {
 
     public Artwork getArtwork()
     {
-        return new Artwork(this);
+        Artwork a = new Artwork(this);
+        a.setTimeStampLastPlayed(this.timeStampLastPlayed);
+        return a;
     }
 }

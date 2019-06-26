@@ -2,6 +2,8 @@ package JPotifyLogic.Network;
 
 import JPotifyLogic.Entity.Artwork;
 import JPotifyLogic.Entity.Song;
+import JPotifyLogic.FileManager;
+import JPotifyLogic.NetworkManager;
 import JPotifyLogic.Playlist.SharedPlaylist;
 
 import java.io.*;
@@ -10,7 +12,7 @@ import java.net.Socket;
 
 public class Server extends Thread{
     private int port = 3663;
-    private SharedPlaylist sharedPlaylist;
+    private static SharedPlaylist sharedPlaylist;
     private static Artwork myLastArtwork = null;
     public Server()
     {
@@ -36,14 +38,17 @@ public class Server extends Thread{
                 while (true) {
                     //System.out.println("Waiting for a client to connect...");
                     Socket socket = listener.accept();
-                    if(this.sharedPlaylist != null) {
-                        if (this.sharedPlaylist.getSongs().size() > 0) {
-                            Song ss = this.sharedPlaylist.getSongs().get(0);
-                            for (Song s : this.sharedPlaylist.getSongs()) {
+                    sharedPlaylist = FileManager.getSharedPlaylist();
+                    if(sharedPlaylist != null) {
+
+                        if (sharedPlaylist.getSongs().size() > 0) {
+                            Song ss = sharedPlaylist.getSongs().get(0);
+                            for (Song s : sharedPlaylist.getSongs()) {
                                 if (s.getTimeStampLastPlayed() > ss.getTimeStampLastPlayed())
                                     ss = s;
                             }
                             myLastArtwork = ss.getArtwork();
+
                         }
                     }
                     new MyClientHandler(socket , myLastArtwork).start();
@@ -60,9 +65,16 @@ public class Server extends Thread{
         }
     }
 
-    public void setSharedPlaylist(SharedPlaylist sharedPlaylist) {
-        this.sharedPlaylist = sharedPlaylist;
+    /**
+     * this method not working because of thread
+     * @param sharedPlaylist_
+     */
+    @Deprecated // :)
+    public static void setSharedPlaylist(SharedPlaylist sharedPlaylist_) {
+        sharedPlaylist = sharedPlaylist_;
+        System.out.println("share playlist ok");
     }
+
 }
 class MyClientHandler extends Thread {
     private Socket socket;
@@ -78,7 +90,9 @@ class MyClientHandler extends Thread {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             // Get messages from the client, line by line; return them capitalized
-            if (in.readLine().equals("give me lastArtwork"))
+//            System.out.println("wait for give me lastArtwork");
+            String txt = in.readLine();
+            if (txt.equals("give me lastArtwork"))
             {
                 if(this.lastArtwork == null)
                 {
@@ -87,6 +101,10 @@ class MyClientHandler extends Thread {
                 else
                 {
                     out.println("ok");
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) { }
+
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     oos.writeObject(this.lastArtwork);
                     oos.close();
