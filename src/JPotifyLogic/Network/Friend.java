@@ -17,15 +17,22 @@ public class Friend {
     public Friend(String name) throws IOException {
         this(name , "localhost");
     }
-    public Friend(String name , String host) throws IOException {
-        this(name , host , InetAddress.getByName(host));
+    public Friend(String name , String host) throws UnknownHostException {
+            this(name, host, InetAddress.getByName(host));
     }
-    public Friend(String name , String host , InetAddress ip) throws IOException {
+
+
+
+    public Friend(String name , String host , InetAddress ip) {
         this.name = name;
         this.hostName = host;
         this.ip = ip;
     }
 
+
+    /**
+     * @return last artwork of your friend ;)
+     */
     public Artwork getLastArtwork() {
         return lastArtwork;
     }

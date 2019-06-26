@@ -194,4 +194,12 @@ public class FileManager implements Serializable {
     public SharedPlaylist getSharedPlaylist() {
         return sharedPlaylist;
     }
+
+    public void setSharedPlaylist(SharedPlaylist sharedPlaylist) {
+        this.sharedPlaylist = sharedPlaylist;
+    }
+
+    public void setFavoritePlaylist(FavoritePlaylist favoritePlaylist) {
+        this.favoritePlaylist = favoritePlaylist;
+    }
 }
