@@ -130,4 +130,9 @@ public class Song extends Entity implements Serializable {
     public void setTimeStampLastPlayed(long timeStampLastPlayed) {
         this.timeStampLastPlayed = timeStampLastPlayed;
     }
+
+    public Artwork getArtwork()
+    {
+        return new Artwork(this);
+    }
 }

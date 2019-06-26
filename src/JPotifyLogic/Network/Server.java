@@ -1,6 +1,8 @@
 package JPotifyLogic.Network;
 
 import JPotifyLogic.Entity.Artwork;
+import JPotifyLogic.Entity.Song;
+import JPotifyLogic.Playlist.SharedPlaylist;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -8,7 +10,8 @@ import java.net.Socket;
 
 public class Server extends Thread{
     private int port = 3663;
-    private static Artwork myLastArtwork;
+    private SharedPlaylist sharedPlaylist;
+    private static Artwork myLastArtwork = null;
     public Server()
     {
         super();
@@ -19,17 +22,31 @@ public class Server extends Thread{
     }
 
     public Artwork getMyLastArtwork() {
-        return this.myLastArtwork;
+        return myLastArtwork;
     }
 
     public void run() {
+        ServerSocket listener;
         while (true)
         {
             System.out.println("Server is running ...");
-            try (ServerSocket listener = new ServerSocket(port)) {
+
+            try  {
+                listener = new ServerSocket(port);
                 while (true) {
                     //System.out.println("Waiting for a client to connect...");
-                    new MyClientHandler(listener.accept() , this.myLastArtwork).start();
+                    Socket socket = listener.accept();
+                    if(this.sharedPlaylist != null) {
+                        if (this.sharedPlaylist.getSongs().size() > 0) {
+                            Song ss = this.sharedPlaylist.getSongs().get(0);
+                            for (Song s : this.sharedPlaylist.getSongs()) {
+                                if (s.getTimeStampLastPlayed() > ss.getTimeStampLastPlayed())
+                                    ss = s;
+                            }
+                            myLastArtwork = ss.getArtwork();
+                        }
+                    }
+                    new MyClientHandler(socket , myLastArtwork).start();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -43,7 +60,9 @@ public class Server extends Thread{
         }
     }
 
-
+    public void setSharedPlaylist(SharedPlaylist sharedPlaylist) {
+        this.sharedPlaylist = sharedPlaylist;
+    }
 }
 class MyClientHandler extends Thread {
     private Socket socket;
@@ -85,4 +104,6 @@ class MyClientHandler extends Thread {
 
         }
     }
+
+
 }
