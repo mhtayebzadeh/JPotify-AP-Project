@@ -20,6 +20,7 @@ public class Song extends Entity implements Serializable {
     private long pauseLocation;
     private long totalSongLength;
     private FileInputStream fis;
+    private boolean isFavorite;
 
     private Mp3File mp3;
     private AdvancedPlayer player;
@@ -31,19 +32,21 @@ public class Song extends Entity implements Serializable {
         try {
             this.fis = new FileInputStream(this.address);
             this.mp3 = new Mp3File(address);
-            this.player = new AdvancedPlayer(fis);
-            this.totalSongLength = fis.available();
+            this.player = new AdvancedPlayer(this.fis);
+            this.totalSongLength = this.fis.available();
         } catch (IOException | UnsupportedTagException | InvalidDataException | JavaLayerException e) {
             e.printStackTrace();
         }
 
 
         // TODO: bonus not implemented
-        this.album = this.mp3.getId3v1Tag().getAlbum();
+        if (this.mp3 != null) {
+            this.album = this.mp3.getId3v1Tag().getAlbum();
 
-        this.setTitle(this.mp3.getId3v1Tag().getTitle());
-        this.setCaption(this.mp3.getId3v1Tag().getArtist());
-        this.setImageData(this.mp3.getId3v2Tag().getAlbumImage());
+            this.setTitle(this.mp3.getId3v1Tag().getTitle());
+            this.setCaption(this.mp3.getId3v1Tag().getArtist());
+            this.setImageData(this.mp3.getId3v2Tag().getAlbumImage());
+        }
     }
 
     public Song(SongMinimumData songMinData) {
@@ -76,7 +79,12 @@ public class Song extends Entity implements Serializable {
     public FileInputStream getFis() {
         return fis;
     }
-    public void reNewSong(){
+
+    public void setFis(FileInputStream fis) {
+        this.fis = fis;
+    }
+
+    public void reNewSong() {
         try {
             this.fis = new FileInputStream(this.address);
             this.mp3 = new Mp3File(address);
@@ -85,9 +93,6 @@ public class Song extends Entity implements Serializable {
         } catch (IOException | UnsupportedTagException | InvalidDataException | JavaLayerException e) {
             e.printStackTrace();
         }
-    }
-    public void setFis(FileInputStream fis) {
-        this.fis = fis;
     }
 
     public boolean getPaused() {
@@ -129,5 +134,13 @@ public class Song extends Entity implements Serializable {
 
     public void setTimeStampLastPlayed(long timeStampLastPlayed) {
         this.timeStampLastPlayed = timeStampLastPlayed;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }
