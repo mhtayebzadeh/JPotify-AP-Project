@@ -12,7 +12,6 @@ public class Playlist extends Entity implements Serializable {
     private ArrayList<Song> songs;
     private String typeOfPlaylist = "normal";
 
-    // TODO: caption and image not being set
     public Playlist() {
         this("");
     }

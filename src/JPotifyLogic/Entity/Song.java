@@ -98,7 +98,7 @@ public class Song extends Entity implements Serializable {
         }
     }
 
-    public boolean getPaused() {
+    public boolean isPaused() {
         return paused;
     }
 
@@ -106,7 +106,7 @@ public class Song extends Entity implements Serializable {
         this.paused = paused;
     }
 
-    public boolean getRepeat() {
+    public boolean isRepeat() {
         return repeat;
     }
 

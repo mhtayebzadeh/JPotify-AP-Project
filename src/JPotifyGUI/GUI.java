@@ -29,9 +29,10 @@ public class GUI {
     public GUI(FileManager fileManager) {
         this.fileManager = fileManager;
         this.fileManager.loadData();
+        this.player = new Player("jpotify");
 
         this.frame = new JFrame("JPotify");
-        this.frame.setSize(3*dim.width/4, 3*dim.height/4);
+        this.frame.setSize(3 * dim.width / 4, 3 * dim.height / 4);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setIconImage(new ImageIcon("src/JPotifyGUI/images/jpotify_icon.png").getImage());
 

@@ -232,14 +232,12 @@ public class FileManager implements Serializable {
     }
 
     //TODO: just search in songs , search in playlist should be added
-    public Playlist searchInSongs(String searchString)
-    {
+    public Playlist searchInSongs(String searchString) {
         Playlist p = new Playlist();
         p.setTypeOfPlaylist("search");
         p.setTitle("Search Playlist");
-        for(Song s : this.songs)
-        {
-            if(s.getTitle().contains(searchString) || s.getCaption().contains(searchString))
+        for (Song s : this.songs) {
+            if (s.getTitle().contains(searchString) || s.getCaption().contains(searchString))
                 p.addSong(s);
         }
         return p;

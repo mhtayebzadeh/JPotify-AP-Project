@@ -4,6 +4,7 @@ import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Playlist.Playlist;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Instant;
@@ -11,33 +12,59 @@ import java.time.LocalTime;
 import java.util.Iterator;
 
 public class Player extends Thread {
-    private String name;
     private static Song song;
-    private Thread playThread;
     private static FileInputStream _fis_;
     private static Playlist playlist = null;
+    private String name;
+    private Thread playThread;
+
     public Player(String playerName) {
         super(playerName);
         this.name = playerName;
     }
 
-    public static void setCurrentSong(Song song_)
-    {
+    public static void setCurrentSong(Song song_) {
         song = song_;
     }
-    // start music from first of lib
-    public void setPlayList(Playlist playlist) {
-        //TODO:
-        try{this.setPlayListAndSong(playlist, playlist.getSongs().get(0));}catch (Exception e){}
-    }
-    public static void setCurrent_fis_(FileInputStream fis)
-    {
+
+    public static void setCurrent_fis_(FileInputStream fis) {
         _fis_ = fis;
     }
-    // start music from first of lib
 
     public static void setCurrentPlaylist(Playlist playlist_) {
         playlist = playlist_;
+    }
+    // start music from first of lib
+
+    public static long getRemainTimeInSecond() {
+        try {
+            return (long) ((float) song.getTimeInSecond() * (((float) _fis_.available()) / ((float) song.getTotalSongLength())));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static long getElapsedTimeInSecond() {
+        return song.getTimeInSecond() - getRemainTimeInSecond();
+    }
+
+    public static float getElapsedTimeInPercent() {
+        try {
+            return (float) (100.0 * (((float) _fis_.available()) / ((float) song.getTotalSongLength())));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    // start music from first of lib
+    public void setPlayList(Playlist playlist) {
+        //TODO:
+        try {
+            this.setPlayListAndSong(playlist, playlist.getSongs().get(0));
+        } catch (Exception ignored) {
+        }
     }
 
     public void setPlayListAndSong(Playlist playlist_, Song song) {
@@ -53,39 +80,37 @@ public class Player extends Thread {
         //TODO: lastPlayed of all library songs not set
     }
 
-
-    public void setPlayListAndSongAndSkip(Playlist playlist_, Song song_ , long skip) {
+    public void setPlayListAndSongAndSkip(Playlist playlist_, Song song_, long skip) {
         Iterator<Song> it = playlist_.getSongs().iterator();
         playlist = playlist_;
         while (it.next() != song) ;
         song = song_;
         this.stop_();
-        MyRunnable myRunnable = new MyRunnable(song,skip);
+        MyRunnable myRunnable = new MyRunnable(song, skip);
         myRunnable.setIterator(it); // add library iter to myRunnable
         this.playThread = new Thread(myRunnable);
         this.playThread.start();
         //TODO: lastPlayed of all library songs not set
     }
 
-    public void setSongAndSkip(Song song_ , long skip) {
+    //    public void play() {
+
+//    }
+
+    public void setSongAndSkip(Song song_, long skip) {
         song = song_;
         this.stop_();
-        this.playThread = new Thread(new MyRunnable(song_,skip));
+        this.playThread = new Thread(new MyRunnable(song_, skip));
         this.playThread.start();
     }
-
 
     public Song getSong() {
         return song;
     }
 
     public void setSong(Song song_) {
-        setSongAndSkip(song_,0);
+        setSongAndSkip(song_, 0);
     }
-
-    //    public void play() {
-
-//    }
 
     // TODO: using deprecated thread stop method
     public void stop_() {
@@ -98,72 +123,47 @@ public class Player extends Thread {
         song.setPaused(false);
         try {
             long skip = song.getTotalSongLength() - song.getPauseLocation();
-            if(playlist != null && playlist.getSongs().contains(song))
-                setPlayListAndSongAndSkip(playlist , song , skip);
+            if (playlist != null && playlist.getSongs().contains(song))
+                setPlayListAndSongAndSkip(playlist, song, skip);
             else
-                setSongAndSkip(song,skip);
+                setSongAndSkip(song, skip);
 
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
     }
 
-    public void pause()
-    {
+    public void pause() {
         song.setPaused(true);
         try {
             song.setPauseLocation(song.getFis().available());
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.stop_();
     }
 
-    public void gotoSecond(long sec)
-    {
-        gotoPercent((float)(100.0 * (float)sec/(float)song.getTimeInSecond()));
+    public void gotoSecond(long sec) {
+        gotoPercent((float) (100.0 * (float) sec / (float) song.getTimeInSecond()));
     }
-    public void gotoPercent(float percent)
-    {
-        long skip = (long )((percent/100)*song.getTotalSongLength());
-        if(song.getPaused())
-        {
+
+    public void gotoPercent(float percent) {
+        long skip = (long) ((percent / 100) * song.getTotalSongLength());
+        if (song.isPaused()) {
             song.setPauseLocation(skip);
-        }
-        else
-        {
+        } else {
             try {
-                if(playlist != null && playlist.getSongs().contains(song))
-                    setPlayListAndSongAndSkip(playlist , song , skip);
+                if (playlist != null && playlist.getSongs().contains(song))
+                    setPlayListAndSongAndSkip(playlist, song, skip);
                 else
-                    setSongAndSkip(song,skip);
-            } catch (Exception e) {}
+                    setSongAndSkip(song, skip);
+            } catch (Exception e) {
+            }
         }
     }
 
     public void run() {
         while (true) {
             //TODO:
-        }
-    }
-
-    public static long getRemainTimeInSecond()
-    {
-        try {
-            return (long)((float)song.getTimeInSecond()*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    public static long getElapsedTimeInSecond()
-    {
-        return song.getTimeInSecond() - getRemainTimeInSecond();
-    }
-    public static float getElapsedTimeInPercent()
-    {
-        try {
-            return (float)(100.0*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 0;
         }
     }
 
@@ -177,7 +177,7 @@ public class Player extends Thread {
         private Iterator<Song> it = null;
 
         public MyRunnable(Song song) {
-            if(!song.getPaused())
+            if (!song.isPaused())
                 song.reNewSong();
             this.song = song;
             this.fis = song.getFis();
@@ -224,7 +224,7 @@ public class Player extends Thread {
                     while (it.hasNext()) {
                         try {
                             this.song = it.next();
-                            if(! this.song.getPaused())
+                            if (!this.song.isPaused())
                                 this.song.reNewSong();
                             FileInputStream f = this.song.getFis();
                             this.player = new AdvancedPlayer(f);
@@ -232,7 +232,7 @@ public class Player extends Thread {
                             Player.setCurrentSong(song);
                             Player.setCurrent_fis_(f);
                             this.player.play();
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
                     }
                 }

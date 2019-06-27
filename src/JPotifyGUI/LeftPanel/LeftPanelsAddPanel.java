@@ -12,12 +12,18 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * a class in top left corner and a panel for the two buttons
+ * add song button and add playlist button
+ */
 public class LeftPanelsAddPanel extends JPanel {
-    private LeftPanel leftPanel;
-    // TODO: NewPlaylistMouseListener not implemented
+    /**
+     * @param leftPanel the whole left panel is needed in this smaller class
+     *                  to add playlists to the below playlists panel and also
+     *                  add songs to center panel through that left panel's field
+     */
     public LeftPanelsAddPanel(LeftPanel leftPanel) {
         super();
-        this.leftPanel = leftPanel;
         this.setBackground(GUI.sideColorBlack);
 
         this.setLayout(new GridLayout(2, 1));
@@ -27,7 +33,7 @@ public class LeftPanelsAddPanel extends JPanel {
         newSongPanel.setLayout(new BorderLayout());
         JButton newSongButton = new JButton();
         newSongButton.setBackground(GUI.sideColorBlack);
-        newSongButton.addMouseListener(new NewSongMouseListener(this.leftPanel));
+        newSongButton.addMouseListener(new NewSongMouseListener(leftPanel));
         JLabel newSongLabel = new JLabel("New Song");
         newSongLabel.setForeground(GUI.captionColorGrey);
 
@@ -36,7 +42,7 @@ public class LeftPanelsAddPanel extends JPanel {
         newPlaylistPanel.setLayout(new BorderLayout());
         JButton newPlaylistButton = new JButton();
         newPlaylistButton.setBackground(GUI.sideColorBlack);
-        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.leftPanel));
+        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(leftPanel));
         JLabel newPlaylistLabel = new JLabel("New Playlist");
         newPlaylistLabel.setForeground(GUI.captionColorGrey);
 
@@ -58,6 +64,10 @@ public class LeftPanelsAddPanel extends JPanel {
         }
     }
 
+    /**
+     * mouse listener class for when the add song button is clicked
+     * only the mouseClicked method is overridden
+     */
     private class NewSongMouseListener implements MouseListener {
         private LeftPanel leftPanel;
 
@@ -99,6 +109,10 @@ public class LeftPanelsAddPanel extends JPanel {
         }
     }
 
+    /**
+     * mouse listener class for when the add playlist button is clicked
+     * only the mouseClicked method is overridden
+     */
     private class NewPlaylistMouseListener implements MouseListener {
         private LeftPanel leftPanel;
 
@@ -110,6 +124,8 @@ public class LeftPanelsAddPanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
             String name = JOptionPane.showInputDialog("Enter Playlist name");
             this.leftPanel.getFileManager().add2PlayLists(new Playlist(name));
+            this.leftPanel.getCenterPanel().resetLibrary();
+            this.leftPanel.getCenterPanel().paint();
             this.leftPanel.getLeftPanelsPlaylistsPanel().paint();
         }
 

@@ -16,6 +16,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * this class is written as GUI's center panel (the main panel)
+ * and its components
+ */
 public class CenterPanel extends JPanel {
     private ArrayList<Entity> library;
     private ArrayList<EntityPanel> entityPanels;
@@ -24,6 +28,15 @@ public class CenterPanel extends JPanel {
     private LeftPanel leftPanel;
     private FileManager fileManager;
 
+    /**
+     * @param player      is required to be able to play musics from the main panel
+     * @param fileManager all the fields from logic are gathered in this object
+     *                    so it's needed to perform all the needed actions
+     * @param bottomPanel is required because making choices in center panel,
+     *                    causes changes to bottom panel as well
+     * @param leftPanel   is required because changes in center panel,
+     *                    causes change to left panel as well
+     */
     public CenterPanel(Player player, FileManager fileManager, BottomPanel bottomPanel, LeftPanel leftPanel) {
         super();
         this.setBackground(GUI.bgColorBlack);
@@ -36,16 +49,10 @@ public class CenterPanel extends JPanel {
         this.leftPanel = leftPanel;
     }
 
-    /*public void setSongs(ArrayList<SongPanel> songs) {
-        this.songs = songs;
-        this.removeAll();
-        for (SongPanel s : songs) {
-            s.setMaximumSize(new Dimension(20, 30));
-            this.add(s);
-        }
-        this.validate();
-    }*/
-
+    /**
+     * when changes in other places occur that involves this panel,
+     * it's components are repainted using this method
+     */
     public void paint() {
         this.removeAll();
         this.entityPanels = new ArrayList<>();
@@ -58,25 +65,22 @@ public class CenterPanel extends JPanel {
         this.repaint();
     }
 
+    /**
+     * resets the center panel's library using it's current library's kind
+     */
+    // TODO: can be used in many places of gui instead of using the setLibrary methoss
+    // written very late and near to deadline
+    public void resetLibrary() {
+        Entity entity = library.get(0);
+        if (entity instanceof Song)
+            this.setLibraryFromSongs(this.fileManager.getSongs());
+        else if (entity instanceof Album)
+            this.setLibraryFromAlbums(this.fileManager.getAlbums());
+        else if (entity instanceof Artist)
+            this.setLibraryFromArtists(this.fileManager.getArtists());
+        else if (entity instanceof Playlist)
+            this.setLibraryFromPlaylists(this.fileManager.getPlaylists());
 
-    public void setLibraryFromSongs(ArrayList<Song> songs) {
-        this.library = new ArrayList<>();
-        this.library.addAll(songs);
-    }
-
-    public void setLibraryFromPlaylists(ArrayList<Playlist> playlists) {
-        this.library = new ArrayList<>();
-        this.library.addAll(playlists);
-    }
-
-    public void setLibraryFromAlbums(ArrayList<Album> albums) {
-        this.library = new ArrayList<>();
-        this.library.addAll(albums);
-    }
-
-    public void setLibraryFromArtists(ArrayList<Artist> artists) {
-        this.library = new ArrayList<>();
-        this.library.addAll(artists);
     }
 
     public Player getPlayer() {
@@ -87,19 +91,55 @@ public class CenterPanel extends JPanel {
         this.player = player;
     }
 
-    public BottomPanel getBottomPanel() {
-        return bottomPanel;
+    public LeftPanel getLeftPanel() {
+        return leftPanel;
     }
 
     public void setLeftPanel(LeftPanel leftPanel) {
         this.leftPanel = leftPanel;
     }
 
-    public LeftPanel getLeftPanel() {
-        return leftPanel;
+    public BottomPanel getBottomPanel() {
+        return bottomPanel;
     }
 
     public FileManager getFileManager() {
         return fileManager;
+    }
+
+    /**
+     * @param songs gets an arrayList of songs and sets this
+     *              panel's displaying components with them
+     */
+    public void setLibraryFromSongs(ArrayList<Song> songs) {
+        this.library = new ArrayList<>();
+        this.library.addAll(songs);
+    }
+
+    /**
+     * @param playlists gets an arrayList of playlists and sets this
+     *                  panel's displaying components with them
+     */
+    public void setLibraryFromPlaylists(ArrayList<Playlist> playlists) {
+        this.library = new ArrayList<>();
+        this.library.addAll(playlists);
+    }
+
+    /**
+     * @param albums gets an arrayList of albums and sets this
+     *               panel's displaying components with them
+     */
+    public void setLibraryFromAlbums(ArrayList<Album> albums) {
+        this.library = new ArrayList<>();
+        this.library.addAll(albums);
+    }
+
+    /**
+     * @param artists gets an arrayList of artists and sets this
+     *                panel's displaying components with them
+     */
+    public void setLibraryFromArtists(ArrayList<Artist> artists) {
+        this.library = new ArrayList<>();
+        this.library.addAll(artists);
     }
 }
