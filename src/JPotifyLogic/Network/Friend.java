@@ -52,14 +52,9 @@ public class Friend {
         String status = in.readLine();
         if (status.equals("nothing")) {
             //pass
-<<<<<<< HEAD
-        } else if (status.equals("ok")) {
-=======
-        }
 
-        else if(status.equals("ok"))
-        {
->>>>>>> dbf8c929386d1e33598b4a45b987ef63d90443f9
+        } else if (status.equals("ok")) {
+
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             lastArtwork = (Artwork) ois.readObject();
         }

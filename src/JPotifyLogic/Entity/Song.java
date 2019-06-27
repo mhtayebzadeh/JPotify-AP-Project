@@ -145,8 +145,6 @@ public class Song extends Entity implements Serializable {
         isFavorite = favorite;
     }
 
-    public Artwork getArtwork() {
-        return new Artwork(this);
     public Artwork getArtwork()
     {
         Artwork a = new Artwork(this);
