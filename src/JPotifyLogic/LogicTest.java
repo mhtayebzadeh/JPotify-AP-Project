@@ -49,6 +49,10 @@ public class LogicTest {
         fileManager.update();
         player.setSong(fileManager.searchInSongs("Koobaar").getSongs().get(0));
         System.out.println(fileManager.searchInSongs("Koobaar").getSongs().get(0).getTitle());
+        Thread.sleep(3000);
+        player.gotoPercent(50);
+        Thread.sleep(3000);
+        player.gotoPercent(10);
         while (true)
         {
             Thread.sleep(500);
