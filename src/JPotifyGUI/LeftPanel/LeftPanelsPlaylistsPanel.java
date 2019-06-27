@@ -64,7 +64,7 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
                 Playlist playlist = this.leftPanel.getFileManager().getPlaylistFromName(selectedValue);
 
                 centerPanel.setLibraryFromSongs(playlist.getSongs());
-                centerPanel.getPlayer().setPlayList(playlist);
+                centerPanel.getPlayer().setCurrentPlaylist(playlist);
                 centerPanel.paint();
 
                 centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().setPlayer(centerPanel.getPlayer());

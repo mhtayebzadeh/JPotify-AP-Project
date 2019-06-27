@@ -12,6 +12,8 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -58,7 +60,15 @@ public class EntityPanelsAddPanel extends JPanel {
             for (Playlist playlist : this.centerPanel.getFileManager().getPlaylists()) {
                 JMenuItem playlistItem = new JMenuItem(playlist.getTitle());
 
-                playlistItem.addMouseListener(new SelectedPlaylistMouseListener(playlist, entity));
+                playlistItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Song song = (Song) entity;
+                        playlist.addSong(song);
+                        playlist.setCaption(song.getCaption());
+                        playlist.setImageData(song.getImageData());
+                    }
+                });
                 popupMenu.add(playlistItem);
             }
             popupMenu.show(e.getComponent(), e.getX(), e.getY());

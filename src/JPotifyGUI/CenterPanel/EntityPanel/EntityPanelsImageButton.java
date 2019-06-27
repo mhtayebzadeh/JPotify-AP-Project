@@ -52,7 +52,7 @@ public class EntityPanelsImageButton extends JButton {
                 this.centerPanel.getLeftPanel().setImageData(this.entity.getImageData());
             }
             else {
-                this.centerPanel.getPlayer().setPlayList((Playlist) entity);
+                this.centerPanel.getPlayer().setCurrentPlaylist((Playlist) entity);
                 if (this.entity instanceof Album)
                     this.centerPanel.setLibraryFromSongs(((Album) entity).getSongs());
                 else if (this.entity instanceof Artist)
@@ -60,7 +60,7 @@ public class EntityPanelsImageButton extends JButton {
                 else {
                     this.centerPanel.setLibraryFromSongs(((Playlist) entity).getSongs());
                 }
-                centerPanel.getLeftPanel().setImageData(((Playlist) entity).getSongs().get(0).getImageData());
+//                centerPanel.getLeftPanel().setImageData(((Playlist) entity).getSongs().get(0).getImageData());
                 this.centerPanel.paint();
             }
             this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().setPlayer(this.centerPanel.getPlayer());
