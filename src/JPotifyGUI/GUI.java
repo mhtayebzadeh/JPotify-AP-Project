@@ -1,7 +1,5 @@
 package JPotifyGUI;
 
-//import com.sun.media.sound.RIFFInvalidDataException;
-
 import JPotifyGUI.BottomPanel.BottomPanel;
 import JPotifyGUI.LeftPanel.LeftPanel;
 import JPotifyLogic.FileManager;
@@ -45,6 +43,7 @@ public class GUI {
         this.centerPanel = new CenterPanel(this.player, this.bottomPanel, this.leftPanel);
         JScrollPane jScrollPane = new JScrollPane(this.centerPanel);
         this.leftPanel = new LeftPanel(this.fileManager, this.centerPanel);
+        this.centerPanel.setLeftPanel(this.leftPanel);
         this.rightPanel = new RightPanel();
 
         this.frame.setLayout(new BorderLayout());

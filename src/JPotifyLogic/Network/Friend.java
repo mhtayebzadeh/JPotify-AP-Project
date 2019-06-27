@@ -2,7 +2,6 @@ package JPotifyLogic.Network;
 
 import JPotifyLogic.Entity.Artwork;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -45,21 +44,15 @@ public class Friend {
         // Streams for communication with server
         try {
             Thread.sleep(50);
-        } catch (InterruptedException e) { }
+        } catch (InterruptedException e) {
+        }
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
         out.println("give me lastArtwork");
         String status = in.readLine();
         if (status.equals("nothing")) {
             //pass
-<<<<<<< HEAD
         } else if (status.equals("ok")) {
-=======
-        }
-
-        else if(status.equals("ok"))
-        {
->>>>>>> dbf8c929386d1e33598b4a45b987ef63d90443f9
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             lastArtwork = (Artwork) ois.readObject();
         }

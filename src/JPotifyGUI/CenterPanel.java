@@ -86,4 +86,12 @@ public class CenterPanel extends JPanel {
     public BottomPanel getBottomPanel() {
         return bottomPanel;
     }
+
+    public void setLeftPanel(LeftPanel leftPanel) {
+        this.leftPanel = leftPanel;
+    }
+
+    public LeftPanel getLeftPanel() {
+        return leftPanel;
+    }
 }

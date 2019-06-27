@@ -3,8 +3,11 @@ package JPotifyGUI.LeftPanel;
 import JPotifyGUI.CenterPanel;
 import JPotifyLogic.FileManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 public class LeftPanel extends JPanel {
     private FileManager fileManager;
@@ -34,6 +37,8 @@ public class LeftPanel extends JPanel {
         leftScrollPanel.add(this.leftPanelsPlaylistsPanel, BorderLayout.CENTER);
 
         this.imagePanel =  new JPanel();
+        this.imagePanel.setPreferredSize(new Dimension(dim.width/8, dim.width/8));
+        this.imagePanel.setBackground(sideColorBlack);
 
         this.add(new LeftPanelsAddPanel(this), BorderLayout.NORTH);
         this.add(leftScrollPane, BorderLayout.CENTER);
@@ -54,14 +59,22 @@ public class LeftPanel extends JPanel {
 
     public void setImageData(byte[] imageData) {
         this.imageData = imageData;
-    }
 
-    public JPanel getImagePanel() {
-        return imagePanel;
-    }
-
-    public void setImagePanel(JPanel imagePanel) {
-        this.imagePanel = imagePanel;
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.imagePanel.removeAll();
+        JLabel imageLabel = new JLabel();
+        imageLabel.setPreferredSize(new Dimension(dim.width/8, dim.width/8));
+        ByteArrayInputStream bis = new ByteArrayInputStream(this.imageData);
+        try {
+            ImageIcon bImageIcon = new ImageIcon(ImageIO.read(bis));
+            Image bImage = bImageIcon.getImage().getScaledInstance(
+                    dim.width/8, dim.width/8, Image.SCALE_SMOOTH);
+            imageLabel.setIcon(new ImageIcon(bImage));
+        } catch (IOException err) {
+            err.printStackTrace();
+        }
+        imagePanel.add(imageLabel);
+        this.add(imagePanel, BorderLayout.SOUTH);
         this.revalidate();
     }
 }

@@ -20,7 +20,6 @@ public class EntityPanel extends JPanel {
     private JButton imageButton;
     private CenterPanel centerPanel;
     private Entity entity;
-    private LeftPanel leftPanel;
     private static final Color bgColorBlack = new Color(43, 43, 43);
     private static final Color captionColorGrey = new Color(180, 180, 180);
 
@@ -30,7 +29,6 @@ public class EntityPanel extends JPanel {
         this.imageButton = new JButton();
         this.centerPanel = centerPanel;
         this.entity = entity;
-        this.leftPanel = leftPanel;
 
         this.setLayout(new BorderLayout());
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -45,7 +43,7 @@ public class EntityPanel extends JPanel {
             e.printStackTrace();
         }
         this.imageButton.setBackground(bgColorBlack);
-        this.imageButton.addMouseListener(new PlaySongMouseListener(this.centerPanel, this.entity, this.leftPanel));
+        this.imageButton.addMouseListener(new PlaySongMouseListener(this.centerPanel, this.entity));
         this.add(this.imageButton, BorderLayout.CENTER);
 
         JPanel subPanel = new JPanel();
@@ -87,22 +85,25 @@ public class EntityPanel extends JPanel {
         private Entity entity;
         private LeftPanel leftPanel;
 
-        public PlaySongMouseListener(CenterPanel centerPanel, Entity entity, LeftPanel leftPanel) {
+        public PlaySongMouseListener(CenterPanel centerPanel, Entity entity) {
             this.centerPanel = centerPanel;
             this.entity = entity;
-            this.leftPanel = leftPanel;
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getSource() == null)
                 return;
+
             JButton button = (JButton) e.getSource();
             if (this.entity instanceof Song) {
                 this.centerPanel.getPlayer().setSong((Song) entity);
                 this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().setPlayer(this.centerPanel.getPlayer());
                 this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().paint();
+
+                this.centerPanel.getLeftPanel().setImageData(this.entity.getImageData());
             }
+
             else {
                 this.centerPanel.getPlayer().setPlayList((Playlist) entity);
                 if (this.entity instanceof Album)
@@ -113,22 +114,6 @@ public class EntityPanel extends JPanel {
                     this.centerPanel.setLibraryFromSongs(((Playlist) entity).getSongs());
                 this.centerPanel.paint();
             }
-
-            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            JPanel imagePanel = new JPanel();
-            JLabel imageLabel = new JLabel();
-            imageLabel.setPreferredSize(new Dimension(dim.width/8, dim.width/8));
-            ByteArrayInputStream bis = new ByteArrayInputStream(entity.getImageData());
-            try {
-                ImageIcon bImageIcon = new ImageIcon(ImageIO.read(bis));
-                Image bImage = bImageIcon.getImage().getScaledInstance(
-                        dim.width/8, dim.width/8, Image.SCALE_SMOOTH);
-                imageLabel.setIcon(new ImageIcon(bImage));
-            } catch (IOException err) {
-                err.printStackTrace();
-            }
-            imagePanel.add(imageLabel);
-            this.leftPanel.setImagePanel(imagePanel);
         }
 
         @Override
