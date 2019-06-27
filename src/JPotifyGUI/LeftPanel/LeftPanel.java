@@ -20,13 +20,12 @@ public class LeftPanel extends JPanel {
     public LeftPanel(CenterPanel centerPanel) {
         super();
         this.centerPanel = centerPanel;
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setPreferredSize(new Dimension(dim.width/8, dim.height/8));
+        this.setPreferredSize(new Dimension(GUI.dim.width/8, GUI.dim.height/8));
         this.setBackground(Color.RED);
         this.setLayout(new BorderLayout());
         this.setBackground(GUI.sideColorBlack);
 
-        this.leftPanelsPlaylistsPanel = new LeftPanelsPlaylistsPanel(centerPanel.getFileManager());
+        this.leftPanelsPlaylistsPanel = new LeftPanelsPlaylistsPanel(this);
         JPanel leftScrollPanel = new JPanel();
         leftScrollPanel.setLayout(new BorderLayout());
         JScrollPane leftScrollPane = new JScrollPane(leftScrollPanel);
@@ -34,12 +33,12 @@ public class LeftPanel extends JPanel {
         leftScrollPanel.add(this.leftPanelsPlaylistsPanel, BorderLayout.CENTER);
 
         this.imagePanel =  new JPanel();
-        this.imagePanel.setPreferredSize(new Dimension(dim.width/8, dim.width/8));
+        this.imagePanel.setPreferredSize(new Dimension(GUI.dim.width/8, GUI.dim.width/8));
         this.imagePanel.setBackground(GUI.sideColorBlack);
         JLabel imageLabel = new JLabel();
         try {
             ImageIcon ii = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/music_icon.png")));
-            Image image = ii.getImage().getScaledInstance(dim.width/8, dim.width/8, Image.SCALE_SMOOTH);
+            Image image = ii.getImage().getScaledInstance(GUI.dim.width/8, GUI.dim.width/8, Image.SCALE_SMOOTH);
             imageLabel.setIcon(new ImageIcon(image));
         } catch (
                 IOException e) {

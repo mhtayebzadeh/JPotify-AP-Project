@@ -10,6 +10,11 @@ import java.awt.*;
 public class EntityPanel extends JPanel {
     public EntityPanel(CenterPanel centerPanel, Entity entity) {
         super();
+//        this.setPreferredSize(new Dimension(new Dimension(
+//                centerPanel.getSize().width/3, centerPanel.getSize().height/2)));
+        this.setPreferredSize(new Dimension(new Dimension(
+                GUI.dim.width/8, GUI.dim.height/8)));
+
         JButton imageButton = new EntityPanelsImageButton(entity.getImageData(), centerPanel, entity);
 
         JPanel subPanel = new JPanel();
@@ -29,8 +34,9 @@ public class EntityPanel extends JPanel {
 
         JPanel controlPanel = new JPanel();
         controlPanel.setLayout(new BorderLayout());
-        controlPanel.add(new EntityPanelsAddRemovePanel(centerPanel.getFileManager()), BorderLayout.WEST);
-        controlPanel.add(new EntityPanelsHeartPanel(entity), BorderLayout.EAST);
+        controlPanel.add(new EntityPanelsRemovePanel(entity), BorderLayout.WEST);
+        controlPanel.add(new EntityPanelsAddPanel(centerPanel, entity), BorderLayout.CENTER);
+        controlPanel.add(new EntityPanelsHeartPanel(centerPanel.getFileManager(), entity), BorderLayout.EAST);
         subPanel.add(controlPanel, BorderLayout.EAST);
 
         this.setLayout(new BorderLayout());

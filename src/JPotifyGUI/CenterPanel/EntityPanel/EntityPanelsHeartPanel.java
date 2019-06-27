@@ -3,6 +3,7 @@ package JPotifyGUI.CenterPanel.EntityPanel;
 import JPotifyGUI.GUI;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
+import JPotifyLogic.FileManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,13 +14,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class EntityPanelsHeartPanel extends JPanel {
-    public EntityPanelsHeartPanel(Entity entity) {
+    public EntityPanelsHeartPanel(FileManager fileManager, Entity entity) {
         super();
         this.setBackground(GUI.bgColorBlack);
-        JLabel heartLabel = new JLabel();
-        heartLabel.addMouseListener(new HeartMouseListener(entity));
         if (entity instanceof Song) {
             Song song = (Song) entity;
+            JLabel heartLabel = new JLabel();
+            heartLabel.addMouseListener(new HeartMouseListener(fileManager, entity));
             try {
                 ImageIcon hw = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_w.png")));
                 ImageIcon hr = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_r.png")));
@@ -41,9 +42,11 @@ public class EntityPanelsHeartPanel extends JPanel {
 
     private class HeartMouseListener implements MouseListener {
         private Entity entity;
+        private FileManager fileManager;
 
-        public HeartMouseListener(Entity entity) {
+        public HeartMouseListener(FileManager fileManager, Entity entity) {
             this.entity = entity;
+            this.fileManager = fileManager;
         }
 
         @Override
@@ -62,12 +65,13 @@ public class EntityPanelsHeartPanel extends JPanel {
                 else {
                     image = hr.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                     song.setFavorite(true);
-                    
+
                 }
                 heartLabel.setIcon(new ImageIcon(image));
             } catch (IOException err) {
                 err.printStackTrace();
             }
+            this.fileManager.update();
         }
 
         @Override

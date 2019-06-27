@@ -1,5 +1,6 @@
 package JPotifyGUI.LeftPanel;
 
+import JPotifyGUI.GUI;
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Playlist.Playlist;
 
@@ -13,31 +14,31 @@ import java.io.IOException;
 
 public class LeftPanelsAddPanel extends JPanel {
     private LeftPanel leftPanel;
-    private static final Color sideColorBlack = new Color(15, 15, 15);
-    private static final Color captionColorGrey = new Color(180, 180, 180);
-
     // TODO: NewPlaylistMouseListener not implemented
     public LeftPanelsAddPanel(LeftPanel leftPanel) {
         super();
         this.leftPanel = leftPanel;
+        this.setBackground(GUI.sideColorBlack);
 
         this.setLayout(new GridLayout(2, 1));
 
         JPanel newSongPanel = new JPanel();
-        newSongPanel.setBackground(sideColorBlack);
+        newSongPanel.setBackground(GUI.sideColorBlack);
         newSongPanel.setLayout(new BorderLayout());
         JButton newSongButton = new JButton();
+        newSongButton.setBackground(GUI.sideColorBlack);
         newSongButton.addMouseListener(new NewSongMouseListener(this.leftPanel));
         JLabel newSongLabel = new JLabel("New Song");
-        newSongLabel.setForeground(captionColorGrey);
+        newSongLabel.setForeground(GUI.captionColorGrey);
 
         JPanel newPlaylistPanel = new JPanel();
-        newPlaylistPanel.setBackground(sideColorBlack);
+        newPlaylistPanel.setBackground(GUI.sideColorBlack);
         newPlaylistPanel.setLayout(new BorderLayout());
         JButton newPlaylistButton = new JButton();
+        newPlaylistButton.setBackground(GUI.sideColorBlack);
         newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.leftPanel));
         JLabel newPlaylistLabel = new JLabel("New Playlist");
-        newPlaylistLabel.setForeground(captionColorGrey);
+        newPlaylistLabel.setForeground(GUI.captionColorGrey);
 
         newSongPanel.add(newSongButton, BorderLayout.WEST);
         newSongPanel.add(newSongLabel, BorderLayout.CENTER);

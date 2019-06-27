@@ -5,19 +5,18 @@ import JPotifyLogic.Entity.SongMinimumData;
 import JPotifyLogic.Playlist.*;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class FileManager implements Serializable {
+    private static SharedPlaylist sharedPlaylist;
+    private final String defaultSaveDir = "savedData";
     private ArrayList<Song> songs;
     private ArrayList<SongMinimumData> songsMinData;
     private ArrayList<PlayListMinData> playListsMinData;
     private ArrayList<Playlist> playlists;
     private ArrayList<Album> albums;
     private ArrayList<Artist> artists;
-    private final String defaultSaveDir = "savedData";
-    private static SharedPlaylist sharedPlaylist;
     private FavoritePlaylist favoritePlaylist;
 
     public FileManager() {
@@ -50,12 +49,20 @@ public class FileManager implements Serializable {
 
     }
 
+    public static SharedPlaylist getSharedPlaylist() {
+        return sharedPlaylist;
+    }
+
+    public static void setSharedPlaylist(SharedPlaylist sharedPlaylist_) {
+        sharedPlaylist = sharedPlaylist_;
+    }
+
     public void loadData(String dataDirectory) {
 
         try {
-            FileInputStream fis = new FileInputStream(Paths.get(dataDirectory , "songs.ser").toString() );
+            FileInputStream fis = new FileInputStream(Paths.get(dataDirectory, "songs.ser").toString());
             ObjectInputStream ois = new ObjectInputStream(fis);
-            System.out.println(Paths.get(dataDirectory , "songs.ser").toString());
+            System.out.println(Paths.get(dataDirectory, "songs.ser").toString());
             this.songsMinData = (ArrayList<SongMinimumData>) ois.readObject();
             ois.close();
 
@@ -65,7 +72,7 @@ public class FileManager implements Serializable {
 
             //
 
-            fis = new FileInputStream(Paths.get(dataDirectory , "playlists.ser").toString());
+            fis = new FileInputStream(Paths.get(dataDirectory, "playlists.ser").toString());
             ois = new ObjectInputStream(fis);
             this.playListsMinData = ((ArrayList<PlayListMinData>) ois.readObject());
             ois.close();
@@ -89,18 +96,18 @@ public class FileManager implements Serializable {
 
     public void saveData(String dataDirectory) {
         File theDir = new File(dataDirectory);
-        if(!theDir.exists())
-        {
-            try{
+        if (!theDir.exists()) {
+            try {
                 theDir.mkdir();
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
         }
         try {
             this.songsMinData = new ArrayList<>();
             for (Song s : this.songs)
                 this.songsMinData.add(s.getSongMinimumData());
 
-            FileOutputStream fos = new FileOutputStream(Paths.get(dataDirectory , "songs.ser").toString());
+            FileOutputStream fos = new FileOutputStream(Paths.get(dataDirectory, "songs.ser").toString());
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(this.songsMinData);
             oos.close();
@@ -109,7 +116,7 @@ public class FileManager implements Serializable {
             this.playListsMinData = new ArrayList<>();
             for (Playlist p : this.playlists)
                 this.playListsMinData.add(p.getPlayListMinData());
-            fos = new FileOutputStream(Paths.get(dataDirectory , "playlists.ser").toString());
+            fos = new FileOutputStream(Paths.get(dataDirectory, "playlists.ser").toString());
             oos = new ObjectOutputStream(fos);
 
             oos.writeObject(this.playListsMinData);
@@ -145,6 +152,13 @@ public class FileManager implements Serializable {
         return this.playlists;
     }
 
+    public Playlist getPlaylistFromName(String name) {
+        for (Playlist playlist : this.playlists)
+            if (playlist.getTitle().equals(name))
+                return playlist;
+        return null;
+    }
+
     public void update() {
         this.updateAlbums();
         this.updateArtists();
@@ -153,8 +167,8 @@ public class FileManager implements Serializable {
 
     private void updateFavorite() {
         favoritePlaylist = new FavoritePlaylist();
-        for(Song s : this.songs)
-            if(s.isFavorite())
+        for (Song s : this.songs)
+            if (s.isFavorite())
                 favoritePlaylist.addSong(s);
 
     }
@@ -211,14 +225,6 @@ public class FileManager implements Serializable {
 
     public FavoritePlaylist getFavoritePlaylist() {
         return favoritePlaylist;
-    }
-
-    public static SharedPlaylist getSharedPlaylist() {
-        return sharedPlaylist;
-    }
-
-    public static void setSharedPlaylist(SharedPlaylist sharedPlaylist_) {
-        sharedPlaylist = sharedPlaylist_;
     }
 
     public void setFavoritePlaylist(FavoritePlaylist favoritePlaylist) {

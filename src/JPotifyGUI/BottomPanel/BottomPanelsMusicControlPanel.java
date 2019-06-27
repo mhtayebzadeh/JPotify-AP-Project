@@ -60,11 +60,13 @@ public class BottomPanelsMusicControlPanel extends JPanel {
         }
     }
 
+
     public void setMusicSliderValue(float persent) {
         this.musicSlider.setValue((int)persent);
     }
 
     public class ShuffleMouseListener implements MouseListener {
+
         @Override
         public void mouseClicked(MouseEvent e) {
             // TODO
@@ -87,7 +89,7 @@ public class BottomPanelsMusicControlPanel extends JPanel {
         }
     }
 
-    public class PreviousMouseListener implements MouseListener {
+    private class PreviousMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
         }
@@ -109,7 +111,7 @@ public class BottomPanelsMusicControlPanel extends JPanel {
         }
     }
 
-    public class PlayPauseMouseListener implements MouseListener {
+    private class PlayPauseMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
         }
@@ -131,7 +133,7 @@ public class BottomPanelsMusicControlPanel extends JPanel {
         }
     }
 
-    public class NextMouseListener implements MouseListener {
+    private class NextMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
         }
@@ -153,7 +155,7 @@ public class BottomPanelsMusicControlPanel extends JPanel {
         }
     }
 
-    public class RepeatMouseListener implements MouseListener {
+    private class RepeatMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
             // TODO

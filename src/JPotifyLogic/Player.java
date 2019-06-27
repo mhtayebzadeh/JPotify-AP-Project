@@ -4,9 +4,6 @@ import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Playlist.Playlist;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
-import javazoom.jl.player.advanced.PlaybackEvent;
-import javazoom.jl.player.advanced.PlaybackListener;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Instant;

@@ -17,15 +17,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public class EntityPanelsImageButton extends JButton {
-
     public EntityPanelsImageButton(byte[] imageData, CenterPanel centerPanel, Entity entity) {
         super();
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
         try {
             ImageIcon bImageIcon = new ImageIcon(ImageIO.read(bis));
             Image bImage = bImageIcon.getImage().getScaledInstance(
-                    dim.width/8, dim.width/8, Image.SCALE_SMOOTH);
+                    GUI.dim.width/8, GUI.dim.width/8, Image.SCALE_SMOOTH);
             this.setIcon(new ImageIcon(bImage));
             // this.imageButton.setLocation(dim.width/3, dim.height/3);
         } catch (IOException e) {
@@ -49,10 +47,12 @@ public class EntityPanelsImageButton extends JButton {
             if (e.getSource() == null)
                 return;
 
-            if (this.entity instanceof Song)
+            if (this.entity instanceof Song) {
                 this.centerPanel.getPlayer().setSong((Song) entity);
+                this.centerPanel.getLeftPanel().setImageData(this.entity.getImageData());
+            }
             else {
-                this.centerPanel.getPlayer().setPlayList((Playlist) entity);
+                this.centerPanel.getPlayer().setCurrentPlaylist((Playlist) entity);
                 if (this.entity instanceof Album)
                     this.centerPanel.setLibraryFromSongs(((Album) entity).getSongs());
                 else if (this.entity instanceof Artist)
@@ -60,11 +60,11 @@ public class EntityPanelsImageButton extends JButton {
                 else {
                     this.centerPanel.setLibraryFromSongs(((Playlist) entity).getSongs());
                 }
+//                centerPanel.getLeftPanel().setImageData(((Playlist) entity).getSongs().get(0).getImageData());
                 this.centerPanel.paint();
             }
             this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().setPlayer(this.centerPanel.getPlayer());
             this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().paint();
-            this.centerPanel.getLeftPanel().setImageData(this.entity.getImageData());
         }
 
         @Override

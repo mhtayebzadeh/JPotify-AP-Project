@@ -33,6 +33,9 @@ public class Playlist extends Entity implements Serializable {
     }
 
     public void addSong(Song song) {
+        for (Song s : this.songs)
+            if (s.equals(song))
+                return;
         this.songs.add(song);
     }
 
