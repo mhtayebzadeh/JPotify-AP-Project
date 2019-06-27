@@ -14,8 +14,7 @@ public class BottomPanelsCurrentMusicPanel extends JPanel {
         this.player = player;
 
         this.setLayout(new GridLayout(2, 1));
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setPreferredSize(new Dimension(dim.width/8, dim.height/64));
+        this.setPreferredSize(new Dimension(GUI.dim.width/8, GUI.dim.height/64));
         this.setBackground(GUI.bottomColorBlack);
     }
 

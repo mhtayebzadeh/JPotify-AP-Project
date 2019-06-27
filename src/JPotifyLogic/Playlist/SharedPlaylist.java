@@ -1,13 +1,12 @@
 package JPotifyLogic.Playlist;
 
-public class SharedPlaylist extends Playlist{
-    public SharedPlaylist()
-    {
-        super();
+public class SharedPlaylist extends Playlist {
+    public SharedPlaylist() {
+        super("Shared Playlist");
         this.setTypeOfPlaylist("shared");
     }
-    public SharedPlaylist(Playlist playlist)
-    {
+
+    public SharedPlaylist(Playlist playlist) {
         super();
         this.setTypeOfPlaylist("shared");
         this.setTitle(playlist.getTitle());

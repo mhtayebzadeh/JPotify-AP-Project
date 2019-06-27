@@ -35,7 +35,7 @@ public class LeftPanelsLibraryPanel extends JPanel {
         this.add(this.libraryList, BorderLayout.CENTER);
     }
 
-    public class LibraryMouseListener implements MouseListener {
+    private class LibraryMouseListener implements MouseListener {
         private JList<String> libraryList;
         private LeftPanel leftPanel;
 
