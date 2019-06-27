@@ -8,7 +8,7 @@ public class Main {
         FileManager fileManager = new FileManager();
         GUI gui = new GUI(fileManager);
         System.out.println("JPotify Start ...");
-        gui.setPlayer(new Player("jpotify"));
+//        gui.setPlayer(new Player("jpotify"));
 //        gui.setSongsPanel(s);
 
     }

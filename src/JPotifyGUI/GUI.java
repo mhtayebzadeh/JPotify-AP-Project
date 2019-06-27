@@ -28,7 +28,7 @@ public class GUI {
     public GUI(FileManager fileManager) {
         this.fileManager = fileManager;
         this.fileManager.loadData();
-
+        this.player = new Player("jpotify");
         this.frame = new JFrame("JPotify");
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.frame.setSize(3*dim.width/4, 3*dim.height/4);
@@ -78,6 +78,8 @@ public class GUI {
             this.fileManager.saveData();
         }
     }
+
+    //TODO: Timer thread
 
     //    public void setSongsPanel(ArrayList<SongPanel> songs) {
 //        centerPanel.setSongs(songs);

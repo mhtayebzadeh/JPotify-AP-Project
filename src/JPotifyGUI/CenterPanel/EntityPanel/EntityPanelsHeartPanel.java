@@ -56,13 +56,13 @@ public class EntityPanelsHeartPanel extends JPanel {
                 ImageIcon hr = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_r.png")));
                 Image image;
                 if (song.isFavorite()) {
-                    image = hr.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                    image = hw.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                     song.setFavorite(false);
                 }
                 else {
-                    image = hw.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                    image = hr.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                     song.setFavorite(true);
-                    //this.
+                    
                 }
                 heartLabel.setIcon(new ImageIcon(image));
             } catch (IOException err) {
