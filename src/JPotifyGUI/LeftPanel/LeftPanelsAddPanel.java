@@ -1,8 +1,6 @@
 package JPotifyGUI.LeftPanel;
 
-import JPotifyGUI.CenterPanel;
 import JPotifyLogic.Entity.Song;
-import JPotifyLogic.FileManager;
 import JPotifyLogic.Playlist.Playlist;
 
 import javax.imageio.ImageIO;

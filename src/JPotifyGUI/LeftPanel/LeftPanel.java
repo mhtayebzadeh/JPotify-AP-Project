@@ -1,12 +1,13 @@
 package JPotifyGUI.LeftPanel;
 
-import JPotifyGUI.CenterPanel;
+import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyLogic.FileManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 
 public class LeftPanel extends JPanel {
@@ -39,6 +40,17 @@ public class LeftPanel extends JPanel {
         this.imagePanel =  new JPanel();
         this.imagePanel.setPreferredSize(new Dimension(dim.width/8, dim.width/8));
         this.imagePanel.setBackground(sideColorBlack);
+        JLabel imageLabel = new JLabel();
+        try {
+            ImageIcon ii = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/music_icon.png")));
+            Image image = ii.getImage().getScaledInstance(dim.width/8, dim.width/8, Image.SCALE_SMOOTH);
+            imageLabel.setIcon(new ImageIcon(image));
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        }
+        this.imagePanel.setBackground(sideColorBlack);
+        this.imagePanel.add(imageLabel);
 
         this.add(new LeftPanelsAddPanel(this), BorderLayout.NORTH);
         this.add(leftScrollPane, BorderLayout.CENTER);

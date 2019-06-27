@@ -1,8 +1,5 @@
 package JPotifyGUI.LeftPanel;
 
-import JPotifyGUI.CenterPanel;
-import JPotifyLogic.FileManager;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;

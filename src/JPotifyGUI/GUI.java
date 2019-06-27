@@ -1,6 +1,7 @@
 package JPotifyGUI;
 
 import JPotifyGUI.BottomPanel.BottomPanel;
+import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.LeftPanel.LeftPanel;
 import JPotifyLogic.FileManager;
 import JPotifyLogic.Player;
@@ -9,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GUI {
-    private static final Color bg_color_black = new Color(43, 43, 43);
+    private static final Color bgColorBlack = new Color(43, 43, 43);
     private BottomPanel bottomPanel;
     private CenterPanel centerPanel;
     private LeftPanel leftPanel;
