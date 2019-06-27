@@ -10,9 +10,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server extends Thread {
-    private static Artwork myLastArtwork;
     private int port = 3663;
     private static SharedPlaylist sharedPlaylist;
+    private Artwork myLastArtwork;
 
     public Server()
     {
