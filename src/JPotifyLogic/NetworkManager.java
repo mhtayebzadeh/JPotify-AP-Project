@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class NetworkManager {
     private ArrayList<Friend> friendsList;
-    private SharedPlaylist sharedPlaylist;
+    private static SharedPlaylist sharedPlaylist;
     private Server server;
 
     public NetworkManager() {
@@ -31,7 +31,19 @@ public class NetworkManager {
         this.friendsList = friendsList;
     }
 
-    public SharedPlaylist getSharedPlaylist() {
+//    public void setSharedPlaylist(SharedPlaylist sharedPlaylist_) {
+//        sharedPlaylist = sharedPlaylist_;
+//        this.server.setSharedPlaylist(sharedPlaylist_);  // not work because of thread
+//        Server.setSharedPlaylist(sharedPlaylist_); // not work because of thread
+//
+//    }
+
+    public void updateSharedPlaylistFromFileManager()
+    {
+        sharedPlaylist = FileManager.getSharedPlaylist();
+    }
+    public static SharedPlaylist getSharedPlaylist() {
+        sharedPlaylist = FileManager.getSharedPlaylist();
         return sharedPlaylist;
     }
 
@@ -49,5 +61,4 @@ public class NetworkManager {
             }
         }
     }
-
 }

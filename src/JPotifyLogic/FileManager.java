@@ -17,7 +17,7 @@ public class FileManager implements Serializable {
     private ArrayList<Album> albums;
     private ArrayList<Artist> artists;
     private final String defaultSaveDir = "savedData";
-    private SharedPlaylist sharedPlaylist;
+    private static SharedPlaylist sharedPlaylist;
     private FavoritePlaylist favoritePlaylist;
 
     public FileManager() {
@@ -50,8 +50,8 @@ public class FileManager implements Serializable {
 
     }
 
-    //TODO: Load date
     public void loadData(String dataDirectory) {
+
         try {
             FileInputStream fis = new FileInputStream(Paths.get(dataDirectory , "songs.ser").toString() );
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -63,6 +63,8 @@ public class FileManager implements Serializable {
             for (SongMinimumData s : this.songsMinData)
                 this.songs.add(new Song(s));
 
+            //
+
             fis = new FileInputStream(Paths.get(dataDirectory , "playlists.ser").toString());
             ois = new ObjectInputStream(fis);
             this.playListsMinData = ((ArrayList<PlayListMinData>) ois.readObject());
@@ -71,6 +73,9 @@ public class FileManager implements Serializable {
             this.playlists = new ArrayList<>();
             for (PlayListMinData p : this.playListsMinData)
                 this.playlists.add(new Playlist(p));
+
+            //
+            //TODO: load SharedPlaylist and favouritPlaylist
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -82,8 +87,14 @@ public class FileManager implements Serializable {
         loadData(this.defaultSaveDir);
     }
 
-    //TODO: Save last data
     public void saveData(String dataDirectory) {
+        File theDir = new File(dataDirectory);
+        if(!theDir.exists())
+        {
+            try{
+                theDir.mkdir();
+            } catch (Exception e) { }
+        }
         try {
             this.songsMinData = new ArrayList<>();
             for (Song s : this.songs)
@@ -103,6 +114,8 @@ public class FileManager implements Serializable {
 
             oos.writeObject(this.playListsMinData);
             oos.close();
+
+            //TODO: save SharedPlaylist and favouritPlaylist
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -135,6 +148,14 @@ public class FileManager implements Serializable {
     public void update() {
         this.updateAlbums();
         this.updateArtists();
+        this.updateFavorite();
+    }
+
+    private void updateFavorite() {
+        favoritePlaylist = new FavoritePlaylist();
+        for(Song s : this.songs);
+        //TODO: update favorites
+
     }
 
     private void updateArtists() {
@@ -191,12 +212,12 @@ public class FileManager implements Serializable {
         return favoritePlaylist;
     }
 
-    public SharedPlaylist getSharedPlaylist() {
+    public static SharedPlaylist getSharedPlaylist() {
         return sharedPlaylist;
     }
 
-    public void setSharedPlaylist(SharedPlaylist sharedPlaylist) {
-        this.sharedPlaylist = sharedPlaylist;
+    public static void setSharedPlaylist(SharedPlaylist sharedPlaylist_) {
+        sharedPlaylist = sharedPlaylist_;
     }
 
     public void setFavoritePlaylist(FavoritePlaylist favoritePlaylist) {

@@ -3,7 +3,7 @@ package JPotifyLogic.Entity;
 import java.io.Serializable;
 
 public class Artwork extends Entity implements Serializable {
-
+    private long timeStampLastPlayed;
     public Artwork()
     {
         super();
@@ -16,4 +16,11 @@ public class Artwork extends Entity implements Serializable {
         super(song.getTitle(),song.getCaption(),song.getImageData());
     }
 
+    public void setTimeStampLastPlayed(long timeStampLastPlayed) {
+        this.timeStampLastPlayed = timeStampLastPlayed;
+    }
+
+    public long getTimeStampLastPlayed() {
+        return timeStampLastPlayed;
+    }
 }
