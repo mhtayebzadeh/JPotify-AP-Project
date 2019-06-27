@@ -14,7 +14,7 @@ public class Friend {
     private String hostName;
     private Artwork lastArtwork;
     private Socket socket;
-
+    private String status = "offline";
     public Friend(String name) throws IOException {
         this(name, "localhost");
     }
@@ -40,7 +40,14 @@ public class Friend {
 
     public void updateLastArtwork() throws IOException, ClassNotFoundException {
         //TODO:
-        this.socket = new Socket(this.ip, this.port);
+        try {
+            this.socket = new Socket(this.ip, this.port);
+            this.status = "online";
+        } catch (IOException e) {
+//            e.printStackTrace();
+            this.status = "offline";
+            return;
+        }
         // Streams for communication with server
         try {
             Thread.sleep(50);
@@ -59,6 +66,14 @@ public class Friend {
         }
 
         this.socket.close();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
 }

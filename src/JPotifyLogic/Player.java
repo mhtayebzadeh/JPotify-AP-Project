@@ -8,7 +8,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class Player extends Thread {
     private String name;
@@ -53,7 +55,65 @@ public class Player extends Thread {
         //TODO: lastPlayed of all library songs not set
     }
 
+    public void setShufflePlaylistAndSong(Playlist playlist_)
+    {
+        if (playlist_ != null)
+            if(playlist_.getSongs().size() > 0)
+                setShufflePlaylistAndSong(playlist_,playlist_.getSongs().get(0));
+    }
+    public void setShufflePlaylistAndSong(Playlist playlist_ , Song song_ )
+    {
+        Playlist shuffle = new Playlist("shuffle");
+        ArrayList<Song> songsArr = (ArrayList<Song>) playlist_.getSongs().clone();
+        Random randomGenerator = new Random();
+        int r = 0;
+        for (Song s:playlist_.getSongs())
+        {
+            r = randomGenerator.nextInt(songsArr.size());
+            shuffle.addSong(songsArr.get(r));
+            songsArr.remove(songsArr.get(r));
+        }
+        setPlayListAndSong(shuffle , song_);
+    }
 
+    //TODO: setShuffle this.playlist and this.song AND pause and resume
+    public void setShuffle()
+    {
+        float t = getElapsedTimeInPercent();
+        setShufflePlaylistAndSong(playlist , song );
+        gotoPercent(t);
+    }
+
+    public void nextSong()
+    {
+        if(playlist == null || song == null)
+            return;
+
+        Iterator<Song> iter = playlist.getSongs().iterator();
+        while (iter.hasNext())
+            if(iter.next().equals(song))
+                if(iter.hasNext())
+                    setPlayListAndSong(playlist,iter.next());
+    }
+
+    public void previousSong()
+    {
+        if(playlist == null || song == null)
+            return;
+        if(getElapsedTimeInSecond() > 4)
+            setPlayListAndSong(playlist,song);
+        else {
+            Song last = null;
+            for(Song s:playlist.getSongs())
+            {
+                if(s.equals(song))
+                    break;
+                last = s;
+            }
+            if(last != null)
+                setPlayListAndSong(playlist,last);
+        }
+    }
     public void setPlayListAndSongAndSkip(Playlist playlist_, Song song_ , long skip) {
         Iterator<Song> it = playlist_.getSongs().iterator();
         playlist = playlist_;
@@ -160,7 +220,7 @@ public class Player extends Thread {
     public static float getElapsedTimeInPercent()
     {
         try {
-            return (float)(100.0*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
+            return 100 - (float)(100.0*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
         } catch (IOException e) {
             e.printStackTrace();
             return 0;

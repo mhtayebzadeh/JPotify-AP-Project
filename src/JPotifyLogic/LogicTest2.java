@@ -12,7 +12,7 @@ public class LogicTest2 {
         FileManager fileManager = new FileManager();
         NetworkManager networkManager = new NetworkManager();
         Player player = new Player("jpotify");
-        GUI gui = new GUI(fileManager);
+        GUI gui = new GUI(fileManager,networkManager);
         System.out.println("JPotify Start ...");
         gui.setPlayer(player);
 

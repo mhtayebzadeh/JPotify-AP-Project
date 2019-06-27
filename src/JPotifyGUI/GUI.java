@@ -4,7 +4,9 @@ import JPotifyGUI.BottomPanel.BottomPanel;
 import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.LeftPanel.LeftPanel;
 import JPotifyLogic.FileManager;
+import JPotifyLogic.NetworkManager;
 import JPotifyLogic.Player;
+import JPotifyLogic.Playlist.Playlist;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,9 +27,12 @@ public class GUI {
     // fields from logic
     private FileManager fileManager;
     private Player player;
+    private NetworkManager networkManager;
+    private Thread timerThread;
 
-    public GUI(FileManager fileManager) {
+    public GUI(FileManager fileManager,NetworkManager networkManager) {
         this.fileManager = fileManager;
+        this.networkManager = networkManager;
         this.fileManager.loadData();
         this.player = new Player("jpotify");
         this.frame = new JFrame("JPotify");
@@ -57,6 +62,10 @@ public class GUI {
         this.frame.add(this.leftPanel, BorderLayout.WEST);
         this.frame.add(this.rightPanel, BorderLayout.EAST);
 
+        MyTimeRunnable myTimeRunnable = new MyTimeRunnable(player,fileManager,networkManager,bottomPanel,leftPanel);
+        this.timerThread = new Thread(myTimeRunnable);
+        this.timerThread.start();
+
         this.frame.setVisible(true);
         Runtime.getRuntime().addShutdownHook(new Thread(new ExitRunnable(fileManager)));
     }
@@ -81,7 +90,39 @@ public class GUI {
 
     //TODO: Timer thread
 
-    //    public void setSongsPanel(ArrayList<SongPanel> songs) {
-//        centerPanel.setSongs(songs);
-//    }
+    private class MyTimeRunnable implements Runnable {
+        private int periodTime = 500 ; // 500 ms
+        private int NetworkPeriodTime = 5000; // 5s
+        private Player player;
+        private FileManager fileManager;
+        private NetworkManager networkManager;
+        private BottomPanel bottomPanel;
+        private LeftPanel leftPanel;
+        public MyTimeRunnable(Player player, FileManager fileManager, NetworkManager networkManager, BottomPanel bottomPanel, LeftPanel leftPanel) {
+            this.player = player;
+            this.bottomPanel = bottomPanel;
+            this.leftPanel = leftPanel;
+            this.fileManager = fileManager;
+            this.networkManager = networkManager;
+        }
+
+        @Override
+        public void run() {
+            int n = NetworkPeriodTime / periodTime;
+            int cnt = 0;
+            while (true)
+            {
+                cnt++;
+                try{
+                    Thread.sleep(periodTime);
+                    this.bottomPanel.setMusicSlider((int)player.getElapsedTimeInPercent(),0,100);
+
+                    if(cnt >= n) // check network
+                    {
+                        cnt = 0;
+                    }
+                }catch (Exception e) {}
+            }
+        }
+    }
 }

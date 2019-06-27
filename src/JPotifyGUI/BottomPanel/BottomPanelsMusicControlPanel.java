@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 public class BottomPanelsMusicControlPanel extends JPanel {
     private JButton[] controlButtons;
@@ -44,25 +45,36 @@ public class BottomPanelsMusicControlPanel extends JPanel {
                     IOException e) {
                 e.printStackTrace();
             }
-            musicSlider = new JSlider();
+            JPanel p = new JPanel();
+            musicSlider = new JSlider(JSlider.HORIZONTAL, 0,100,0);
+            musicSlider.setPaintTicks(false);
             musicSlider.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent changeEvent) {
-                    player.gotoPercent(100* (float)musicSlider.getValue()/(float)musicSlider.getMaximum());
+//TODO: problem of listener
+//                    player.gotoPercent(100* (float)musicSlider.getValue()/(float)musicSlider.getMaximum());
+                    musicSlider.setToolTipText("hi");
+
                     System.out.println((float)100* musicSlider.getValue()/(float)musicSlider.getMaximum());
                 }
             });
+            p.add(musicSlider);
             this.setLayout(new BorderLayout());
             this.add(buttonsPanel,BorderLayout.CENTER);
-            this.add(musicSlider,BorderLayout.SOUTH);
+            this.add(p,BorderLayout.SOUTH);
             this.setVisible(true);
 
         }
     }
 
-
-    public void setMusicSliderValue(float persent) {
-        this.musicSlider.setValue((int)persent);
+    public void setMusicSliderInitValue(int val,int min , int max)
+    {
+        this.musicSlider.setMinimum(min);
+        this.musicSlider.setMaximum(max);
+        this.musicSlider.setValue(val);
+    }
+    public void setMusicSliderValue(float percent) {
+        this.musicSlider.setValue((int)percent);
     }
 
     public class ShuffleMouseListener implements MouseListener {
