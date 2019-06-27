@@ -1,5 +1,7 @@
-package JPotifyGUI.CenterPanel;
+package JPotifyGUI.CenterPanel.EntityPanel;
 
+import JPotifyGUI.CenterPanel.CenterPanel;
+import JPotifyGUI.GUI;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Playlist.Album;
@@ -15,7 +17,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public class EntityPanelsImageButton extends JButton {
-    private static final Color bgColorBlack = new Color(43, 43, 43);
 
     public EntityPanelsImageButton(byte[] imageData, CenterPanel centerPanel, Entity entity) {
         super();
@@ -30,7 +31,7 @@ public class EntityPanelsImageButton extends JButton {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.setBackground(bgColorBlack);
+        this.setBackground(GUI.bgColorBlack);
         this.addMouseListener(new PlaySongMouseListener(centerPanel, entity));
     }
 

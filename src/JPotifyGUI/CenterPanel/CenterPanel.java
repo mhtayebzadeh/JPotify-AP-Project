@@ -1,9 +1,12 @@
 package JPotifyGUI.CenterPanel;
 
 import JPotifyGUI.BottomPanel.BottomPanel;
+import JPotifyGUI.CenterPanel.EntityPanel.EntityPanel;
+import JPotifyGUI.GUI;
 import JPotifyGUI.LeftPanel.LeftPanel;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
+import JPotifyLogic.FileManager;
 import JPotifyLogic.Player;
 import JPotifyLogic.Playlist.Album;
 import JPotifyLogic.Playlist.Artist;
@@ -14,20 +17,21 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class CenterPanel extends JPanel {
-    private static final Color bgColorBlack = new Color(43, 43, 43);
     private ArrayList<Entity> library;
     private ArrayList<EntityPanel> entityPanels;
     private Player player;
     private BottomPanel bottomPanel;
     private LeftPanel leftPanel;
+    private FileManager fileManager;
 
-    public CenterPanel(Player player, BottomPanel bottomPanel, LeftPanel leftPanel) {
+    public CenterPanel(Player player, FileManager fileManager, BottomPanel bottomPanel, LeftPanel leftPanel) {
         super();
-        this.setBackground(bgColorBlack);
+        this.setBackground(GUI.bgColorBlack);
         this.entityPanels = new ArrayList<>();
         this.library = new ArrayList<>();
         this.setLayout(new GridLayout(0, 3));
         this.player = player;
+        this.fileManager = fileManager;
         this.bottomPanel = bottomPanel;
         this.leftPanel = leftPanel;
     }
@@ -93,5 +97,9 @@ public class CenterPanel extends JPanel {
 
     public LeftPanel getLeftPanel() {
         return leftPanel;
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
     }
 }

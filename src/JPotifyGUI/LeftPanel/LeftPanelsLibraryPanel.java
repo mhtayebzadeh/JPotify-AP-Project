@@ -1,5 +1,7 @@
 package JPotifyGUI.LeftPanel;
 
+import JPotifyGUI.GUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -8,13 +10,10 @@ import java.awt.event.MouseListener;
 public class LeftPanelsLibraryPanel extends JPanel {
     private JList<String> libraryList;
     private LeftPanel leftPanel;
-    private static final Color sideColorBlack = new Color(15, 15, 15);
-    private static final Color captionColorGrey = new Color(180, 180, 180);
-    private static final Color bottomColorBlack = new Color(100, 100, 100);
 
     public LeftPanelsLibraryPanel(LeftPanel leftPanel) {
         this.leftPanel = leftPanel;
-        this.setBackground(sideColorBlack);
+        this.setBackground(GUI.sideColorBlack);
         DefaultListModel<String> list = new DefaultListModel<>();
 
         list.addElement("Songs");
@@ -23,14 +22,14 @@ public class LeftPanelsLibraryPanel extends JPanel {
         list.addElement("Playlists");
         this.libraryList = new JList<>(list);
         this.libraryList.addMouseListener(new LibraryMouseListener(this.leftPanel, this.libraryList));
-        this.libraryList.setBackground(sideColorBlack);
-        this.libraryList.setForeground(captionColorGrey);
+        this.libraryList.setBackground(GUI.sideColorBlack);
+        this.libraryList.setForeground(GUI.captionColorGrey);
         this.leftPanel.getCenterPanel().setLibraryFromSongs(this.leftPanel.getFileManager().getSongs());
         this.leftPanel.getCenterPanel().paint();
 
         this.setLayout(new BorderLayout());
         JLabel label = new JLabel("Library");
-        label.setForeground(bottomColorBlack);
+        label.setForeground(GUI.bottomColorBlack);
         label.setPreferredSize(new Dimension(30, 30));
         this.add(label, BorderLayout.NORTH);
         this.add(this.libraryList, BorderLayout.CENTER);

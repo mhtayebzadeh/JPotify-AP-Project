@@ -10,7 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GUI {
-    private static final Color bgColorBlack = new Color(43, 43, 43);
+    public static final Color captionColorGrey = new Color(180, 180, 180);
+    public static final Color bottomColorBlack = new Color(100, 100, 100);
+    public static final Color bgColorBlack = new Color(43, 43, 43);
+    public static final Color sideColorBlack = new Color(15, 15, 15);
+
     private BottomPanel bottomPanel;
     private CenterPanel centerPanel;
     private LeftPanel leftPanel;
@@ -41,9 +45,9 @@ public class GUI {
         this.frame.setBackground(Color.BLACK);
 
         this.bottomPanel = new BottomPanel(this.player);
-        this.centerPanel = new CenterPanel(this.player, this.bottomPanel, this.leftPanel);
+        this.centerPanel = new CenterPanel(this.player, this.fileManager, this.bottomPanel, this.leftPanel);
         JScrollPane jScrollPane = new JScrollPane(this.centerPanel);
-        this.leftPanel = new LeftPanel(this.fileManager, this.centerPanel);
+        this.leftPanel = new LeftPanel(this.centerPanel);
         this.centerPanel.setLeftPanel(this.leftPanel);
         this.rightPanel = new RightPanel();
 

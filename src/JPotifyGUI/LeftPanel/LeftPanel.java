@@ -1,6 +1,7 @@
 package JPotifyGUI.LeftPanel;
 
 import JPotifyGUI.CenterPanel.CenterPanel;
+import JPotifyGUI.GUI;
 import JPotifyLogic.FileManager;
 
 import javax.imageio.ImageIO;
@@ -11,26 +12,21 @@ import java.io.File;
 import java.io.IOException;
 
 public class LeftPanel extends JPanel {
-    private FileManager fileManager;
     private CenterPanel centerPanel;
     private LeftPanelsPlaylistsPanel leftPanelsPlaylistsPanel;
     private JPanel imagePanel;
     private byte[] imageData;
-    private static final Color sideColorBlack = new Color(15, 15, 15);
 
-    public LeftPanel(FileManager fileManager, CenterPanel centerPanel) {
+    public LeftPanel(CenterPanel centerPanel) {
         super();
-        this.fileManager = fileManager;
         this.centerPanel = centerPanel;
-//        this.setSize(new Dimension(100,200));
-//        this.setMinimumSize(new Dimension(100,300));
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setPreferredSize(new Dimension(dim.width/8, dim.height/8));
         this.setBackground(Color.RED);
         this.setLayout(new BorderLayout());
-        this.setBackground(sideColorBlack);
+        this.setBackground(GUI.sideColorBlack);
 
-        this.leftPanelsPlaylistsPanel = new LeftPanelsPlaylistsPanel(fileManager);
+        this.leftPanelsPlaylistsPanel = new LeftPanelsPlaylistsPanel(centerPanel.getFileManager());
         JPanel leftScrollPanel = new JPanel();
         leftScrollPanel.setLayout(new BorderLayout());
         JScrollPane leftScrollPane = new JScrollPane(leftScrollPanel);
@@ -39,7 +35,7 @@ public class LeftPanel extends JPanel {
 
         this.imagePanel =  new JPanel();
         this.imagePanel.setPreferredSize(new Dimension(dim.width/8, dim.width/8));
-        this.imagePanel.setBackground(sideColorBlack);
+        this.imagePanel.setBackground(GUI.sideColorBlack);
         JLabel imageLabel = new JLabel();
         try {
             ImageIcon ii = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/music_icon.png")));
@@ -49,7 +45,7 @@ public class LeftPanel extends JPanel {
                 IOException e) {
             e.printStackTrace();
         }
-        this.imagePanel.setBackground(sideColorBlack);
+        this.imagePanel.setBackground(GUI.sideColorBlack);
         this.imagePanel.add(imageLabel);
 
         this.add(new LeftPanelsAddPanel(this), BorderLayout.NORTH);
@@ -62,7 +58,7 @@ public class LeftPanel extends JPanel {
     }
 
     public FileManager getFileManager() {
-        return fileManager;
+        return centerPanel.getFileManager();
     }
 
     public LeftPanelsPlaylistsPanel getLeftPanelsPlaylistsPanel() {

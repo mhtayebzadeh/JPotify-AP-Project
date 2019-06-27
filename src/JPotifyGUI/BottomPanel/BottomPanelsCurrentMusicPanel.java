@@ -1,5 +1,6 @@
 package JPotifyGUI.BottomPanel;
 
+import JPotifyGUI.GUI;
 import JPotifyLogic.Player;
 
 import javax.swing.*;
@@ -7,8 +8,6 @@ import java.awt.*;
 
 public class BottomPanelsCurrentMusicPanel extends JPanel {
     private Player player;
-    private static final Color captionColorGrey = new Color(180, 180, 180);
-    private static final Color bottomColorBlack = new Color(100, 100, 100);
 
     public BottomPanelsCurrentMusicPanel(Player player) {
         super();
@@ -17,7 +16,7 @@ public class BottomPanelsCurrentMusicPanel extends JPanel {
         this.setLayout(new GridLayout(2, 1));
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setPreferredSize(new Dimension(dim.width/8, dim.height/64));
-        this.setBackground(bottomColorBlack);
+        this.setBackground(GUI.bottomColorBlack);
     }
 
     public void setPlayer(Player player) {
@@ -29,7 +28,7 @@ public class BottomPanelsCurrentMusicPanel extends JPanel {
         JLabel titleLabel = new JLabel(this.player.getSong().getTitle());
         titleLabel.setForeground(Color.WHITE);
         JLabel captionLabel = new JLabel(this.player.getSong().getArtist());
-        captionLabel.setForeground(captionColorGrey);
+        captionLabel.setForeground(GUI.captionColorGrey);
         this.add(titleLabel);
         this.add(captionLabel);
         this.revalidate();

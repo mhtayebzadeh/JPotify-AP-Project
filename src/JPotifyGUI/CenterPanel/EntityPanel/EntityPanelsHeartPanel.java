@@ -1,5 +1,6 @@
-package JPotifyGUI.CenterPanel;
+package JPotifyGUI.CenterPanel.EntityPanel;
 
+import JPotifyGUI.GUI;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
 
@@ -12,11 +13,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class EntityPanelsHeartPanel extends JPanel {
-    private static final Color bgColorBlack = new Color(43, 43, 43);
-
     public EntityPanelsHeartPanel(Entity entity) {
         super();
-        this.setBackground(bgColorBlack);
+        this.setBackground(GUI.bgColorBlack);
         JLabel heartLabel = new JLabel();
         heartLabel.addMouseListener(new HeartMouseListener(entity));
         if (entity instanceof Song) {
