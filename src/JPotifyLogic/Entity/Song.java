@@ -21,7 +21,7 @@ public class Song extends Entity implements Serializable {
     private long totalSongLength;
     private FileInputStream fis;
     private boolean isFavorite;
-
+    private long timeInSecond;
     private Mp3File mp3;
     private AdvancedPlayer player;
 
@@ -35,6 +35,7 @@ public class Song extends Entity implements Serializable {
             this.player = new AdvancedPlayer(this.fis);
             this.totalSongLength = this.fis.available();
             this.isFavorite = false;
+            this.timeInSecond = mp3.getLengthInSeconds();
         } catch (IOException | UnsupportedTagException | InvalidDataException | JavaLayerException e) {
             e.printStackTrace();
         }
@@ -55,6 +56,7 @@ public class Song extends Entity implements Serializable {
         this.setPauseLocation(songMinData.getPauseLocation());
         this.setLastPlayed(songMinData.getLastPlayed());
         this.timeStampLastPlayed = songMinData.getTimeStampLastPlayed();
+        this.isFavorite = songMinData.isFavorite();
     }
 
     public String getArtist() {
@@ -126,7 +128,7 @@ public class Song extends Entity implements Serializable {
 
 
     public SongMinimumData getSongMinimumData() {
-        return new SongMinimumData(address, lastPlayed, pauseLocation, timeStampLastPlayed);
+        return new SongMinimumData(address, lastPlayed, pauseLocation, timeStampLastPlayed,isFavorite);
     }
 
     public long getTimeStampLastPlayed() {
@@ -151,4 +153,9 @@ public class Song extends Entity implements Serializable {
         a.setTimeStampLastPlayed(this.timeStampLastPlayed);
         return a;
     }
+
+    public long getTimeInSecond() {
+        return timeInSecond;
+    }
+
 }

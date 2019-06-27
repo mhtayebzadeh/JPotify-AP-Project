@@ -35,7 +35,6 @@ public class Player extends Thread {
     public static void setCurrent_fis_(FileInputStream fis)
     {
         _fis_ = fis;
-
     }
     // start music from first of lib
     public void setPlayList(Playlist playlist, Song song) {
@@ -96,6 +95,33 @@ public class Player extends Thread {
         }
     }
 
+    public static long getRemainTimeInSecond()
+    {
+        try {
+            return (long)((float)song.getTimeInSecond()*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static long getElapsedTimeInSecond()
+    {
+        return song.getTimeInSecond() - getRemainTimeInSecond();
+    }
+    public static float getElapsedTimeInPercent()
+    {
+        try {
+            return (float)(100.0*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+//    public void goto
+    //TODO: play at time ...
+
     private class MyRunnable implements Runnable {
         private AdvancedPlayer player;
         private FileInputStream fis;
@@ -107,6 +133,7 @@ public class Player extends Thread {
                 song.reNewSong();
             this.song = song;
             this.fis = song.getFis();
+            Player.setCurrent_fis_(this.fis);
             this.player = song.getPlayer();
 
         }
@@ -118,6 +145,7 @@ public class Player extends Thread {
                 this.fis = song.getFis();
                 fis.skip(skipFrame);
                 this.player = new AdvancedPlayer(fis);
+                Player.setCurrent_fis_(this.fis);
             } catch (JavaLayerException e) {
             } catch (IOException e) {
                 e.printStackTrace();
@@ -154,7 +182,7 @@ public class Player extends Thread {
                             this.player = new AdvancedPlayer(f);
                             this.setLastPlayed(this.song);
                             Player.setCurrentSong(song);
-
+                            Player.setCurrent_fis_(f);
                             this.player.play();
                         } catch (Exception e) {
                         }

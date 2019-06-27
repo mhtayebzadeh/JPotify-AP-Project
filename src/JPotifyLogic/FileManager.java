@@ -115,7 +115,7 @@ public class FileManager implements Serializable {
             oos.writeObject(this.playListsMinData);
             oos.close();
 
-            //TODO: save SharedPlaylist and favouritPlaylist
+            //TODO: save SharedPlaylist
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,8 +153,9 @@ public class FileManager implements Serializable {
 
     private void updateFavorite() {
         favoritePlaylist = new FavoritePlaylist();
-        for(Song s : this.songs);
-        //TODO: update favorites
+        for(Song s : this.songs)
+            if(s.isFavorite())
+                favoritePlaylist.addSong(s);
 
     }
 
@@ -223,4 +224,19 @@ public class FileManager implements Serializable {
     public void setFavoritePlaylist(FavoritePlaylist favoritePlaylist) {
         this.favoritePlaylist = favoritePlaylist;
     }
+
+    //TODO: just search in songs , search in playlist should be added
+    public Playlist searchInSongs(String searchString)
+    {
+        Playlist p = new Playlist();
+        p.setTypeOfPlaylist("search");
+        p.setTitle("Search Playlist");
+        for(Song s : this.songs)
+        {
+            if(s.getTitle().contains(searchString) || s.getCaption().contains(searchString))
+                p.addSong(s);
+        }
+        return p;
+    }
+
 }

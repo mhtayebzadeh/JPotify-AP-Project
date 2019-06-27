@@ -47,22 +47,15 @@ public class LogicTest {
         fileManager.loadData();
 
         fileManager.update();
-        for(Album a : fileManager.getAlbums())
-            System.out.println(a.getAlbum());
-        System.out.println("-----------------");
-        Song song = (Song)fileManager.getPlaylists().get(1).getSongs().get(1);
-
-
-        Song song4 = song;
-        System.out.println(song4.getTitle());
-        System.out.println(song4.getAlbum());
-        System.out.println(song4.getArtist());
-        System.out.println(song4.getLastPlayed());
-
-        player.setSong(song);
-
-        Thread.sleep(5000);
-        player.stop_();
+        player.setSong(fileManager.searchInSongs("Koobaar").getSongs().get(0));
+        System.out.println(fileManager.searchInSongs("Koobaar").getSongs().get(0).getTitle());
+        while (true)
+        {
+            Thread.sleep(500);
+            System.out.println(Player.getElapsedTimeInSecond());
+        }
+//        Thread.sleep(1000);
+//        player.stop_();
 
 //        song.stop();
     }
