@@ -1,8 +1,6 @@
 package JPotifyGUI.LeftPanel;
 
-import JPotifyGUI.CenterPanel;
 import JPotifyLogic.Entity.Song;
-import JPotifyLogic.FileManager;
 import JPotifyLogic.Playlist.Playlist;
 
 import javax.imageio.ImageIO;
@@ -49,7 +47,7 @@ public class LeftPanelsAddPanel extends JPanel {
         this.add(newPlaylistPanel);
 
         try {
-            ImageIcon ii = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/add_icon.png")));
+            ImageIcon ii = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/add and remove/add_icon.png")));
             Image image = ii.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
             newSongButton.setIcon(new ImageIcon(image));
             newPlaylistButton.setIcon(new ImageIcon(image));

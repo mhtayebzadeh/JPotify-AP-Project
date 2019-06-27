@@ -3,7 +3,6 @@ package JPotifyLogic.Network;
 import JPotifyLogic.Entity.Artwork;
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.FileManager;
-import JPotifyLogic.NetworkManager;
 import JPotifyLogic.Playlist.SharedPlaylist;
 
 import java.io.*;
@@ -13,7 +12,8 @@ import java.net.Socket;
 public class Server extends Thread {
     private int port = 3663;
     private static SharedPlaylist sharedPlaylist;
-    private static Artwork myLastArtwork = null;
+    private Artwork myLastArtwork;
+
     public Server()
     {
         super();
