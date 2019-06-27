@@ -10,6 +10,7 @@ public class LeftPanel extends JPanel {
     private FileManager fileManager;
     private CenterPanel centerPanel;
     private LeftPanelsPlaylistsPanel leftPanelsPlaylistsPanel;
+    private JPanel imagePanel;
     private byte[] imageData;
     private static final Color sideColorBlack = new Color(15, 15, 15);
 
@@ -32,12 +33,11 @@ public class LeftPanel extends JPanel {
         leftScrollPanel.add(new LeftPanelsLibraryPanel(this), BorderLayout.NORTH);
         leftScrollPanel.add(this.leftPanelsPlaylistsPanel, BorderLayout.CENTER);
 
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(dim.width/8, dim.width/8));
+        this.imagePanel =  new JPanel();
 
         this.add(new LeftPanelsAddPanel(this), BorderLayout.NORTH);
         this.add(leftScrollPane, BorderLayout.CENTER);
-        this.add(panel, BorderLayout.SOUTH);
+        this.add(this.imagePanel, BorderLayout.SOUTH);
     }
 
     public CenterPanel getCenterPanel() {
@@ -54,5 +54,14 @@ public class LeftPanel extends JPanel {
 
     public void setImageData(byte[] imageData) {
         this.imageData = imageData;
+    }
+
+    public JPanel getImagePanel() {
+        return imagePanel;
+    }
+
+    public void setImagePanel(JPanel imagePanel) {
+        this.imagePanel = imagePanel;
+        this.revalidate();
     }
 }

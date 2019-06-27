@@ -34,6 +34,7 @@ public class Song extends Entity implements Serializable {
             this.mp3 = new Mp3File(address);
             this.player = new AdvancedPlayer(this.fis);
             this.totalSongLength = this.fis.available();
+            this.isFavorite = false;
         } catch (IOException | UnsupportedTagException | InvalidDataException | JavaLayerException e) {
             e.printStackTrace();
         }

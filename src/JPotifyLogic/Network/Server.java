@@ -8,35 +8,34 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server extends Thread{
+public class Server extends Thread {
+    private static Artwork myLastArtwork;
     private int port = 3663;
     private SharedPlaylist sharedPlaylist;
-    private static Artwork myLastArtwork = null;
-    public Server()
-    {
-        super();
-    }
 
-    public static void setMyLastArtwork(Artwork myLastArtwork_) {
-        myLastArtwork = myLastArtwork_;
+    public Server() {
+        super();
     }
 
     public Artwork getMyLastArtwork() {
         return myLastArtwork;
     }
 
+    public static void setMyLastArtwork(Artwork myLastArtwork) {
+        myLastArtwork = myLastArtwork;
+    }
+
     public void run() {
         ServerSocket listener;
-        while (true)
-        {
+        while (true) {
             System.out.println("Server is running ...");
 
-            try  {
+            try {
                 listener = new ServerSocket(port);
                 while (true) {
                     //System.out.println("Waiting for a client to connect...");
                     Socket socket = listener.accept();
-                    if(this.sharedPlaylist != null) {
+                    if (this.sharedPlaylist != null) {
                         if (this.sharedPlaylist.getSongs().size() > 0) {
                             Song ss = this.sharedPlaylist.getSongs().get(0);
                             for (Song s : this.sharedPlaylist.getSongs()) {
@@ -46,7 +45,7 @@ public class Server extends Thread{
                             myLastArtwork = ss.getArtwork();
                         }
                     }
-                    new MyClientHandler(socket , myLastArtwork).start();
+                    new MyClientHandler(socket, myLastArtwork).start();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -64,28 +63,26 @@ public class Server extends Thread{
         this.sharedPlaylist = sharedPlaylist;
     }
 }
+
 class MyClientHandler extends Thread {
     private Socket socket;
     private Artwork lastArtwork = null;
-    public MyClientHandler(Socket socket,Artwork lastArtwork){
+
+    public MyClientHandler(Socket socket, Artwork lastArtwork) {
         this.socket = socket;
         this.lastArtwork = lastArtwork;
     }
-    public void run()
-    {
+
+    public void run() {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             // Get messages from the client, line by line; return them capitalized
-            if (in.readLine().equals("give me lastArtwork"))
-            {
-                if(this.lastArtwork == null)
-                {
+            if (in.readLine().equals("give me lastArtwork")) {
+                if (this.lastArtwork == null) {
                     out.println("nothing");
-                }
-                else
-                {
+                } else {
                     out.println("ok");
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     oos.writeObject(this.lastArtwork);

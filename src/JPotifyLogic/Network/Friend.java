@@ -14,16 +14,17 @@ public class Friend {
     private String hostName;
     private Artwork lastArtwork;
     private Socket socket;
+
     public Friend(String name) throws IOException {
-        this(name , "localhost");
-    }
-    public Friend(String name , String host) throws UnknownHostException {
-            this(name, host, InetAddress.getByName(host));
+        this(name, "localhost");
     }
 
+    public Friend(String name, String host) throws UnknownHostException {
+        this(name, host, InetAddress.getByName(host));
+    }
 
 
-    public Friend(String name , String host , InetAddress ip) {
+    public Friend(String name, String host, InetAddress ip) {
         this.name = name;
         this.hostName = host;
         this.ip = ip;
@@ -36,22 +37,20 @@ public class Friend {
     public Artwork getLastArtwork() {
         return lastArtwork;
     }
+
     public void updateLastArtwork() throws IOException, ClassNotFoundException {
         //TODO:
-        this.socket = new Socket(this.ip,this.port);
+        this.socket = new Socket(this.ip, this.port);
         // Streams for communication with server
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        out.println("give me lastArtwork");
         String status = in.readLine();
-        if(status.equals("nothing"))
-        {
+        if (status.equals("nothing")) {
             //pass
-        }
-        else if(status.equals("ok"))
-        {
-            out.println("give me lastArtwork");
+        } else if (status.equals("ok")) {
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            lastArtwork = (Artwork)ois.readObject();
+            lastArtwork = (Artwork) ois.readObject();
         }
 
 

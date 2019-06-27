@@ -11,40 +11,40 @@ public class NetworkManager {
     private ArrayList<Friend> friendsList;
     private SharedPlaylist sharedPlaylist;
     private Server server;
-    public NetworkManager()
-    {
+
+    public NetworkManager() {
         this.friendsList = new ArrayList<>();
         this.server = new Server();
         server.start(); // start server as threead ...
 
     }
-    public void addFriend(Friend friend)
-    {
+
+    public void addFriend(Friend friend) {
         friendsList.add(friend);
     }
+
     public ArrayList<Friend> getFriendsList() {
         return friendsList;
     }
+
     public void setFriendsList(ArrayList<Friend> friendsList) {
         this.friendsList = friendsList;
     }
 
-    public void setSharedPlaylist(SharedPlaylist sharedPlaylist) {
-        this.sharedPlaylist = sharedPlaylist;
-    }
     public SharedPlaylist getSharedPlaylist() {
         return sharedPlaylist;
     }
 
-    public void updateFriendsLastSong()
-    {
-        for(Friend f : friendsList)
-        {
+    public void setSharedPlaylist(SharedPlaylist sharedPlaylist) {
+        this.sharedPlaylist = sharedPlaylist;
+        this.server.setSharedPlaylist(sharedPlaylist);
+    }
+
+    public void updateFriendsLastSong() {
+        for (Friend f : friendsList) {
             try {
                 f.updateLastArtwork();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }

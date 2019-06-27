@@ -42,7 +42,7 @@ public class GUI {
         this.frame.setBackground(Color.BLACK);
 
         this.bottomPanel = new BottomPanel(this.player);
-        this.centerPanel = new CenterPanel(this.player, this.bottomPanel);
+        this.centerPanel = new CenterPanel(this.player, this.bottomPanel, this.leftPanel);
         JScrollPane jScrollPane = new JScrollPane(this.centerPanel);
         this.leftPanel = new LeftPanel(this.fileManager, this.centerPanel);
         this.rightPanel = new RightPanel();
