@@ -5,41 +5,46 @@ import JPotifyLogic.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * this class is created as bottom music control panel
+ * play, pause, stop, previous, next, repeat and shuffle
+ * are the control functions this panel can perform
+ */
 public class BottomPanelsMusicControlPanel extends Container {
     private JLabel[] controlButtons;
-    JPanel buttonsPanel ;
-    JSlider musicSlider;
-    Player player;
-    boolean _mouseAction = false;
-    long sliderVal = 0;
+    private JSlider musicSlider;
+    private Player player;
+    private boolean _mouseAction = false;
+    private long sliderVal = 0;
     private JLabel elapse;
     private JLabel total;
-    String playIcon = "play.png";
-    String pauseIcon = "pause.png";
-    private ImageIcon imageIconPlay ;
+    private ImageIcon imageIconPlay;
     private ImageIcon imageIconPause;
 
     public BottomPanelsMusicControlPanel(Player player) {
         super();
         this.player = player;
 
+        String playIcon = "play.png";
         try {
-            imageIconPlay = new ImageIcon(new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/multimedia/" + playIcon))).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-            imageIconPause = new ImageIcon(new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/multimedia/" + pauseIcon))).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+            imageIconPlay = new ImageIcon(new ImageIcon(ImageIO.read(new File(
+                    "src/JPotifyGUI/images/multimedia/" + playIcon))).getImage().getScaledInstance(
+                    30, 30, Image.SCALE_SMOOTH));
+            String pauseIcon = "pause.png";
+            imageIconPause = new ImageIcon(new ImageIcon(ImageIO.read(new File(
+                    "src/JPotifyGUI/images/multimedia/" + pauseIcon))).getImage().getScaledInstance(
+                    30, 30, Image.SCALE_SMOOTH));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        buttonsPanel = new JPanel();
+        JPanel buttonsPanel = new JPanel();
         this.setBackground(GUI.bottomColorBlack);
         buttonsPanel.setBackground(GUI.bottomColorBlack);
 //        buttonsPanel.setLayout(new GridLayout(1, 5));
@@ -57,7 +62,7 @@ public class BottomPanelsMusicControlPanel extends Container {
                         "src/JPotifyGUI/images/multimedia/" + addresses[i])));
                 Image image = ii.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
                 this.controlButtons[i] = new JLabel();
-                this.controlButtons[i].setBorder(BorderFactory.createEmptyBorder(0,10,0,10));
+                this.controlButtons[i].setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
                 this.controlButtons[i].setIcon(new ImageIcon(image));
                 this.controlButtons[i].addMouseListener(mouseListeners[i]);
                 this.controlButtons[i].setBackground(GUI.bottomColorBlack);
@@ -72,44 +77,41 @@ public class BottomPanelsMusicControlPanel extends Container {
 
         JPanel p = new JPanel();
         p.setLayout(new BorderLayout());
-        musicSlider = new JSlider(JSlider.HORIZONTAL, 0,100,0);
+        musicSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
 //            musicSlider.setPaintTicks(false);
 //            musicSlider.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         musicSlider.setBackground(GUI.bottomColorBlack);
-        musicSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent changeEvent) {
-//T.ODO: problem of listener
-                if(_mouseAction)
-                    sliderVal = musicSlider.getValue();
+        musicSlider.addChangeListener(changeEvent -> {
+//TODO: problem of listener
+            if (_mouseAction)
+                sliderVal = musicSlider.getValue();
 //                        player.gotoPercent(100* (float)musicSlider.getValue()/(float)musicSlider.getMaximum());
-                System.out.println((float)100* musicSlider.getValue()/(float)musicSlider.getMaximum());
-            }
+            System.out.println((float) 100 * musicSlider.getValue() / (float) musicSlider.getMaximum());
         });
         musicSlider.addMouseListener(new SliderMouseListener());
+
         musicSlider.setPreferredSize(new Dimension(GUI.dim.width/3,40));
         musicSlider.setBorder(BorderFactory.createEmptyBorder(5,0,10,0));
         elapse = new JLabel("0:00");
-        elapse.setBorder(BorderFactory.createEmptyBorder(0,50,0,15));
+        elapse.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 15));
         elapse.setForeground(GUI.captionColorGrey);
         total = new JLabel("5:36");
-        total.setBorder(BorderFactory.createEmptyBorder(0,15,0,50));
+        total.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 50));
         total.setForeground(GUI.captionColorGrey);
-        p.add(elapse,BorderLayout.WEST);
-        p.add(musicSlider,BorderLayout.CENTER);
-        p.add(total,BorderLayout.EAST);
+        p.add(elapse, BorderLayout.WEST);
+        p.add(musicSlider, BorderLayout.CENTER);
+        p.add(total, BorderLayout.EAST);
         p.setBackground(GUI.bottomColorBlack);
 //            p.setPreferredSize(new Dimension(200 , 50));
 
         this.setLayout(new BorderLayout());
-        this.add(buttonsPanel,BorderLayout.CENTER);
-        this.add(p,BorderLayout.SOUTH);
+        this.add(buttonsPanel, BorderLayout.CENTER);
+        this.add(p, BorderLayout.SOUTH);
         this.setVisible(true);
 
     }
 
-    public void setMusicSliderInitValue(int val,int min , int max)
-    {
+    public void setMusicSliderInitValue(int val, int min, int max) {
 
         this.musicSlider.setMinimum(min);
         this.musicSlider.setMaximum(max);
@@ -122,23 +124,23 @@ public class BottomPanelsMusicControlPanel extends Container {
         this.musicSlider.setValue((int) percent);
     }
 
-    public void setElapse(String elapseStr)
-    {
+    public void setElapse(String elapseStr) {
         elapse.setText(elapseStr);
     }
-    public void setTotal(String totalStr)
-    {
+
+    public void setTotal(String totalStr) {
         total.setText(totalStr);
     }
-    public void setIconPlayPause(boolean isPlaying)
-    {
+
+    public void setIconPlayPause(boolean isPlaying) {
         JLabel playPause = controlButtons[2];
-        if(isPlaying)
+        if (isPlaying)
             playPause.setIcon(imageIconPause);
         else
             playPause.setIcon(imageIconPlay);
     }
-    public class SliderMouseListener implements MouseListener{
+
+    public class SliderMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -234,7 +236,7 @@ public class BottomPanelsMusicControlPanel extends Container {
         @Override
         public void mouseClicked(MouseEvent e) {
 
-            if(Player.isPlaying())
+            if (Player.isPlaying())
                 player.pause();
 
             else

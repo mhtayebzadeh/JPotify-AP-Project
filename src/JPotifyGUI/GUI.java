@@ -3,6 +3,7 @@ package JPotifyGUI;
 import JPotifyGUI.BottomPanel.BottomPanel;
 import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.LeftPanel.LeftPanel;
+import JPotifyGUI.RightPanel.RightPanel;
 import JPotifyLogic.FileManager;
 import JPotifyLogic.NetworkManager;
 import JPotifyLogic.Player;
@@ -24,7 +25,6 @@ public class GUI {
     public static final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     private Player player; // field from logic which is needed in gui besides fileManager
-    private NetworkManager networkManager;
     private Thread timerThread;
 
     /**
@@ -54,7 +54,7 @@ public class GUI {
         JScrollPane scrollPane = new JScrollPane(centerPanel);
         LeftPanel leftPanel = new LeftPanel(centerPanel);
         centerPanel.setLeftPanel(leftPanel);
-        RightPanel rightPanel = new RightPanel();
+        RightPanel rightPanel = new RightPanel(networkManager);
 
         frame.setLayout(new BorderLayout());
         frame.add(bottomPanel, BorderLayout.SOUTH);
@@ -62,38 +62,20 @@ public class GUI {
         frame.add(leftPanel, BorderLayout.WEST);
         frame.add(rightPanel, BorderLayout.EAST);
 
-        MyTimeRunnable myTimeRunnable = new MyTimeRunnable(player,fileManager,networkManager,bottomPanel,leftPanel);
+        MyTimeRunnable myTimeRunnable = new MyTimeRunnable(player, fileManager, networkManager, bottomPanel, leftPanel);
         this.timerThread = new Thread(myTimeRunnable);
         this.timerThread.start();
 
         frame.setVisible(true);
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                fileManager.saveData();
-            }
-        }));
+        // intellij's optimization below
+        Runtime.getRuntime().addShutdownHook(new Thread(fileManager::saveData));
     }
 
     public void setPlayer(Player player) {
         this.player = player;
     }
 
-    private class ExitRunnable implements Runnable {
-        private FileManager fileManager;
-
-        public ExitRunnable(FileManager fileManager) {
-            this.fileManager = fileManager;
-        }
-
-        @Override
-        public void run() {
-            this.fileManager.saveData();
-        }
-    }
-
     //TODO: Timer thread
-
     private class MyTimeRunnable implements Runnable {
         private int periodTime = 500; // 500 ms
         private int NetworkPeriodTime = 5000; // 5s
@@ -103,7 +85,8 @@ public class GUI {
         private BottomPanel bottomPanel;
         private LeftPanel leftPanel;
 
-        public MyTimeRunnable(Player player, FileManager fileManager, NetworkManager networkManager, BottomPanel bottomPanel, LeftPanel leftPanel) {
+        public MyTimeRunnable(Player player, FileManager fileManager, NetworkManager networkManager,
+                              BottomPanel bottomPanel, LeftPanel leftPanel) {
             this.player = player;
             this.bottomPanel = bottomPanel;
             this.leftPanel = leftPanel;
@@ -118,11 +101,11 @@ public class GUI {
             int sec = 0;
             int min, hour;
             int val;
-            while (true)
-            {
+            while (true) {
                 cnt++;
                 try {
                     Thread.sleep(periodTime);
+
                     this.leftPanel.setImageData(player.getSong().getImageData());
                     this.bottomPanel.getBottomPanelsCurrentMusicPanel().paint();
                     this.bottomPanel.setMusicSlider((int)player.getElapsedTimeInPercent(),0,100);
@@ -130,26 +113,26 @@ public class GUI {
                     sec = Math.floorMod(val,60);
                     min = Math.floorMod(val/60,60);
                     hour = val / 60;
-                    if(val > 3600)
-                        this.bottomPanel.setElapse(""+hour+":"+min+":"+sec);
+                    if (val > 3600)
+                        this.bottomPanel.setElapse("" + hour + ":" + min + ":" + sec);
                     else
-                        this.bottomPanel.setElapse(""+min+":"+sec);
+                        this.bottomPanel.setElapse("" + min + ":" + sec);
 
-                    val = (int)Player.getTotalTimeInSecond();
-                    sec = Math.floorMod(val,60);
-                    min = Math.floorMod(val/60,60);
+                    val = (int) Player.getTotalTimeInSecond();
+                    sec = Math.floorMod(val, 60);
+                    min = Math.floorMod(val / 60, 60);
                     hour = val / 60;
-                    if(val > 3600)
-                        this.bottomPanel.setTotal(""+hour+":"+min+":"+sec);
+                    if (val > 3600)
+                        this.bottomPanel.setTotal("" + hour + ":" + min + ":" + sec);
                     else
-                        this.bottomPanel.setTotal(""+min+":"+sec);
+                        this.bottomPanel.setTotal("" + min + ":" + sec);
 
                     bottomPanel.setIconPlayPause(Player.isPlaying());
-                    if(cnt >= n) // check network
+                    if (cnt >= n) // check network
                     {
                         cnt = 0;
                     }
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
         }

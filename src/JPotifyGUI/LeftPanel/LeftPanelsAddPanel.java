@@ -54,22 +54,22 @@ public class LeftPanelsAddPanel extends JPanel {
 
         newPlaylistLabel.setForeground(GUI.captionColorGrey);
 
-        newSongPanel.add(newSongButton, BorderLayout.WEST);
-        newSongPanel.add(newSongLabel, BorderLayout.CENTER);
-        newPlaylistPanel.add(newPlaylistButton, BorderLayout.WEST);
-        newPlaylistPanel.add(newPlaylistLabel, BorderLayout.CENTER);
-        this.add(newSongPanel);
-        this.add(newPlaylistPanel);
-
         try {
             ImageIcon ii = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/add and remove/add_icon.png")));
             Image image = ii.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
             newSongButton.setIcon(new ImageIcon(image));
             newPlaylistButton.setIcon(new ImageIcon(image));
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
+        newSongPanel.add(newSongButton, BorderLayout.WEST);
+        newSongPanel.add(newSongLabel, BorderLayout.CENTER);
+        newPlaylistPanel.add(newPlaylistButton, BorderLayout.WEST);
+        newPlaylistPanel.add(newPlaylistLabel, BorderLayout.CENTER);
+
+        this.add(newSongPanel);
+        this.add(newPlaylistPanel);
     }
 
     /**
