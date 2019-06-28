@@ -19,7 +19,7 @@ public class BottomPanelSoundControl extends JPanel {
         this.setPreferredSize(new Dimension(dim.width/8, -1));
         this.setBackground(GUI.sideColorBlack);
         slider = new JSlider(JSlider.HORIZONTAL,0,100,50);
-        Audio.setMasterOutputVolume(0.5f);
+        Audio.setMasterOutputVolume(0.6f);
         slider.addMouseListener(new SoundControlListener());
         BorderLayout b = new BorderLayout();
         b.setVgap(100);

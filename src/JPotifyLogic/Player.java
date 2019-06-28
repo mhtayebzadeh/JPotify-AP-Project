@@ -144,7 +144,10 @@ public class Player extends Thread {
         this.playThread.start();
     }
 
-
+    public static int getTotalTimeInSecond()
+    {
+        return (int) song.getTimeInSecond();
+    }
     public Song getSong() {
         return song;
     }
@@ -220,7 +223,7 @@ public class Player extends Thread {
         try {
             return (long)((float)song.getTimeInSecond()*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return 0;
         }
     }
@@ -241,7 +244,7 @@ public class Player extends Thread {
         try {
             return 100 - (float)(100.0*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return 0;
         }
     }

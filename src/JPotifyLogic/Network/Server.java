@@ -39,7 +39,6 @@ public class Server extends Thread {
                     Socket socket = listener.accept();
                     sharedPlaylist = FileManager.getSharedPlaylist();
                     if(sharedPlaylist != null) {
-
                         if (sharedPlaylist.getSongs().size() > 0) {
                             Song ss = sharedPlaylist.getSongs().get(0);
                             for (Song s : sharedPlaylist.getSongs()) {

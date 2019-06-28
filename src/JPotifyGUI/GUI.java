@@ -110,13 +110,34 @@ public class GUI {
         public void run() {
             int n = NetworkPeriodTime / periodTime;
             int cnt = 0;
+            int sec = 0;
+            int min, hour;
+            int val;
             while (true)
             {
                 cnt++;
                 try{
                     Thread.sleep(periodTime);
                     this.bottomPanel.setMusicSlider((int)player.getElapsedTimeInPercent(),0,100);
+                    val = (int)Player.getElapsedTimeInSecond();
+                    sec = Math.floorMod(val,60);
+                    min = Math.floorMod(val/60,60);
+                    hour = val / 60;
+                    if(val > 3600)
+                        this.bottomPanel.setElapse(""+hour+":"+min+":"+sec);
+                    else
+                        this.bottomPanel.setElapse(""+min+":"+sec);
 
+                    val = (int)Player.getTotalTimeInSecond();
+                    sec = Math.floorMod(val,60);
+                    min = Math.floorMod(val/60,60);
+                    hour = val / 60;
+                    if(val > 3600)
+                        this.bottomPanel.setTotal(""+hour+":"+min+":"+sec);
+                    else
+                        this.bottomPanel.setTotal(""+min+":"+sec);
+
+                    bottomPanel.setIconPlayPause(Player.isPlaying());
                     if(cnt >= n) // check network
                     {
                         cnt = 0;

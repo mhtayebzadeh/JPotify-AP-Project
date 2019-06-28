@@ -21,23 +21,26 @@ public class LeftPanelsAddPanel extends JPanel {
         this.setBackground(GUI.sideColorBlack);
 
         this.setLayout(new GridLayout(2, 1));
-
+        BorderLayout bb = new BorderLayout();
+        bb.setHgap(10);
         JPanel newSongPanel = new JPanel();
         newSongPanel.setBackground(GUI.sideColorBlack);
-        newSongPanel.setLayout(new BorderLayout());
-        JButton newSongButton = new JButton();
+        newSongPanel.setLayout(bb);
+        JLabel newSongButton = new JLabel();
         newSongButton.setBackground(GUI.sideColorBlack);
         newSongButton.addMouseListener(new NewSongMouseListener(this.leftPanel));
-        JLabel newSongLabel = new JLabel("New Song");
+        JLabel newSongLabel = new JLabel("  New Song");
         newSongLabel.setForeground(GUI.captionColorGrey);
 
         JPanel newPlaylistPanel = new JPanel();
         newPlaylistPanel.setBackground(GUI.sideColorBlack);
-        newPlaylistPanel.setLayout(new BorderLayout());
-        JButton newPlaylistButton = new JButton();
+        BorderLayout b = new BorderLayout();
+        b.setHgap(10);
+        newPlaylistPanel.setLayout(b);
+        JLabel newPlaylistButton = new JLabel();
         newPlaylistButton.setBackground(GUI.sideColorBlack);
         newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.leftPanel));
-        JLabel newPlaylistLabel = new JLabel("New Playlist");
+        JLabel newPlaylistLabel = new JLabel("  New Playlist");
         newPlaylistLabel.setForeground(GUI.captionColorGrey);
 
         newSongPanel.add(newSongButton, BorderLayout.WEST);
