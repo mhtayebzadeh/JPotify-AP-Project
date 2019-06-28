@@ -1,7 +1,5 @@
 package JPotifyLogic.Playlist;
 
-import com.sun.corba.se.spi.activation.Server;
-
 import java.io.Serializable;
 
 /**

@@ -15,7 +15,7 @@ public class BottomPanel extends JPanel {
 
     /**
      * @param player gets an object from Player class to use music controls on it
-     * and also fetch current music data and display it
+     *               and also fetch current music data and display it
      */
     public BottomPanel(Player player) {
         super();
@@ -34,16 +34,15 @@ public class BottomPanel extends JPanel {
         this.bottomPanelsMusicControlPanel.setMusicSliderInitValue(val, min, max);
     }
 
-    public void setElapse(String elapseStr)
-    {
+    public void setElapse(String elapseStr) {
         bottomPanelsMusicControlPanel.setElapse(elapseStr);
     }
-    public void setTotal(String totalStr)
-    {
+
+    public void setTotal(String totalStr) {
         bottomPanelsMusicControlPanel.setTotal(totalStr);
     }
-    public void setIconPlayPause(boolean isPlaying)
-    {
+
+    public void setIconPlayPause(boolean isPlaying) {
         bottomPanelsMusicControlPanel.setIconPlayPause(isPlaying);
     }
 
