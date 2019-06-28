@@ -1,6 +1,7 @@
 package JPotifyLogic.Entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 //TODO: add Javadoc
 public class Artwork extends Entity implements Serializable {
@@ -18,8 +19,18 @@ public class Artwork extends Entity implements Serializable {
         super(song.getTitle(), song.getCaption(), song.getImageData());
     }
 
-    public long getTimeStampLastPlayed() {
+    private long getTimeStampLastPlayed() {
         return timeStampLastPlayed;
+    }
+
+    public String getTimeLastPlayed() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(this.getTimeStampLastPlayed());
+
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        return hour + ":" + minute;
     }
 
     public void setTimeStampLastPlayed(long timeStampLastPlayed) {
