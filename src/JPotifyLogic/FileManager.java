@@ -52,7 +52,6 @@ public class FileManager implements Serializable {
             last = smaller.getTimeStampLastPlayed();
             newSongs.add(smaller);
         }
-
         playlist.setSongs(newSongs);
         return playlist;
     }

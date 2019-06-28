@@ -17,13 +17,21 @@ import java.io.IOException;
  * are the control functions this panel can perform
  */
 public class BottomPanelsMusicControlPanel extends JPanel {
+    private JSlider musicSlider;
+    private Player player;
+    private boolean _mouseAction = false;
+    private long sliderVal = 0;
+    private JButton[] controlButtons;
+
     /**
      * @param player gets an object from Player class to
-     *               use music controls on it
+     * use music controls on it
      */
     public BottomPanelsMusicControlPanel(Player player) {
         super();
-        this.setLayout(new GridLayout(1, 5));
+        this.player = player;
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(1, 5));
         String[] addresses = {"icons8-shuffle-100.png", "icons8-skip-to-start-100.png",
                 "icons8-circled-play-100.png", "icons8-end-100.png", "icons8-repeat-100.png"};
         JButton[] controlButtons = new JButton[5];
@@ -45,6 +53,64 @@ public class BottomPanelsMusicControlPanel extends JPanel {
                 new PlayPauseMouseListener(player, controlButtons[2]), new NextMouseListener(), new RepeatMouseListener()};
         for (int i = 0; i < 5; i++)
             controlButtons[i].addMouseListener(mouseListeners[i]);
+
+        JPanel p = new JPanel();
+        musicSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        musicSlider.setPaintTicks(false);
+        musicSlider.addChangeListener(changeEvent -> {
+            //TODO: problem of listener
+            if (_mouseAction)
+                sliderVal = musicSlider.getValue();
+//                        player.gotoPercent(100* (float)musicSlider.getValue()/(float)musicSlider.getMaximum());
+            System.out.println((float) 100 * musicSlider.getValue() / (float) musicSlider.getMaximum());
+        });
+        musicSlider.addMouseListener(new SliderMouseListener());
+        p.add(musicSlider);
+        this.setLayout(new BorderLayout());
+        this.add(buttonsPanel, BorderLayout.CENTER);
+        this.add(p, BorderLayout.SOUTH);
+    }
+
+    public void setMusicSliderInitValue(int val, int min, int max) {
+        this.musicSlider.setMinimum(min);
+        this.musicSlider.setMaximum(max);
+        if (!_mouseAction)
+            this.musicSlider.setValue(val);
+//        _mouseAction = false;
+    }
+
+    public void setMusicSliderValue(float percent) {
+        this.musicSlider.setValue((int) percent);
+    }
+
+    public class SliderMouseListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent mouseEvent) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent mouseEvent) {
+            _mouseAction = true;
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent mouseEvent) {
+            _mouseAction = false;
+            player.gotoPercent(100 * (float) sliderVal / (float) musicSlider.getMaximum());
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent mouseEvent) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent mouseEvent) {
+
+        }
     }
 
     /**

@@ -77,6 +77,7 @@ public class EntityPanelsHeartPanel extends JPanel {
                     ImageIcon hr = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_r.png")));
                     image = hr.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                     song.setFavorite(true);
+
                 }
                 heartLabel.setIcon(new ImageIcon(image));
             } catch (IOException err) {
