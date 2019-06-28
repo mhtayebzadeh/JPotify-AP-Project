@@ -88,7 +88,12 @@ public class FileManager implements Serializable {
             for (PlaylistMinData p : this.playListsMinData)
                 this.playlists.add(new Playlist(p));
 
-            //TODO: load SharedPlaylist and favouritPlaylist
+
+            fis = new FileInputStream(Paths.get(dataDirectory, "sharesPlaylists.ser").toString());
+            ois = new ObjectInputStream(fis);
+            sharedPlaylist = (SharedPlaylist) ois.readObject();
+            ois.close();
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -133,7 +138,11 @@ public class FileManager implements Serializable {
             oos.writeObject(this.playListsMinData);
             oos.close();
 
-            //TODO: save SharedPlaylist
+            fos = new FileOutputStream(Paths.get(dataDirectory, "sharesPlaylists.ser").toString());
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(sharedPlaylist);
+            oos.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

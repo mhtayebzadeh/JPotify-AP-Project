@@ -26,7 +26,7 @@ public class BottomPanelsMusicControlPanel extends Container {
     private JLabel total;
     private ImageIcon imageIconPlay;
     private ImageIcon imageIconPause;
-
+    private int btnSize = GUI.dim.height/35;
     public BottomPanelsMusicControlPanel(Player player) {
         super();
         this.player = player;
@@ -35,11 +35,11 @@ public class BottomPanelsMusicControlPanel extends Container {
         try {
             imageIconPlay = new ImageIcon(new ImageIcon(ImageIO.read(new File(
                     "src/JPotifyGUI/images/multimedia/" + playIcon))).getImage().getScaledInstance(
-                    30, 30, Image.SCALE_SMOOTH));
+                    btnSize, btnSize, Image.SCALE_SMOOTH));
             String pauseIcon = "pause.png";
             imageIconPause = new ImageIcon(new ImageIcon(ImageIO.read(new File(
                     "src/JPotifyGUI/images/multimedia/" + pauseIcon))).getImage().getScaledInstance(
-                    30, 30, Image.SCALE_SMOOTH));
+                    btnSize, btnSize, Image.SCALE_SMOOTH));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,8 +50,8 @@ public class BottomPanelsMusicControlPanel extends Container {
 //        buttonsPanel.setLayout(new GridLayout(1, 5));
 //        buttonsPanel.setLayout(new BoxLayout(this , BoxLayout.X_AXIS));
 
-        String[] addresses = {"shuffle.png", "backward-1.png",
-                playIcon, "fast-forward.png", "random(1).png"};
+        String[] addresses = {"shuffle_off.png", "backward-1.png",
+                playIcon, "fast-forward.png", "loop_off.png"};
         MouseListener[] mouseListeners = {new ShuffleMouseListener(), new PreviousMouseListener(),
                 new PlayPauseMouseListener(), new NextMouseListener(), new RepeatMouseListener()};
         this.controlButtons = new JLabel[5];
@@ -60,7 +60,7 @@ public class BottomPanelsMusicControlPanel extends Container {
             try {
                 ImageIcon ii = new ImageIcon(ImageIO.read(new File(
                         "src/JPotifyGUI/images/multimedia/" + addresses[i])));
-                Image image = ii.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+                Image image = ii.getImage().getScaledInstance(btnSize, btnSize, Image.SCALE_SMOOTH);
                 this.controlButtons[i] = new JLabel();
                 this.controlButtons[i].setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
                 this.controlButtons[i].setIcon(new ImageIcon(image));

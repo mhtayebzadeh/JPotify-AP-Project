@@ -17,7 +17,8 @@ public class Player extends Thread {
     private static Song song;
     private static FileInputStream _fis_;
     private static Playlist playlist;
-
+    private static boolean repeat;
+    private static boolean shuffle;
     private static Thread playThread;
 	private static boolean playing;
 
@@ -39,6 +40,22 @@ public class Player extends Thread {
 
     private static void setCurrent_fis_(FileInputStream fis) {
         _fis_ = fis;
+    }
+
+    public static boolean isRepeat() {
+        return repeat;
+    }
+
+    public static boolean isShuffle() {
+        return shuffle;
+    }
+
+    public static void setRepeat(boolean repeat) {
+        Player.repeat = repeat;
+    }
+
+    public static void setShuffle(boolean shuffle) {
+        Player.shuffle = shuffle;
     }
 
     public static void setCurrentPlaylist(Playlist playlist_) {
