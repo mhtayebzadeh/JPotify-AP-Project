@@ -94,6 +94,7 @@ public class Player extends Thread {
             if(playlist_.getSongs().size() > 0)
                 setShufflePlaylistAndSong(playlist_,playlist_.getSongs().get(0));
     }
+
     public void setShufflePlaylistAndSong(Playlist playlist_ , Song song_)
     {
         Playlist shuffle = new Playlist("shuffle");
@@ -261,11 +262,16 @@ public class Player extends Thread {
         }
     }
 
+    public static Playlist getPlaylist() {
+        return playlist;
+    }
+
     //TODO: play at time ...
     private class MyRunnable implements Runnable {
         private AdvancedPlayer player;
         private FileInputStream fis;
         private Song song;
+        private Playlist shulePlaylist = null;
         private Iterator<Song> it = null;
 
         public MyRunnable(Song song) {
@@ -307,20 +313,66 @@ public class Player extends Thread {
             song.setTimeStampLastPlayed(timeStampMillis);
         }
 
+        public Song selectNectSong()
+        {
+            if(shuffle)
+            {
+                if(shulePlaylist == null)
+                {
+                    Playlist shuffleP = new Playlist("shuffle");
+                    Playlist playlist_ = Player.getPlaylist();
+                    ArrayList<Song> songsArr = (ArrayList<Song>)  playlist_.getSongs().clone();
+                    Random randomGenerator = new Random();
+                    int r = 0;
+                    for (Song s:playlist_.getSongs())
+                    {
+                        r = randomGenerator.nextInt(songsArr.size());
+                        shuffleP.addSong(songsArr.get(r));
+                        songsArr.remove(songsArr.get(r));
+                    }
+                    shuffleP.removeSong(this.song);
+                    shulePlaylist = shuffleP;
+                }
+
+            }
+            else
+            {
+                if(it != null) {
+                    if (it.hasNext()) {
+                        this.song = it.next();
+                        if (!this.song.isPaused()) {
+                            this.song.reNewSong();
+                        }
+                        return this.song;
+                    }
+                }
+
+                return null;
+            }
+            return null;
+        }
         @Override
         public void run() {
             try {
-
                 this.setLastPlayed(this.song);
                 Player.setCurrentSong(song);
                 Player.setPlaying(true);
                 this.player.play();
+                while (isRepeat())
+                {
+                    this.song.reNewSong();
+                    this.player = new AdvancedPlayer(this.song.getFis());
+                    Player.setCurrentSong(song);
+                    Player.setPlaying(true);
+                    this.player.play();
+                }
                 if (it != null) {
                     while (it.hasNext()) {
                         try {
                             this.song = it.next();
                             if (!this.song.isPaused())
                                 this.song.reNewSong();
+                            //TODO: next song selection
                             FileInputStream f = this.song.getFis();
                             this.player = new AdvancedPlayer(f);
                             this.setLastPlayed(this.song);

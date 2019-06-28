@@ -26,19 +26,41 @@ public class BottomPanelsMusicControlPanel extends Container {
     private JLabel total;
     private ImageIcon imageIconPlay;
     private ImageIcon imageIconPause;
+    private ImageIcon imageIconloopOn;
+    private ImageIcon imageIconloopOff;
+    private ImageIcon imageIconShuffleOn;
+    private ImageIcon imageIconShuffleOff;
     private int btnSize = GUI.dim.height/35;
     public BottomPanelsMusicControlPanel(Player player) {
         super();
         this.player = player;
 
         String playIcon = "play.png";
+        String pauseIcon = "pause.png";
+        String shuffleOnIcon = "shuffle_on.png";
+        String shuffleOffIcon = "shuffle_off.png";
+        String loopOnIcon = "loop_on.png";
+        String loopOffIcon = "loop_off.png";
         try {
             imageIconPlay = new ImageIcon(new ImageIcon(ImageIO.read(new File(
                     "src/JPotifyGUI/images/multimedia/" + playIcon))).getImage().getScaledInstance(
                     btnSize, btnSize, Image.SCALE_SMOOTH));
-            String pauseIcon = "pause.png";
             imageIconPause = new ImageIcon(new ImageIcon(ImageIO.read(new File(
                     "src/JPotifyGUI/images/multimedia/" + pauseIcon))).getImage().getScaledInstance(
+                    btnSize, btnSize, Image.SCALE_SMOOTH));
+
+            imageIconloopOff = new ImageIcon(new ImageIcon(ImageIO.read(new File(
+                    "src/JPotifyGUI/images/multimedia/" + loopOffIcon))).getImage().getScaledInstance(
+                    btnSize, btnSize, Image.SCALE_SMOOTH));
+            imageIconloopOn = new ImageIcon(new ImageIcon(ImageIO.read(new File(
+                    "src/JPotifyGUI/images/multimedia/" + loopOnIcon))).getImage().getScaledInstance(
+                    btnSize, btnSize, Image.SCALE_SMOOTH));
+
+            imageIconShuffleOff = new ImageIcon(new ImageIcon(ImageIO.read(new File(
+                    "src/JPotifyGUI/images/multimedia/" + shuffleOffIcon))).getImage().getScaledInstance(
+                    btnSize, btnSize, Image.SCALE_SMOOTH));
+            imageIconShuffleOn = new ImageIcon(new ImageIcon(ImageIO.read(new File(
+                    "src/JPotifyGUI/images/multimedia/" + shuffleOnIcon))).getImage().getScaledInstance(
                     btnSize, btnSize, Image.SCALE_SMOOTH));
 
         } catch (IOException e) {
@@ -174,11 +196,18 @@ public class BottomPanelsMusicControlPanel extends Container {
      */
     //TODO: implement
     private class ShuffleMouseListener implements MouseListener {
+        private boolean shuffleState = false;
         @Override
         public void mouseClicked(MouseEvent e) {
-            player.setShuffle();
-            // TODO:
+            shuffleState = !shuffleState;
+            Player.setShuffle(shuffleState);
+            if(shuffleState)
+                controlButtons[0].setIcon(imageIconShuffleOn);
+            else
+                controlButtons[0].setIcon(imageIconShuffleOff);
 
+            // TODO: shuffle not complete
+            player.setShuffle();
         }
 
         @Override
@@ -292,12 +321,19 @@ public class BottomPanelsMusicControlPanel extends Container {
     /**
      * this mouse listener is added as repeat button's listener
      */
-    //TODO: implement
+
     private class RepeatMouseListener implements MouseListener {
+        private boolean repeatState = false;
         @Override
         public void mouseClicked(MouseEvent e) {
-            // TODO:
+            repeatState = !repeatState;
+            Player.setRepeat(repeatState);
+            if(repeatState)
+                controlButtons[4].setIcon(imageIconloopOn);
+            else
+                controlButtons[4].setIcon(imageIconloopOff);
         }
+
 
         @Override
         public void mousePressed(MouseEvent e) {
