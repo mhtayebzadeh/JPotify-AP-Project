@@ -31,6 +31,7 @@ public class EntityPanelsImageButton extends JButton {
      */
     public EntityPanelsImageButton(CenterPanel centerPanel, Entity entity) {
         super();
+        this.setPreferredSize(new Dimension(200,200));
         try {
             ImageIcon bImageIcon;
             if (entity.getImageData() == null)

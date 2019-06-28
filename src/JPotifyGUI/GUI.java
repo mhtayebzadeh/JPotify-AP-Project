@@ -123,7 +123,8 @@ public class GUI {
                 cnt++;
                 try {
                     Thread.sleep(periodTime);
-
+                    this.leftPanel.setImageData(player.getSong().getImageData());
+                    this.bottomPanel.getBottomPanelsCurrentMusicPanel().paint();
                     this.bottomPanel.setMusicSlider((int)player.getElapsedTimeInPercent(),0,100);
                     val = (int)Player.getElapsedTimeInSecond();
                     sec = Math.floorMod(val,60);

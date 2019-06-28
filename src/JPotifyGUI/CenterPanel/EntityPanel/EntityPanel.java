@@ -26,6 +26,8 @@ public class EntityPanel extends JPanel {
         super();
         this.setPreferredSize(new Dimension(new Dimension(
                 GUI.dim.width / 8, GUI.dim.height / 8)));
+        this.setMaximumSize(new Dimension(new Dimension(
+                GUI.dim.width / 8, GUI.dim.height / 8)));
         this.setLayout(new BorderLayout());
 
         JButton imageButton = new EntityPanelsImageButton(centerPanel, entity);
@@ -33,5 +35,6 @@ public class EntityPanel extends JPanel {
 
         this.add(imageButton, BorderLayout.CENTER);
         this.add(entityPanelsSubPanel, BorderLayout.SOUTH);
+
     }
 }
