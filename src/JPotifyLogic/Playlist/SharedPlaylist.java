@@ -1,5 +1,9 @@
 package JPotifyLogic.Playlist;
 
+/**
+ * a child of playlist where one single shared playlist object is made
+ * songs to shared playlist are added automatically when a song is shared
+ */
 public class SharedPlaylist extends Playlist {
     public SharedPlaylist() {
         super("Shared Playlist");

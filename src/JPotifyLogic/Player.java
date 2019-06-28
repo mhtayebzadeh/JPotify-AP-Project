@@ -14,13 +14,12 @@ import java.util.Iterator;
 public class Player extends Thread {
     private static Song song;
     private static FileInputStream _fis_;
-    private static Playlist playlist = null;
-    private String name;
+    private static Playlist playlist;
+
     private Thread playThread;
 
     public Player(String playerName) {
         super(playerName);
-        this.name = playerName;
     }
 
     public static void setCurrentSong(Song song_) {
@@ -156,7 +155,7 @@ public class Player extends Thread {
                     setPlayListAndSongAndSkip(playlist, song, skip);
                 else
                     setSongAndSkip(song, skip);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

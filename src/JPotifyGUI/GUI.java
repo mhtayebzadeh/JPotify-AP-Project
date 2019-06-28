@@ -9,6 +9,12 @@ import JPotifyLogic.Player;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * the primary Graphical User Interface class which is instantiated in main function
+ * each panel or component is implemented in different packages and classes for cleanness
+ * as a result of the above mentioned reason, different parts are passes tp eachother
+ * so that events in one can alter another using listeners
+ */
 public class GUI {
     public static final Color captionColorGrey = new Color(180, 180, 180);
     public static final Color bottomColorBlack = new Color(100, 100, 100);
@@ -16,25 +22,20 @@ public class GUI {
     public static final Color sideColorBlack = new Color(15, 15, 15);
     public static final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
-    private BottomPanel bottomPanel;
-    private CenterPanel centerPanel;
-    private LeftPanel leftPanel;
-    private RightPanel rightPanel;
-    private JFrame frame;
+    private Player player; // field from logic which is needed in gui besides fileManager
 
-    // fields from logic
-    private FileManager fileManager;
-    private Player player;
-
+    /**
+     * @param fileManager gets the primary object from Logic part
+     *                    required fields from logic are gathered inside fileManager
+     */
     public GUI(FileManager fileManager) {
-        this.fileManager = fileManager;
-        this.fileManager.loadData();
+        fileManager.loadData();
         this.player = new Player("jpotify");
 
-        this.frame = new JFrame("JPotify");
-        this.frame.setSize(3 * dim.width / 4, 3 * dim.height / 4);
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setIconImage(new ImageIcon("src/JPotifyGUI/images/jpotify_icon.png").getImage());
+        JFrame frame = new JFrame("JPotify");
+        frame.setSize(3 * dim.width / 4, 3 * dim.height / 4);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setIconImage(new ImageIcon("src/JPotifyGUI/images/jpotify_icon.png").getImage());
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -42,45 +43,32 @@ public class GUI {
             e.printStackTrace();
         }
         //set initial position of frame in center of screen
-        this.frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
-        this.frame.setBackground(GUI.bgColorBlack);
+        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
+        frame.setBackground(GUI.bgColorBlack);
 
-        this.bottomPanel = new BottomPanel(this.player);
-        this.centerPanel = new CenterPanel(this.player, this.fileManager, this.bottomPanel, this.leftPanel);
-        JScrollPane scrollPane = new JScrollPane(this.centerPanel);
-        this.leftPanel = new LeftPanel(this.centerPanel);
-        this.centerPanel.setLeftPanel(this.leftPanel);
-        this.rightPanel = new RightPanel();
+        BottomPanel bottomPanel = new BottomPanel(this.player);
+        CenterPanel centerPanel = new CenterPanel(this.player, fileManager, bottomPanel, null);
+        JScrollPane scrollPane = new JScrollPane(centerPanel);
+        LeftPanel leftPanel = new LeftPanel(centerPanel);
+        centerPanel.setLeftPanel(leftPanel);
+        RightPanel rightPanel = new RightPanel();
 
-        this.frame.setLayout(new BorderLayout());
-        this.frame.add(this.bottomPanel, BorderLayout.SOUTH);
-        this.frame.add(scrollPane, BorderLayout.CENTER);
-        this.frame.add(this.leftPanel, BorderLayout.WEST);
-        this.frame.add(this.rightPanel, BorderLayout.EAST);
+        frame.setLayout(new BorderLayout());
+        frame.add(bottomPanel, BorderLayout.SOUTH);
+        frame.add(scrollPane, BorderLayout.CENTER);
+        frame.add(leftPanel, BorderLayout.WEST);
+        frame.add(rightPanel, BorderLayout.EAST);
 
-        this.frame.setVisible(true);
-        Runtime.getRuntime().addShutdownHook(new Thread(new ExitRunnable(fileManager)));
+        frame.setVisible(true);
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                fileManager.saveData();
+            }
+        }));
     }
 
     public void setPlayer(Player player) {
         this.player = player;
-        this.centerPanel.setPlayer(player);
     }
-
-    private class ExitRunnable implements Runnable {
-        private FileManager fileManager;
-
-        public ExitRunnable(FileManager fileManager) {
-            this.fileManager = fileManager;
-        }
-
-        @Override
-        public void run() {
-            this.fileManager.saveData();
-        }
-    }
-
-    //    public void setSongsPanel(ArrayList<SongPanel> songs) {
-//        centerPanel.setSongs(songs);
-//    }
 }
