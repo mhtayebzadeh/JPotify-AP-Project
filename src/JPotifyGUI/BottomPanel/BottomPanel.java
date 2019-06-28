@@ -5,34 +5,35 @@ import JPotifyLogic.Player;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * this class is created as GUI's bottom panel
+ * and its own components
+ */
 public class BottomPanel extends JPanel {
-    private Player player;
     private BottomPanelsCurrentMusicPanel bottomPanelsCurrentMusicPanel;
-    private BottomPanelSoundControl bottomPanelSoundControl;
     private BottomPanelsMusicControlPanel bottomPanelsMusicControlPanel;
+
+    /**
+     * @param player gets an object from Player class to use music controls on it
+     * and also fetch current music data and display it
+     */
     public BottomPanel(Player player) {
         super();
-        this.player = player;
         this.setLayout(new BorderLayout());
-        this.bottomPanelSoundControl = new BottomPanelSoundControl();
+        BottomPanelSoundControl bottomPanelSoundControl = new BottomPanelSoundControl();
         this.bottomPanelsCurrentMusicPanel = new BottomPanelsCurrentMusicPanel(player);
-        bottomPanelsMusicControlPanel = new BottomPanelsMusicControlPanel(player);
+        this.add(new BottomPanelsMusicControlPanel(player), BorderLayout.CENTER);
+        this.add(this.bottomPanelsCurrentMusicPanel, BorderLayout.WEST);
+        this.bottomPanelsMusicControlPanel = new BottomPanelsMusicControlPanel(player);
         this.add(bottomPanelsMusicControlPanel, BorderLayout.CENTER);
         this.add(this.bottomPanelsCurrentMusicPanel, BorderLayout.WEST);
-        this.add(this.bottomPanelSoundControl,BorderLayout.EAST);
-        /*this.add(playButton, BorderLayout.CENTER);
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("play pressed at " + e.getWhen());
-            }
-        });*/
+        this.add(bottomPanelSoundControl, BorderLayout.EAST);
     }
 
-    public void setMusicSlider(int val,int min , int max)
-    {
-        this.bottomPanelsMusicControlPanel.setMusicSliderInitValue(val,min,max);
+    public void setMusicSlider(int val, int min, int max) {
+        this.bottomPanelsMusicControlPanel.setMusicSliderInitValue(val, min, max);
     }
+
     public void setElapse(String elapseStr)
     {
         bottomPanelsMusicControlPanel.setElapse(elapseStr);
@@ -45,6 +46,7 @@ public class BottomPanel extends JPanel {
     {
         bottomPanelsMusicControlPanel.setIconPlayPause(isPlaying);
     }
+
     public BottomPanelsCurrentMusicPanel getBottomPanelsCurrentMusicPanel() {
         return bottomPanelsCurrentMusicPanel;
     }

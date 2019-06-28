@@ -1,9 +1,9 @@
-package JPotifyGUI.CenterPanel.EntityPanel;
+package JPotifyGUI.CenterPanel.EntityPanel.SubPanel;
 
+import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.GUI;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
-import JPotifyLogic.FileManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,40 +13,53 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * this class is created for liking songs and adding them to the favorites playlists
+ * the little heart panel on the bottom right corner does this
+ */
 public class EntityPanelsHeartPanel extends JPanel {
-    public EntityPanelsHeartPanel(FileManager fileManager, Entity entity) {
+    /**
+     * @param centerPanel gets the outer larger center panel to
+     *                    both use and set its data when liking songs
+     * @param entity      the entity which this entity panel is
+     *                    representing it
+     */
+    public EntityPanelsHeartPanel(CenterPanel centerPanel, Entity entity) {
         super();
         this.setBackground(GUI.bgColorBlack);
         if (entity instanceof Song) {
             Song song = (Song) entity;
             JLabel heartLabel = new JLabel();
-            heartLabel.addMouseListener(new HeartMouseListener(fileManager, entity));
+            heartLabel.addMouseListener(new HeartMouseListener(centerPanel, entity));
             try {
-                ImageIcon hw = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_w.png")));
-                ImageIcon hr = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_r.png")));
                 Image image;
-                if (song.isFavorite())
+                if (song.isFavorite()) {
+                    ImageIcon hr = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_r.png")));
                     image = hr.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-                else {
+                } else {
+                    ImageIcon hw = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_w.png")));
                     image = hw.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-                    //this.
                 }
                 heartLabel.setIcon(new ImageIcon(image));
-            } catch (
-                    IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             this.add(heartLabel);
         }
     }
 
+    /**
+     * the mouse listener which turns the heart panel red when liking songs
+     * and turning it to an empty white heart when disliking songs
+     * only mouseClicked method is overridden
+     */
     private class HeartMouseListener implements MouseListener {
         private Entity entity;
-        private FileManager fileManager;
+        private CenterPanel centerPanel;
 
-        public HeartMouseListener(FileManager fileManager, Entity entity) {
+        public HeartMouseListener(CenterPanel centerPanel, Entity entity) {
             this.entity = entity;
-            this.fileManager = fileManager;
+            this.centerPanel = centerPanel;
         }
 
         @Override
@@ -55,14 +68,13 @@ public class EntityPanelsHeartPanel extends JPanel {
             Song song = (Song) this.entity;
 
             try {
-                ImageIcon hw = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_w.png")));
-                ImageIcon hr = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_r.png")));
                 Image image;
                 if (song.isFavorite()) {
+                    ImageIcon hw = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_w.png")));
                     image = hw.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                     song.setFavorite(false);
-                }
-                else {
+                } else {
+                    ImageIcon hr = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/heart/heart_tr_r.png")));
                     image = hr.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                     song.setFavorite(true);
 
@@ -71,7 +83,9 @@ public class EntityPanelsHeartPanel extends JPanel {
             } catch (IOException err) {
                 err.printStackTrace();
             }
-            this.fileManager.update();
+            this.centerPanel.getFileManager().update();
+            //TODO: remove the song from center panel if its being removed while in favorite playlist
+            this.centerPanel.paint();
         }
 
         @Override

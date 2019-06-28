@@ -7,34 +7,47 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * this panel class is for the left side library panel
+ * for which the constant items named below are always displayed
+ * Songs, Albums, Artists and Playlists
+ */
 public class LeftPanelsLibraryPanel extends JPanel {
-    private JList<String> libraryList;
-    private LeftPanel leftPanel;
-
+    /**
+     * @param leftPanel this is needed to gain access to fileManager object
+     *                  and also add playlists to bottom playlists list when
+     *                  the above add playlist button is clicked
+     */
     public LeftPanelsLibraryPanel(LeftPanel leftPanel) {
-        this.leftPanel = leftPanel;
+        super();
         this.setBackground(GUI.sideColorBlack);
-        DefaultListModel<String> list = new DefaultListModel<>();
+        this.setLayout(new BorderLayout());
 
+        JLabel label = new JLabel("Library");
+        label.setForeground(GUI.bottomColorBlack);
+        label.setPreferredSize(new Dimension(30, 30));
+
+        DefaultListModel<String> list = new DefaultListModel<>();
         list.addElement("Songs");
         list.addElement("Albums");
         list.addElement("Artists");
         list.addElement("Playlists");
-        this.libraryList = new JList<>(list);
-        this.libraryList.addMouseListener(new LibraryMouseListener(this.leftPanel, this.libraryList));
-        this.libraryList.setBackground(GUI.sideColorBlack);
-        this.libraryList.setForeground(GUI.captionColorGrey);
-        this.leftPanel.getCenterPanel().setLibraryFromSongs(this.leftPanel.getFileManager().getSongs());
-        this.leftPanel.getCenterPanel().paint();
+        JList<String> libraryList = new JList<>(list);
+        libraryList.addMouseListener(new LibraryMouseListener(leftPanel, libraryList));
+        libraryList.setBackground(GUI.sideColorBlack);
+        libraryList.setForeground(GUI.captionColorGrey);
+        leftPanel.getCenterPanel().setLibraryFromSongs(leftPanel.getFileManager().getSongs());
+        leftPanel.getCenterPanel().paint();
 
-        this.setLayout(new BorderLayout());
-        JLabel label = new JLabel("Library");
-        label.setForeground(GUI.bottomColorBlack);
-        label.setPreferredSize(new Dimension(30, 30));
         this.add(label, BorderLayout.NORTH);
-        this.add(this.libraryList, BorderLayout.CENTER);
+        this.add(libraryList, BorderLayout.CENTER);
     }
 
+    /**
+     * mouse listener for when an item from library list is selected
+     * and proper arrayList should be set for the centerPanel
+     * only the mouseClicked method is overridden here
+     */
     private class LibraryMouseListener implements MouseListener {
         private JList<String> libraryList;
         private LeftPanel leftPanel;

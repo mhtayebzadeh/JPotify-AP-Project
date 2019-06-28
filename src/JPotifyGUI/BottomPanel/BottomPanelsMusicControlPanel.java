@@ -2,19 +2,17 @@ package JPotifyGUI.BottomPanel;
 
 import JPotifyGUI.GUI;
 import JPotifyLogic.Player;
-import JPotifyLogic.Playlist.Playlist;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.SliderUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
+
 
 public class BottomPanelsMusicControlPanel extends Container {
     private JLabel[] controlButtons;
@@ -64,59 +62,63 @@ public class BottomPanelsMusicControlPanel extends Container {
                 this.controlButtons[i].addMouseListener(mouseListeners[i]);
                 this.controlButtons[i].setBackground(GUI.bottomColorBlack);
                 buttonsPanel.add(this.controlButtons[i]);
+
             } catch (
                     IOException e) {
                 e.printStackTrace();
             }
-            JPanel p = new JPanel();
-            p.setLayout(new BorderLayout());
-            musicSlider = new JSlider(JSlider.HORIZONTAL, 0,100,0);
-//            musicSlider.setPaintTicks(false);
-//            musicSlider.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-            musicSlider.setBackground(GUI.bottomColorBlack);
-            musicSlider.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent changeEvent) {
-//T.ODO: problem of listener
-                    if(_mouseAction)
-                        sliderVal = musicSlider.getValue();
-//                        player.gotoPercent(100* (float)musicSlider.getValue()/(float)musicSlider.getMaximum());
-                    System.out.println((float)100* musicSlider.getValue()/(float)musicSlider.getMaximum());
-                }
-            });
-            musicSlider.addMouseListener(new SliderMouseListener());
-            musicSlider.setPreferredSize(new Dimension(GUI.dim.width/3,50));
-            elapse = new JLabel("0:00");
-            elapse.setBorder(BorderFactory.createEmptyBorder(0,50,0,15));
-            elapse.setForeground(GUI.captionColorGrey);
-            total = new JLabel("5:36");
-            total.setBorder(BorderFactory.createEmptyBorder(0,15,0,50));
-            total.setForeground(GUI.captionColorGrey);
-            p.add(elapse,BorderLayout.WEST);
-            p.add(musicSlider,BorderLayout.CENTER);
-            p.add(total,BorderLayout.EAST);
-            p.setBackground(GUI.bottomColorBlack);
-//            p.setPreferredSize(new Dimension(200 , 50));
-
-            this.setLayout(new BorderLayout());
-            this.add(buttonsPanel,BorderLayout.CENTER);
-            this.add(p,BorderLayout.SOUTH);
-            this.setVisible(true);
 
         }
-    }
+        
+        JPanel p = new JPanel();
+        p.setLayout(new BorderLayout());
+        musicSlider = new JSlider(JSlider.HORIZONTAL, 0,100,0);
+//            musicSlider.setPaintTicks(false);
+//            musicSlider.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        musicSlider.setBackground(GUI.bottomColorBlack);
+        musicSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent changeEvent) {
+//T.ODO: problem of listener
+                if(_mouseAction)
+                    sliderVal = musicSlider.getValue();
+//                        player.gotoPercent(100* (float)musicSlider.getValue()/(float)musicSlider.getMaximum());
+                System.out.println((float)100* musicSlider.getValue()/(float)musicSlider.getMaximum());
+            }
+        });
+        musicSlider.addMouseListener(new SliderMouseListener());
+        musicSlider.setPreferredSize(new Dimension(GUI.dim.width/3,50));
+        elapse = new JLabel("0:00");
+        elapse.setBorder(BorderFactory.createEmptyBorder(0,50,0,15));
+        elapse.setForeground(GUI.captionColorGrey);
+        total = new JLabel("5:36");
+        total.setBorder(BorderFactory.createEmptyBorder(0,15,0,50));
+        total.setForeground(GUI.captionColorGrey);
+        p.add(elapse,BorderLayout.WEST);
+        p.add(musicSlider,BorderLayout.CENTER);
+        p.add(total,BorderLayout.EAST);
+        p.setBackground(GUI.bottomColorBlack);
+//            p.setPreferredSize(new Dimension(200 , 50));
 
+        this.setLayout(new BorderLayout());
+        this.add(buttonsPanel,BorderLayout.CENTER);
+        this.add(p,BorderLayout.SOUTH);
+        this.setVisible(true);
+
+    }
 
     public void setMusicSliderInitValue(int val,int min , int max)
     {
+
         this.musicSlider.setMinimum(min);
         this.musicSlider.setMaximum(max);
-        if(!_mouseAction)
+        if (!_mouseAction)
             this.musicSlider.setValue(val);
 //        _mouseAction = false;
     }
+
     public void setMusicSliderValue(float percent) {
-        this.musicSlider.setValue((int)percent);
+        this.musicSlider.setValue((int) percent);
     }
 
     public void setElapse(String elapseStr)
@@ -136,7 +138,6 @@ public class BottomPanelsMusicControlPanel extends Container {
             playPause.setIcon(imageIconPlay);
     }
     public class SliderMouseListener implements MouseListener{
-
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -151,7 +152,7 @@ public class BottomPanelsMusicControlPanel extends Container {
         @Override
         public void mouseReleased(MouseEvent mouseEvent) {
             _mouseAction = false;
-            player.gotoPercent(100* (float)sliderVal/(float)musicSlider.getMaximum());
+            player.gotoPercent(100 * (float) sliderVal / (float) musicSlider.getMaximum());
         }
 
         @Override
@@ -164,12 +165,17 @@ public class BottomPanelsMusicControlPanel extends Container {
 
         }
     }
-    public class ShuffleMouseListener implements MouseListener {
 
+    /**
+     * this mouse listener is added as shuffle button's listener
+     */
+    //TODO: implement
+    private class ShuffleMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
             player.setShuffle();
-            // TODO
+            // TODO:
+
         }
 
         @Override
@@ -189,6 +195,10 @@ public class BottomPanelsMusicControlPanel extends Container {
         }
     }
 
+    /**
+     * this mouse listener is added as previous button's listener
+     */
+    //TODO: implement
     private class PreviousMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -212,14 +222,24 @@ public class BottomPanelsMusicControlPanel extends Container {
         }
     }
 
+    /**
+     * this mouse listener is added as play/pause button's listener
+     */
     private class PlayPauseMouseListener implements MouseListener {
+//        private Player player;
+//        private JButton playPauseButton;
+
+
         @Override
         public void mouseClicked(MouseEvent e) {
+
             if(Player.isPlaying())
                 player.pause();
+
             else
                 player.resume_();
             setIconPlayPause(Player.isPlaying());
+
         }
 
         @Override
@@ -239,6 +259,10 @@ public class BottomPanelsMusicControlPanel extends Container {
         }
     }
 
+    /**
+     * this mouse listener is added as next button's listener
+     */
+    //TODO: implement
     private class NextMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -262,6 +286,10 @@ public class BottomPanelsMusicControlPanel extends Container {
         }
     }
 
+    /**
+     * this mouse listener is added as repeat button's listener
+     */
+    //TODO: implement
     private class RepeatMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {

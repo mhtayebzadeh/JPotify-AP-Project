@@ -4,6 +4,7 @@ import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.GUI;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
+import JPotifyLogic.Player;
 import JPotifyLogic.Playlist.Album;
 import JPotifyLogic.Playlist.Artist;
 import JPotifyLogic.Playlist.Playlist;
@@ -14,18 +15,33 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 
+/**
+ * this class is for the panel that the image of entities are shown
+ * the panel is actually a button so performing an action can be felt
+ */
 public class EntityPanelsImageButton extends JButton {
-    public EntityPanelsImageButton(byte[] imageData, CenterPanel centerPanel, Entity entity) {
+    /**
+     * @param centerPanel the main outer panel is needed
+     *                    to both use and set its data
+     * @param entity      each entity panel represents an entity and it is
+     *                    needed for its data especially its image data here
+     */
+    public EntityPanelsImageButton(CenterPanel centerPanel, Entity entity) {
         super();
-        ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
         try {
-            ImageIcon bImageIcon = new ImageIcon(ImageIO.read(bis));
+            ImageIcon bImageIcon;
+            if (entity.getImageData() == null)
+                bImageIcon = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/music_icon.png")));
+            else {
+                ByteArrayInputStream bis = new ByteArrayInputStream(entity.getImageData());
+                bImageIcon = new ImageIcon(ImageIO.read(bis));
+            }
             Image bImage = bImageIcon.getImage().getScaledInstance(
-                    GUI.dim.width/8, GUI.dim.width/8, Image.SCALE_SMOOTH);
+                    GUI.dim.width / 8, GUI.dim.width / 8, Image.SCALE_SMOOTH);
             this.setIcon(new ImageIcon(bImage));
-            // this.imageButton.setLocation(dim.width/3, dim.height/3);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,6 +49,10 @@ public class EntityPanelsImageButton extends JButton {
         this.addMouseListener(new PlaySongMouseListener(centerPanel, entity));
     }
 
+    /**
+     * a mouse listener class for when a music is selected for playing
+     * only the mouseClicked method is overridden
+     */
     private class PlaySongMouseListener implements MouseListener {
         private CenterPanel centerPanel;
         private Entity entity;
@@ -50,9 +70,8 @@ public class EntityPanelsImageButton extends JButton {
             if (this.entity instanceof Song) {
                 this.centerPanel.getPlayer().setSong((Song) entity);
                 this.centerPanel.getLeftPanel().setImageData(this.entity.getImageData());
-            }
-            else {
-                this.centerPanel.getPlayer().setCurrentPlaylist((Playlist) entity);
+            } else {
+                Player.setCurrentPlaylist((Playlist) entity);
                 if (this.entity instanceof Album)
                     this.centerPanel.setLibraryFromSongs(((Album) entity).getSongs());
                 else if (this.entity instanceof Artist)

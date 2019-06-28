@@ -2,22 +2,31 @@ package JPotifyLogic.Entity;
 
 import java.io.Serializable;
 
+/**
+ * abstract class which holds the common information between
+ * songs and playlists. this class is used in GUI entity panels
+ * to be able to show both songs and playlists (polymorphism)
+ */
 public abstract class Entity implements Serializable {
-    int ID = -1;
     private String title;
     private String caption;
     private byte[] imageData;
 
+    /**
+     * default constructor (essential)
+     */
     public Entity() {
     }
 
+    /**
+     * @param title     title of the entity (name)
+     * @param caption   caption of the entity (whatever the developer desires)
+     * @param imageData artwork of the entity (song image and whatever for playlists)
+     */
     public Entity(String title, String caption, byte[] imageData) {
         this.title = title;
         this.caption = caption;
         this.imageData = imageData;
-    }
-
-    public void act() {
     }
 
     public String getTitle() {
@@ -42,13 +51,5 @@ public abstract class Entity implements Serializable {
 
     public void setImageData(byte[] imageData) {
         this.imageData = imageData;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
     }
 }
