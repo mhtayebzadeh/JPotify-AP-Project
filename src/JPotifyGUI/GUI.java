@@ -62,6 +62,10 @@ public class GUI {
         frame.add(leftPanel, BorderLayout.WEST);
         frame.add(rightPanel, BorderLayout.EAST);
 
+        MyTimeRunnable myTimeRunnable = new MyTimeRunnable(player, fileManager, networkManager, bottomPanel, leftPanel);
+        this.timerThread = new Thread(myTimeRunnable);
+        this.timerThread.start();
+
         frame.setVisible(true);
         // intellij's optimization below
         Runtime.getRuntime().addShutdownHook(new Thread(fileManager::saveData));
@@ -94,13 +98,35 @@ public class GUI {
         public void run() {
             int n = NetworkPeriodTime / periodTime;
             int cnt = 0;
+            int sec = 0;
+            int min, hour;
+            int val;
             while (true) {
                 cnt++;
                 try {
                     Thread.sleep(periodTime);
                     this.bottomPanel.setMusicSlider((int) Player.getElapsedTimeInPercent(), 0, 100);
+                    val = (int) Player.getElapsedTimeInSecond();
+                    sec = Math.floorMod(val, 60);
+                    min = Math.floorMod(val / 60, 60);
+                    hour = val / 60;
+                    if (val > 3600)
+                        this.bottomPanel.setElapse("" + hour + ":" + min + ":" + sec);
+                    else
+                        this.bottomPanel.setElapse("" + min + ":" + sec);
 
-                    if (cnt >= n) { // check network
+                    val = (int) Player.getTotalTimeInSecond();
+                    sec = Math.floorMod(val, 60);
+                    min = Math.floorMod(val / 60, 60);
+                    hour = val / 60;
+                    if (val > 3600)
+                        this.bottomPanel.setTotal("" + hour + ":" + min + ":" + sec);
+                    else
+                        this.bottomPanel.setTotal("" + min + ":" + sec);
+
+                    bottomPanel.setIconPlayPause(Player.isPlaying());
+                    if (cnt >= n) // check network
+                    {
                         cnt = 0;
                     }
                 } catch (Exception ignored) {

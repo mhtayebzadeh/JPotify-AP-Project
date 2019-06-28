@@ -17,6 +17,7 @@ import java.io.IOException;
  * add song button and add playlist button
  */
 public class LeftPanelsAddPanel extends JPanel {
+    LeftPanel leftPanel;
     /**
      * @param leftPanel the whole left panel is needed in this smaller class
      *                  to add playlists to the below playlists panel and also
@@ -25,25 +26,32 @@ public class LeftPanelsAddPanel extends JPanel {
     public LeftPanelsAddPanel(LeftPanel leftPanel) {
         super();
         this.setBackground(GUI.sideColorBlack);
-
+        this.leftPanel = leftPanel;
         this.setLayout(new GridLayout(2, 1));
-
+        BorderLayout bb = new BorderLayout();
+        bb.setHgap(10);
         JPanel newSongPanel = new JPanel();
         newSongPanel.setBackground(GUI.sideColorBlack);
-        newSongPanel.setLayout(new BorderLayout());
-        JButton newSongButton = new JButton();
+        newSongPanel.setLayout(bb);
+        JLabel newSongButton = new JLabel();
         newSongButton.setBackground(GUI.sideColorBlack);
-        newSongButton.addMouseListener(new NewSongMouseListener(leftPanel));
-        JLabel newSongLabel = new JLabel("New Song");
+
+        newSongButton.addMouseListener(new NewSongMouseListener(this.leftPanel));
+        JLabel newSongLabel = new JLabel("  New Song");
+
         newSongLabel.setForeground(GUI.captionColorGrey);
 
         JPanel newPlaylistPanel = new JPanel();
         newPlaylistPanel.setBackground(GUI.sideColorBlack);
-        newPlaylistPanel.setLayout(new BorderLayout());
-        JButton newPlaylistButton = new JButton();
+        BorderLayout b = new BorderLayout();
+        b.setHgap(10);
+        newPlaylistPanel.setLayout(b);
+        JLabel newPlaylistButton = new JLabel();
         newPlaylistButton.setBackground(GUI.sideColorBlack);
-        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(leftPanel));
-        JLabel newPlaylistLabel = new JLabel("New Playlist");
+
+        newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.leftPanel));
+        JLabel newPlaylistLabel = new JLabel("  New Playlist");
+
         newPlaylistLabel.setForeground(GUI.captionColorGrey);
 
         try {

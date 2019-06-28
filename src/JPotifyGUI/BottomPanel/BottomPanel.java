@@ -34,6 +34,19 @@ public class BottomPanel extends JPanel {
         this.bottomPanelsMusicControlPanel.setMusicSliderInitValue(val, min, max);
     }
 
+    public void setElapse(String elapseStr)
+    {
+        bottomPanelsMusicControlPanel.setElapse(elapseStr);
+    }
+    public void setTotal(String totalStr)
+    {
+        bottomPanelsMusicControlPanel.setTotal(totalStr);
+    }
+    public void setIconPlayPause(boolean isPlaying)
+    {
+        bottomPanelsMusicControlPanel.setIconPlayPause(isPlaying);
+    }
+
     public BottomPanelsCurrentMusicPanel getBottomPanelsCurrentMusicPanel() {
         return bottomPanelsCurrentMusicPanel;
     }
