@@ -56,7 +56,7 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
         this.remove(this.playlists);
         DefaultListModel<String> list = new DefaultListModel<>();
         list.addElement(leftPanel.getFileManager().getFavoritePlaylist().getTitle());
-        //list.addElement(leftPanel); //TODO: add shared playlist
+        list.addElement(FileManager.getSharedPlaylist().getTitle());
         for (Playlist playlist : this.leftPanel.getFileManager().getPlaylists())
             list.addElement(playlist.getTitle());
         this.playlists = new JList<>(list);
