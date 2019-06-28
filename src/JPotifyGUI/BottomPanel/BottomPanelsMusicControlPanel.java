@@ -89,7 +89,9 @@ public class BottomPanelsMusicControlPanel extends Container {
             System.out.println((float) 100 * musicSlider.getValue() / (float) musicSlider.getMaximum());
         });
         musicSlider.addMouseListener(new SliderMouseListener());
-        musicSlider.setPreferredSize(new Dimension(GUI.dim.width / 3, 50));
+
+        musicSlider.setPreferredSize(new Dimension(GUI.dim.width/3,40));
+        musicSlider.setBorder(BorderFactory.createEmptyBorder(5,0,10,0));
         elapse = new JLabel("0:00");
         elapse.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 15));
         elapse.setForeground(GUI.captionColorGrey);

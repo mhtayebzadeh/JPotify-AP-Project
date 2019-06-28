@@ -105,10 +105,13 @@ public class GUI {
                 cnt++;
                 try {
                     Thread.sleep(periodTime);
-                    this.bottomPanel.setMusicSlider((int) Player.getElapsedTimeInPercent(), 0, 100);
-                    val = (int) Player.getElapsedTimeInSecond();
-                    sec = Math.floorMod(val, 60);
-                    min = Math.floorMod(val / 60, 60);
+
+                    this.leftPanel.setImageData(player.getSong().getImageData());
+                    this.bottomPanel.getBottomPanelsCurrentMusicPanel().paint();
+                    this.bottomPanel.setMusicSlider((int)player.getElapsedTimeInPercent(),0,100);
+                    val = (int)Player.getElapsedTimeInSecond();
+                    sec = Math.floorMod(val,60);
+                    min = Math.floorMod(val/60,60);
                     hour = val / 60;
                     if (val > 3600)
                         this.bottomPanel.setElapse("" + hour + ":" + min + ":" + sec);
