@@ -123,6 +123,7 @@ public class GUI {
                     this.centerPanel.getBottomPanel().setIconPlayPause(Player.isPlaying());
                     if (cnt >= n) // check network
                     {
+                        this.networkManager.updateFriendsLastSong();
                         this.rightPanel.getRightPanelsFriendsPanel().paint();
                         cnt = 0;
                     }

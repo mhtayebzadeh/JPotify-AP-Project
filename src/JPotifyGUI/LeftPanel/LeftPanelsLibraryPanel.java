@@ -40,7 +40,7 @@ public class LeftPanelsLibraryPanel extends JPanel {
         leftPanel.getCenterPanel().paint();
 
         this.add(label, BorderLayout.NORTH);
-        this.add(libraryList, BorderLayout.CENTER);
+        this.add(libraryList, BorderLayout.SOUTH);
     }
 
     /**
