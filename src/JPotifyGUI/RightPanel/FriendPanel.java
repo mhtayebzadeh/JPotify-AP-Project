@@ -51,6 +51,7 @@ public class FriendPanel extends JPanel {
                         "src/JPotifyGUI/images/flat_icon/cancel.png")));
             Image image = ch.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
             imageLabel.setIcon(new ImageIcon(image));
+            imageLabel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         } catch (IOException err) {
             err.printStackTrace();
         }

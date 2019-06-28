@@ -89,11 +89,6 @@ public class FileManager implements Serializable {
                 this.playlists.add(new Playlist(p));
 
 
-            fis = new FileInputStream(Paths.get(dataDirectory, "sharesPlaylists.ser").toString());
-            ois = new ObjectInputStream(fis);
-            sharedPlaylist = (SharedPlaylist) ois.readObject();
-            ois.close();
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -138,10 +133,11 @@ public class FileManager implements Serializable {
             oos.writeObject(this.playListsMinData);
             oos.close();
 
-            fos = new FileOutputStream(Paths.get(dataDirectory, "sharesPlaylists.ser").toString());
-            oos = new ObjectOutputStream(fos);
-            oos.writeObject(sharedPlaylist);
-            oos.close();
+//            PlaylistMinData sharedPlaylistMinData = sharedPlaylist.getPlayListMinData();
+//            fos = new FileOutputStream(Paths.get(dataDirectory, "sharedPlaylist.ser").toString());
+//            oos = new ObjectOutputStream(fos);
+//            oos.writeObject(sharedPlaylistMinData);
+//            oos.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -179,6 +175,7 @@ public class FileManager implements Serializable {
         this.updateAlbums();
         this.updateArtists();
         this.updateFavorite();
+        this.updateShared();
     }
 
     /**
@@ -238,6 +235,13 @@ public class FileManager implements Serializable {
         for (Song s : this.songs)
             if (s.isFavorite())
                 this.favoritePlaylist.addSong(s);
+    }
+
+    private void updateShared() {
+        sharedPlaylist = new SharedPlaylist();
+        for (Song s : this.songs)
+            if (s.isShared())
+                sharedPlaylist.addSong(s);
     }
 
     //TODO: just search in songs, search in playlist should be added, Add Javadoc

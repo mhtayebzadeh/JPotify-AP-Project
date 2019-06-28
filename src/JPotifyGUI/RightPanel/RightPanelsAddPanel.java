@@ -32,6 +32,7 @@ public class RightPanelsAddPanel extends JPanel {
             ImageIcon ii = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/add and remove/add_icon.png")));
             Image image = ii.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
             newFriendButton.setIcon(new ImageIcon(image));
+            newFriendButton.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         } catch (
                 IOException e) {
             e.printStackTrace();
@@ -64,12 +65,9 @@ public class RightPanelsAddPanel extends JPanel {
             int result = JOptionPane.showConfirmDialog(null, optionPanel,
                     "Please enter friend's information", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
-                try {
                     this.rightPanel.getNetworkManager().addFriend(
                             new Friend(nameField.getText(), addressField.getText()));
-                } catch (UnknownHostException err) {
-                    err.printStackTrace();
-                }
+
             }
             this.rightPanel.getRightPanelsFriendsPanel().paint();
         }

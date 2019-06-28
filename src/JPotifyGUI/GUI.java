@@ -32,6 +32,7 @@ public class GUI {
      */
     public GUI(FileManager fileManager, NetworkManager networkManager) {
         fileManager.loadData();
+        networkManager.loadData();
         this.player = new Player("jpotify");
 
         JFrame frame = new JFrame("JPotify");

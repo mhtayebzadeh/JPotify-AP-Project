@@ -29,11 +29,13 @@ public class Artwork extends Entity implements Serializable {
 
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-
+        int am_pm = calendar.get(Calendar.AM_PM);
+        System.out.println("AM "+ am_pm);
+        String str_AM_PM = am_pm == 0 ? "AM" : "PM";
         String hourStr = hour / 10 == 0 ? "0" + hour : "" + hour;
         String minuteStr = minute / 10 == 0 ? "0" + minute : "" + minute;
 
-        return hourStr + ":" + minuteStr;
+        return hourStr + ":" + minuteStr + " " + str_AM_PM;
     }
 
     public void setTimeStampLastPlayed(long timeStampLastPlayed) {
