@@ -4,11 +4,14 @@ import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.GUI;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
+import JPotifyLogic.FileManager;
 import JPotifyLogic.Playlist.Playlist;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -60,10 +63,10 @@ public class EntityPanelsAddPanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             JPopupMenu popupMenu = new JPopupMenu("Select Playlist");
-            if (this.centerPanel.getFileManager().getPlaylists().size() == 0) {
-                JMenuItem menuItem = new JMenuItem("No Playlists Available!");
-                popupMenu.add(menuItem);
-            }
+            popupMenu.setBackground(Color.WHITE);
+            JMenuItem menuItem = new JMenuItem("Shared Playlist");
+            menuItem.addActionListener(e12 -> FileManager.getSharedPlaylist().addSong((Song) entity));
+            popupMenu.add(menuItem);
             for (Playlist playlist : this.centerPanel.getFileManager().getPlaylists()) {
                 JMenuItem playlistItem = new JMenuItem(playlist.getTitle());
 

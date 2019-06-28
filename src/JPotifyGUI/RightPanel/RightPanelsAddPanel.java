@@ -19,8 +19,10 @@ public class RightPanelsAddPanel extends JPanel {
 
         JPanel newFriendPanel = new JPanel();
         newFriendPanel.setBackground(GUI.sideColorBlack);
-        newFriendPanel.setLayout(new BorderLayout());
-        JButton newFriendButton = new JButton();
+        BorderLayout b = new BorderLayout();
+        b.setHgap(10);
+        newFriendPanel.setLayout(b);
+        JLabel newFriendButton = new JLabel();
         newFriendButton.setBackground(GUI.sideColorBlack);
         newFriendButton.addMouseListener(new NewFriendMouseListener(rightPanel));
         JLabel newFriendLabel = new JLabel("New Friend");

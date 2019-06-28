@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class CenterPanel extends JPanel {
     private ArrayList<Entity> library;
     private ArrayList<EntityPanel> entityPanels;
+    private String libraryKind;
     private Player player;
     private BottomPanel bottomPanel;
     private LeftPanel leftPanel;
@@ -42,6 +43,7 @@ public class CenterPanel extends JPanel {
         this.setBackground(GUI.bgColorBlack);
         this.entityPanels = new ArrayList<>();
         this.library = new ArrayList<>();
+        this.libraryKind = "Songs";
         this.setLayout(new GridLayout(0, 3));
         this.player = player;
         this.fileManager = fileManager;
@@ -55,6 +57,7 @@ public class CenterPanel extends JPanel {
      */
     public void paint() {
         this.removeAll();
+        this.resetLibrary();
         this.entityPanels = new ArrayList<>();
         for (Entity entity : this.library) {
             EntityPanel entityPanel = new EntityPanel(this, entity);
@@ -68,19 +71,40 @@ public class CenterPanel extends JPanel {
     /**
      * resets the center panel's library using it's current library's kind
      */
-    // TODO: can be used in many places of gui instead of using the setLibrary methoss
+    // TODO: can be used in many places of gui instead of using the setLibrary methods
     // written very late and near to deadline
-    public void resetLibrary() {
-        Entity entity = library.get(0);
-        if (entity instanceof Song)
-            this.setLibraryFromSongs(this.fileManager.getSongs());
-        else if (entity instanceof Album)
-            this.setLibraryFromAlbums(this.fileManager.getAlbums());
-        else if (entity instanceof Artist)
-            this.setLibraryFromArtists(this.fileManager.getArtists());
-        else if (entity instanceof Playlist)
-            this.setLibraryFromPlaylists(this.fileManager.getPlaylists());
+    private void resetLibrary() {
+        switch (this.libraryKind) {
+            case "Songs":
+                this.setLibraryFromSongs(this.fileManager.getSongs());
+                break;
+            case "Albums":
+                this.setLibraryFromAlbums(this.fileManager.getAlbums());
+                break;
+            case "Artists":
+                this.setLibraryFromArtists(this.fileManager.getArtists());
+                break;
+            case "Playlists":
+                this.setLibraryFromPlaylists(this.fileManager.getPlaylists());
+                break;
+            case "Favorite Playlist":
+                this.setLibraryFromSongs(this.fileManager.getFavoritePlaylist().getSongs());
+                break;
+            case "Shared Playlist":
+                this.setLibraryFromSongs(FileManager.getSharedPlaylist().getSongs());
+                break;
+            default:
+                this.setLibraryFromSongs(this.fileManager.getPlaylistFromName(this.libraryKind).getSongs());
+                break;
+        }
+    }
 
+    public BottomPanel getBottomPanel() {
+        return bottomPanel;
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
     }
 
     public Player getPlayer() {
@@ -99,12 +123,12 @@ public class CenterPanel extends JPanel {
         this.leftPanel = leftPanel;
     }
 
-    public BottomPanel getBottomPanel() {
-        return bottomPanel;
+    public String getLibraryKind() {
+        return libraryKind;
     }
 
-    public FileManager getFileManager() {
-        return fileManager;
+    public void setLibraryKind(String libraryKind) {
+        this.libraryKind = libraryKind;
     }
 
     /**

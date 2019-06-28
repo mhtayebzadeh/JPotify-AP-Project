@@ -40,7 +40,7 @@ public class LeftPanelsLibraryPanel extends JPanel {
         leftPanel.getCenterPanel().paint();
 
         this.add(label, BorderLayout.NORTH);
-        this.add(libraryList, BorderLayout.CENTER);
+        this.add(libraryList, BorderLayout.SOUTH);
     }
 
     /**
@@ -75,6 +75,7 @@ public class LeftPanelsLibraryPanel extends JPanel {
                         this.leftPanel.getCenterPanel().setLibraryFromArtists(this.leftPanel.getFileManager().getArtists());
                         break;
                 }
+                this.leftPanel.getCenterPanel().setLibraryKind(selectedValue);
                 this.leftPanel.getCenterPanel().paint();
             }
         }

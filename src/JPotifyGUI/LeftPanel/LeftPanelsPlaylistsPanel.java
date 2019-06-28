@@ -56,7 +56,7 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
         this.remove(this.playlists);
         DefaultListModel<String> list = new DefaultListModel<>();
         list.addElement(leftPanel.getFileManager().getFavoritePlaylist().getTitle());
-        //list.addElement(leftPanel); //TODO: add shared playlist
+        list.addElement(FileManager.getSharedPlaylist().getTitle());
         for (Playlist playlist : this.leftPanel.getFileManager().getPlaylists())
             list.addElement(playlist.getTitle());
         this.playlists = new JList<>(list);
@@ -85,7 +85,7 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
             if (this.playlists.getSelectedIndex() != -1) {
                 CenterPanel centerPanel = this.leftPanel.getCenterPanel();
                 String selectedValue = this.playlists.getSelectedValue();
-                Playlist playlist = null;
+                Playlist playlist;
 
                 switch (selectedValue) {
                     case "Favorite Playlist":
@@ -98,6 +98,7 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
                         playlist = this.leftPanel.getFileManager().getPlaylistFromName(selectedValue);
                         break;
                 }
+                this.leftPanel.getCenterPanel().setLibraryKind(selectedValue);
 
                 if (playlist != null)
                     centerPanel.setLibraryFromSongs(playlist.getSongs());
