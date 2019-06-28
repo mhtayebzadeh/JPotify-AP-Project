@@ -58,6 +58,7 @@ public class CenterPanel extends JPanel {
     public void paint() {
         this.removeAll();
         this.resetLibrary();
+        this.fileManager.update();
         this.entityPanels = new ArrayList<>();
         for (Entity entity : this.library) {
             EntityPanel entityPanel = new EntityPanel(this, entity);

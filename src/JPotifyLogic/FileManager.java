@@ -37,7 +37,7 @@ public class FileManager implements Serializable {
         this.playListsMinData = new ArrayList<>();
     }
 
-    //TODO: maybe better to move to Playlist class???!! without param or return, just void void. Add Javadoc
+    //TODO: maybe better to move to Playlist class?! without param or return, just void void. Add Javadoc
     public static Playlist sortByLastPlayed(Playlist playlist) {
         ArrayList<Song> newSongs = new ArrayList<>();
         Song smaller;
@@ -173,6 +173,9 @@ public class FileManager implements Serializable {
      * this method is used in GUI when needed instead if calling each update separately
      */
     public void update() {
+        // TODO: sort the playlists here
+//        for (Playlist playlist : this.playlists)
+//            sortByLastPlayed(playlist);
         this.updateAlbums();
         this.updateArtists();
         this.updateFavorite();
