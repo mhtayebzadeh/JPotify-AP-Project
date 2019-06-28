@@ -24,6 +24,7 @@ public class Song extends Entity implements Serializable {
     private boolean repeat;
     private boolean paused;
     private boolean isFavorite;
+    private boolean shared;
     private FileInputStream fis;
     private Mp3File mp3;
     private AdvancedPlayer player;
@@ -66,6 +67,7 @@ public class Song extends Entity implements Serializable {
         this.setLastPlayed(songMinData.getLastPlayed());
         this.timeStampLastPlayed = songMinData.getTimeStampLastPlayed();
         this.isFavorite = songMinData.isFavorite();
+        this.shared = songMinData.isShared();
     }
 
     /**
@@ -113,7 +115,7 @@ public class Song extends Entity implements Serializable {
     }
 
     public SongMinimumData getSongMinimumData() {
-        return new SongMinimumData(address, lastPlayed, pauseLocation, timeStampLastPlayed, isFavorite);
+        return new SongMinimumData(address, lastPlayed, pauseLocation, timeStampLastPlayed, isFavorite,shared);
     }
 
     public String getLastPlayed() {
@@ -170,5 +172,13 @@ public class Song extends Entity implements Serializable {
 
     public void setFis(FileInputStream fis) {
         this.fis = fis;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
+    }
+
+    public boolean isShared() {
+        return shared;
     }
 }

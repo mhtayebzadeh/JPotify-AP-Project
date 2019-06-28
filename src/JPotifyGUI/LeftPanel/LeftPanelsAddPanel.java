@@ -37,7 +37,7 @@ public class LeftPanelsAddPanel extends JPanel {
         newSongButton.setBackground(GUI.sideColorBlack);
 
         newSongButton.addMouseListener(new NewSongMouseListener(this.leftPanel));
-        JLabel newSongLabel = new JLabel("  New Song");
+        JLabel newSongLabel = new JLabel("New Song");
 
         newSongLabel.setForeground(GUI.captionColorGrey);
 
@@ -50,7 +50,7 @@ public class LeftPanelsAddPanel extends JPanel {
         newPlaylistButton.setBackground(GUI.sideColorBlack);
 
         newPlaylistButton.addMouseListener(new NewPlaylistMouseListener(this.leftPanel));
-        JLabel newPlaylistLabel = new JLabel("  New Playlist");
+        JLabel newPlaylistLabel = new JLabel("New Playlist");
 
         newPlaylistLabel.setForeground(GUI.captionColorGrey);
 
@@ -58,7 +58,9 @@ public class LeftPanelsAddPanel extends JPanel {
             ImageIcon ii = new ImageIcon(ImageIO.read(new File("src/JPotifyGUI/images/add and remove/add_icon.png")));
             Image image = ii.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
             newSongButton.setIcon(new ImageIcon(image));
+            newSongButton.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
             newPlaylistButton.setIcon(new ImageIcon(image));
+            newPlaylistButton.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         } catch (IOException e) {
             e.printStackTrace();
         }

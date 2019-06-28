@@ -7,7 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Friend {
+public class Friend implements Serializable {
     private int port = 3663; // :|
     private String name;
     private InetAddress ip;
@@ -19,8 +19,9 @@ public class Friend {
         this(name, "localhost");
     }
 
-    public Friend(String name, String host) throws UnknownHostException {
-        this(name, host, InetAddress.getByName(host));
+    public Friend(String name, String host){
+        this.name = name;
+        this.hostName = host;
     }
 
 
@@ -40,6 +41,7 @@ public class Friend {
 
     public void updateLastArtwork() throws IOException, ClassNotFoundException {
         //TODO:
+        this.ip = InetAddress.getByName(this.hostName);
         try {
             this.socket = new Socket(this.ip, this.port);
             this.status = "online";
@@ -68,6 +70,10 @@ public class Friend {
         this.socket.close();
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getName() {
         return name;
     }
@@ -76,4 +82,19 @@ public class Friend {
         return status;
     }
 
+    public int getPort() {
+        return port;
+    }
+
+    public String getHostName() {
+        return hostName;
+    }
+
+    public void setLastArtwork(Artwork lastArtwork) {
+        this.lastArtwork = lastArtwork;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
 }

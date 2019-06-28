@@ -3,6 +3,7 @@ package JPotifyLogic;
 import JPotifyLogic.Entity.Song;
 import JPotifyLogic.Entity.SongMinimumData;
 import JPotifyLogic.Network.Friend;
+import JPotifyLogic.Network.FriendMinData;
 import JPotifyLogic.Network.Server;
 import JPotifyLogic.Playlist.Playlist;
 import JPotifyLogic.Playlist.PlaylistMinData;
@@ -40,13 +41,16 @@ public class NetworkManager {
         this.friendsList.add(friend);
     }
 
-    private void loadData(String dataDirectory) {
+    public void loadData(String dataDirectory) {
         try {
             FileInputStream fis = new FileInputStream(Paths.get(dataDirectory, "friends.ser").toString());
             ObjectInputStream ois = new ObjectInputStream(fis);
             System.out.println(Paths.get(dataDirectory, "friends.ser").toString());
-            this.friendsList = (ArrayList<Friend>) ois.readObject();
+            ArrayList<FriendMinData> friendMinData = (ArrayList<FriendMinData>) ois.readObject();
             ois.close();
+            this.friendsList = new ArrayList<Friend>();
+            for (FriendMinData f:friendMinData)
+                friendsList.add(f.getFriend());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -62,7 +66,7 @@ public class NetworkManager {
     /**
      * @param dataDirectory saves the program's current data to the given directory
      */
-    private void saveData(String dataDirectory) {
+    public void saveData(String dataDirectory) {
         File theDir = new File(dataDirectory);
         if (!theDir.exists()) {
             try {
@@ -71,15 +75,21 @@ public class NetworkManager {
             }
         }
         try {
+            ArrayList<FriendMinData> friendsMinData = new ArrayList<FriendMinData>();
+            for (Friend f:friendsList)
+                friendsMinData.add(new FriendMinData(f));
             FileOutputStream fos = new FileOutputStream(Paths.get(dataDirectory, "friends.ser").toString());
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(this.friendsList);
+            oos.writeObject(friendsMinData);
             oos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    public void saveData()
+    {
+        saveData(this.defaultSaveDir);
+    }
     public ArrayList<Friend> getFriendsList() {
         return friendsList;
     }
@@ -97,7 +107,8 @@ public class NetworkManager {
             try {
                 f.updateLastArtwork();
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                f.setStatus("offline");
             }
         }
     }

@@ -32,6 +32,7 @@ public class GUI {
      */
     public GUI(FileManager fileManager, NetworkManager networkManager) {
         fileManager.loadData();
+        networkManager.loadData();
         this.player = new Player("jpotify");
 
         JFrame frame = new JFrame("JPotify");
@@ -68,6 +69,7 @@ public class GUI {
         frame.setVisible(true);
         // intellij's optimization below
         Runtime.getRuntime().addShutdownHook(new Thread(fileManager::saveData));
+        Runtime.getRuntime().addShutdownHook(new Thread(networkManager::saveData));
     }
 
     public void setPlayer(Player player) {

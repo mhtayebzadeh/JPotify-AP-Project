@@ -12,7 +12,7 @@ public class SongMinimumData implements Serializable {
     private long pauseLocation;
     private boolean isFavorite;
     private long timeStampLastPlayed;
-
+    private boolean shared;
     /**
      * @param fileAddress         address of the file
      * @param lastPlayed          lastPlayed time in today
@@ -21,12 +21,13 @@ public class SongMinimumData implements Serializable {
      * @param isFavorite          whether the song is liked or not
      */
     public SongMinimumData(String fileAddress, String lastPlayed, long pauseLocation,
-                           long timeStampLastPlayed, boolean isFavorite) {
+                           long timeStampLastPlayed, boolean isFavorite,boolean shared) {
         this.timeStampLastPlayed = timeStampLastPlayed;
         this.fileAddress = fileAddress;
         this.lastPlayed = lastPlayed;
         this.pauseLocation = pauseLocation;
         this.isFavorite = isFavorite;
+        this.shared = shared;
     }
 
     public long getPauseLocation() {
@@ -51,5 +52,13 @@ public class SongMinimumData implements Serializable {
 
     public void setTimeStampLastPlayed(long timeStampLastPlayed) {
         this.timeStampLastPlayed = timeStampLastPlayed;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 }

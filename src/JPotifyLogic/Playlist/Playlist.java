@@ -51,11 +51,15 @@ public class Playlist extends Entity implements Serializable {
         for (Song s : this.songs)
             if (s.equals(song))
                 return;
+        if(typeOfPlaylist.equals("shared"))
+            song.setShared(true);
         this.songs.add(song);
     }
 
     public void removeSong(Song song) {
         this.songs.remove(song);
+        if(typeOfPlaylist.equals("shared"))
+            song.setShared(false);
     }
 
     /**
