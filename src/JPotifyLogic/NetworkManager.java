@@ -1,16 +1,21 @@
 package JPotifyLogic;
 
+import JPotifyLogic.Entity.Song;
+import JPotifyLogic.Entity.SongMinimumData;
 import JPotifyLogic.Network.Friend;
 import JPotifyLogic.Network.Server;
+import JPotifyLogic.Playlist.Playlist;
+import JPotifyLogic.Playlist.PlaylistMinData;
 import JPotifyLogic.Playlist.SharedPlaylist;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class NetworkManager {
     private static SharedPlaylist sharedPlaylist;
     private ArrayList<Friend> friendsList;
-
+    private String defaultSaveDir = "savedData";
     public NetworkManager() {
         this.friendsList = new ArrayList<>();
         Server server = new Server();
@@ -35,12 +40,45 @@ public class NetworkManager {
         this.friendsList.add(friend);
     }
 
-//    public void setSharedPlaylist(SharedPlaylist sharedPlaylist_) {
-//        sharedPlaylist = sharedPlaylist_;
-//        this.server.setSharedPlaylist(sharedPlaylist_);  // not work because of thread
-//        Server.setSharedPlaylist(sharedPlaylist_); // not work because of thread
-//
-//    }
+    private void loadData(String dataDirectory) {
+        try {
+            FileInputStream fis = new FileInputStream(Paths.get(dataDirectory, "friends.ser").toString());
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            System.out.println(Paths.get(dataDirectory, "friends.ser").toString());
+            this.friendsList = (ArrayList<Friend>) ois.readObject();
+            ois.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * loads the data from the defaultSaveDir to the program
+     */
+    public void loadData() {
+        loadData(this.defaultSaveDir);
+    }
+
+    /**
+     * @param dataDirectory saves the program's current data to the given directory
+     */
+    private void saveData(String dataDirectory) {
+        File theDir = new File(dataDirectory);
+        if (!theDir.exists()) {
+            try {
+                theDir.mkdir();
+            } catch (Exception ignored) {
+            }
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(Paths.get(dataDirectory, "friends.ser").toString());
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this.friendsList);
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public ArrayList<Friend> getFriendsList() {
         return friendsList;
