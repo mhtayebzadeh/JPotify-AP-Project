@@ -15,12 +15,22 @@ import java.util.Random;
 public class Player extends Thread {
     private String name;
     private static Song song;
-    private Thread playThread;
+    private static Thread playThread;
     private static FileInputStream _fis_;
     private static Playlist playlist = null;
+    private static boolean playing;
     public Player(String playerName) {
         super(playerName);
         this.name = playerName;
+        playing = false;
+    }
+
+    public static void setPlaying(boolean playing) {
+        Player.playing = playing;
+    }
+
+    public static boolean isPlaying() {
+        return playing;
     }
 
     public static void setCurrentSong(Song song_)
@@ -151,6 +161,7 @@ public class Player extends Thread {
     public void stop_() {
         if (playThread != null) {
             this.playThread.stop();
+            setPlaying(false);
         }
     }
 
@@ -173,6 +184,7 @@ public class Player extends Thread {
             song.setPauseLocation(song.getFis().available());
         } catch (IOException e) { e.printStackTrace(); }
         this.stop_();
+        setPlaying(false);
     }
 
     public void gotoSecond(long sec)
@@ -213,6 +225,13 @@ public class Player extends Thread {
         }
     }
 
+    public static void forceStop()
+    {
+        if (playThread != null) {
+            playThread.stop();
+            setPlaying(false);
+        }
+    }
     public static long getElapsedTimeInSecond()
     {
         return song.getTimeInSecond() - getRemainTimeInSecond();
@@ -278,7 +297,10 @@ public class Player extends Thread {
         @Override
         public void run() {
             try {
+
                 this.setLastPlayed(this.song);
+                Player.setCurrentSong(song);
+                Player.setPlaying(true);
                 this.player.play();
                 if (it != null) {
                     while (it.hasNext()) {
@@ -297,10 +319,12 @@ public class Player extends Thread {
                     }
                 }
 //                if(repeat == true ) // repeat song
-
+                Player.setPlaying(false);
 
             } catch (JavaLayerException e) {
                 e.printStackTrace();
+//                this.player.stop();
+                Player.forceStop();
             }
         }
     }

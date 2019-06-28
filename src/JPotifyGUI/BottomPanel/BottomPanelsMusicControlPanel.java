@@ -21,6 +21,8 @@ public class BottomPanelsMusicControlPanel extends JPanel {
     JPanel buttonsPanel ;
     JSlider musicSlider;
     Player player;
+    boolean _mouseAction = false;
+    long sliderVal = 0;
     public BottomPanelsMusicControlPanel(Player player) {
         super();
         this.player = player;
@@ -51,13 +53,14 @@ public class BottomPanelsMusicControlPanel extends JPanel {
             musicSlider.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent changeEvent) {
-//TODO: problem of listener
-//                    player.gotoPercent(100* (float)musicSlider.getValue()/(float)musicSlider.getMaximum());
-                    musicSlider.setToolTipText("hi");
-
+//T.ODO: problem of listener
+                    if(_mouseAction)
+                        sliderVal = musicSlider.getValue();
+//                        player.gotoPercent(100* (float)musicSlider.getValue()/(float)musicSlider.getMaximum());
                     System.out.println((float)100* musicSlider.getValue()/(float)musicSlider.getMaximum());
                 }
             });
+            musicSlider.addMouseListener(new SliderMouseListener());
             p.add(musicSlider);
             this.setLayout(new BorderLayout());
             this.add(buttonsPanel,BorderLayout.CENTER);
@@ -71,12 +74,43 @@ public class BottomPanelsMusicControlPanel extends JPanel {
     {
         this.musicSlider.setMinimum(min);
         this.musicSlider.setMaximum(max);
-        this.musicSlider.setValue(val);
+        if(!_mouseAction)
+            this.musicSlider.setValue(val);
+//        _mouseAction = false;
     }
     public void setMusicSliderValue(float percent) {
         this.musicSlider.setValue((int)percent);
     }
 
+    public class SliderMouseListener implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent mouseEvent) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent mouseEvent) {
+            _mouseAction = true;
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent mouseEvent) {
+            _mouseAction = false;
+            player.gotoPercent(100* (float)sliderVal/(float)musicSlider.getMaximum());
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent mouseEvent) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent mouseEvent) {
+
+        }
+    }
     public class ShuffleMouseListener implements MouseListener {
 
         @Override
