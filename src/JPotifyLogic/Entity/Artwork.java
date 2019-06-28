@@ -27,10 +27,13 @@ public class Artwork extends Entity implements Serializable {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(this.getTimeStampLastPlayed());
 
-        int hour = calendar.get(Calendar.HOUR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        return hour + ":" + minute;
+        String hourStr = hour / 10 == 0 ? "0" + hour : "" + hour;
+        String minuteStr = minute / 10 == 0 ? "0" + minute : "" + minute;
+
+        return hourStr + ":" + minuteStr;
     }
 
     public void setTimeStampLastPlayed(long timeStampLastPlayed) {
