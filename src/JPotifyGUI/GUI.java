@@ -25,7 +25,6 @@ public class GUI {
     public static final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     private Player player; // field from logic which is needed in gui besides fileManager
-    private Thread timerThread;
 
     /**
      * @param fileManager gets the primary object from Logic part
@@ -62,9 +61,9 @@ public class GUI {
         frame.add(leftPanel, BorderLayout.WEST);
         frame.add(rightPanel, BorderLayout.EAST);
 
-        MyTimeRunnable myTimeRunnable = new MyTimeRunnable(player, fileManager, networkManager, bottomPanel, leftPanel);
-        this.timerThread = new Thread(myTimeRunnable);
-        this.timerThread.start();
+        MyTimeRunnable myTimeRunnable = new MyTimeRunnable(centerPanel, networkManager, rightPanel);
+        Thread timerThread = new Thread(myTimeRunnable);
+        timerThread.start();
 
         frame.setVisible(true);
         // intellij's optimization below
@@ -79,19 +78,14 @@ public class GUI {
     private class MyTimeRunnable implements Runnable {
         private int periodTime = 500; // 500 ms
         private int NetworkPeriodTime = 5000; // 5s
-        private Player player;
-        private FileManager fileManager;
+        private CenterPanel centerPanel;
         private NetworkManager networkManager;
-        private BottomPanel bottomPanel;
-        private LeftPanel leftPanel;
+        private RightPanel rightPanel;
 
-        public MyTimeRunnable(Player player, FileManager fileManager, NetworkManager networkManager,
-                              BottomPanel bottomPanel, LeftPanel leftPanel) {
-            this.player = player;
-            this.bottomPanel = bottomPanel;
-            this.leftPanel = leftPanel;
-            this.fileManager = fileManager;
+        public MyTimeRunnable(CenterPanel centerPanel, NetworkManager networkManager, RightPanel rightPanel) {
+            this.centerPanel = centerPanel;
             this.networkManager = networkManager;
+            this.rightPanel = rightPanel;
         }
 
         @Override
@@ -106,30 +100,30 @@ public class GUI {
                 try {
                     Thread.sleep(periodTime);
 
-                    this.leftPanel.setImageData(player.getSong().getImageData());
-                    this.bottomPanel.getBottomPanelsCurrentMusicPanel().paint();
-                    this.bottomPanel.setMusicSlider((int)player.getElapsedTimeInPercent(),0,100);
-                    val = (int)Player.getElapsedTimeInSecond();
-                    sec = Math.floorMod(val,60);
-                    min = Math.floorMod(val/60,60);
+                    this.centerPanel.getLeftPanel().setImageData(player.getSong().getImageData());
+                    this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().paint();
+                    this.centerPanel.getBottomPanel().setMusicSlider((int) Player.getElapsedTimeInPercent(), 0, 100);
+                    val = (int) Player.getElapsedTimeInSecond();
+                    sec = Math.floorMod(val, 60);
+                    min = Math.floorMod(val / 60, 60);
                     hour = val / 60;
                     if (val > 3600)
-                        this.bottomPanel.setElapse("" + hour + ":" + min + ":" + sec);
+                        this.centerPanel.getBottomPanel().setElapse("" + hour + ":" + min + ":" + sec);
                     else
-                        this.bottomPanel.setElapse("" + min + ":" + sec);
+                        this.centerPanel.getBottomPanel().setElapse("" + min + ":" + sec);
 
                     val = (int) Player.getTotalTimeInSecond();
                     sec = Math.floorMod(val, 60);
                     min = Math.floorMod(val / 60, 60);
                     hour = val / 60;
                     if (val > 3600)
-                        this.bottomPanel.setTotal("" + hour + ":" + min + ":" + sec);
+                        this.centerPanel.getBottomPanel().setTotal("" + hour + ":" + min + ":" + sec);
                     else
-                        this.bottomPanel.setTotal("" + min + ":" + sec);
-
-                    bottomPanel.setIconPlayPause(Player.isPlaying());
+                        this.centerPanel.getBottomPanel().setTotal("" + min + ":" + sec);
+                    this.centerPanel.getBottomPanel().setIconPlayPause(Player.isPlaying());
                     if (cnt >= n) // check network
                     {
+                        this.rightPanel.getRightPanelsFriendsPanel().paint();
                         cnt = 0;
                     }
                 } catch (Exception ignored) {

@@ -132,7 +132,6 @@ public class LeftPanelsAddPanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
             String name = JOptionPane.showInputDialog("Enter Playlist name");
             this.leftPanel.getFileManager().add2PlayLists(new Playlist(name));
-            this.leftPanel.getCenterPanel().resetLibrary();
             this.leftPanel.getCenterPanel().paint();
             this.leftPanel.getLeftPanelsPlaylistsPanel().paint();
         }

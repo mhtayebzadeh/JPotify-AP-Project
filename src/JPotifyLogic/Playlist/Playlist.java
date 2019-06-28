@@ -54,6 +54,10 @@ public class Playlist extends Entity implements Serializable {
         this.songs.add(song);
     }
 
+    public void removeSong(Song song) {
+        this.songs.remove(song);
+    }
+
     /**
      * @return playlistMinData contains the minimum data required to save a playlist
      */

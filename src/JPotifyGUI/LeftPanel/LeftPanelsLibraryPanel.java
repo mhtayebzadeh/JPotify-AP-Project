@@ -75,6 +75,7 @@ public class LeftPanelsLibraryPanel extends JPanel {
                         this.leftPanel.getCenterPanel().setLibraryFromArtists(this.leftPanel.getFileManager().getArtists());
                         break;
                 }
+                this.leftPanel.getCenterPanel().setLibraryKind(selectedValue);
                 this.leftPanel.getCenterPanel().paint();
             }
         }

@@ -33,7 +33,8 @@ public class EntityPanelsRemovePanel extends JPanel {
         super();
         this.setBackground(GUI.bgColorBlack);
 
-        if (!(entity instanceof Album || entity instanceof Artist)) {
+        if (!(centerPanel.getLibraryKind().equals("Albums") || centerPanel.getLibraryKind().equals("Artists")
+                || centerPanel.getLibraryKind().equals("Favorite Playlist"))) {
             JLabel removeLabel = new JLabel();
             removeLabel.addMouseListener(new RemoveMouseListener(centerPanel, entity));
             try {
@@ -66,7 +67,7 @@ public class EntityPanelsRemovePanel extends JPanel {
             int selection = JOptionPane.showConfirmDialog(
                     this.centerPanel, "Are you sure?");
             if (selection == JOptionPane.YES_OPTION) {
-                if (this.entity instanceof Song) {
+                if (this.centerPanel.getLibraryKind().equals("Songs")) {
                     Song song = (Song) this.entity;
                     this.centerPanel.getFileManager().getSongs().remove(song);
                     this.centerPanel.setLibraryFromSongs(this.centerPanel.getFileManager().getSongs());
@@ -75,6 +76,11 @@ public class EntityPanelsRemovePanel extends JPanel {
                     this.centerPanel.getFileManager().getPlaylists().remove(playlist);
                     this.centerPanel.setLibraryFromPlaylists(this.centerPanel.getFileManager().getPlaylists());
                     this.centerPanel.getLeftPanel().getLeftPanelsPlaylistsPanel().paint();
+                }
+                else {
+                    Song song = (Song) this.entity;
+                    this.centerPanel.getFileManager().getPlaylistFromName(
+                            this.centerPanel.getLibraryKind()).removeSong(song);
                 }
                 this.centerPanel.getFileManager().update();
                 this.centerPanel.paint();

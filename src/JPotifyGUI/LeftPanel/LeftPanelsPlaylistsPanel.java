@@ -85,7 +85,7 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
             if (this.playlists.getSelectedIndex() != -1) {
                 CenterPanel centerPanel = this.leftPanel.getCenterPanel();
                 String selectedValue = this.playlists.getSelectedValue();
-                Playlist playlist = null;
+                Playlist playlist;
 
                 switch (selectedValue) {
                     case "Favorite Playlist":
@@ -98,6 +98,7 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
                         playlist = this.leftPanel.getFileManager().getPlaylistFromName(selectedValue);
                         break;
                 }
+                this.leftPanel.getCenterPanel().setLibraryKind(selectedValue);
 
                 if (playlist != null)
                     centerPanel.setLibraryFromSongs(playlist.getSongs());
