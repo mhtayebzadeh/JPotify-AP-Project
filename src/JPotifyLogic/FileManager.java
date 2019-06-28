@@ -27,7 +27,7 @@ public class FileManager implements Serializable {
      * default constructor
      */
     public FileManager() {
-        this.sharedPlaylist = new SharedPlaylist();
+        sharedPlaylist = new SharedPlaylist();
         this.favoritePlaylist = new FavoritePlaylist();
         this.songs = new ArrayList<>();
         this.playlists = new ArrayList<>();

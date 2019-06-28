@@ -3,6 +3,7 @@ package JPotifyGUI;
 import JPotifyGUI.BottomPanel.BottomPanel;
 import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.LeftPanel.LeftPanel;
+import JPotifyGUI.RightPanel.RightPanel;
 import JPotifyLogic.FileManager;
 import JPotifyLogic.NetworkManager;
 import JPotifyLogic.Player;
@@ -24,7 +25,6 @@ public class GUI {
     public static final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     private Player player; // field from logic which is needed in gui besides fileManager
-    private NetworkManager networkManager;
     private Thread timerThread;
 
     /**
@@ -54,7 +54,7 @@ public class GUI {
         JScrollPane scrollPane = new JScrollPane(centerPanel);
         LeftPanel leftPanel = new LeftPanel(centerPanel);
         centerPanel.setLeftPanel(leftPanel);
-        RightPanel rightPanel = new RightPanel();
+        RightPanel rightPanel = new RightPanel(networkManager);
 
         frame.setLayout(new BorderLayout());
         frame.add(bottomPanel, BorderLayout.SOUTH);
@@ -63,33 +63,15 @@ public class GUI {
         frame.add(rightPanel, BorderLayout.EAST);
 
         frame.setVisible(true);
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                fileManager.saveData();
-            }
-        }));
+        // intellij's optimization below
+        Runtime.getRuntime().addShutdownHook(new Thread(fileManager::saveData));
     }
 
     public void setPlayer(Player player) {
         this.player = player;
     }
 
-    private class ExitRunnable implements Runnable {
-        private FileManager fileManager;
-
-        public ExitRunnable(FileManager fileManager) {
-            this.fileManager = fileManager;
-        }
-
-        @Override
-        public void run() {
-            this.fileManager.saveData();
-        }
-    }
-
     //TODO: Timer thread
-
     private class MyTimeRunnable implements Runnable {
         private int periodTime = 500; // 500 ms
         private int NetworkPeriodTime = 5000; // 5s
@@ -99,7 +81,8 @@ public class GUI {
         private BottomPanel bottomPanel;
         private LeftPanel leftPanel;
 
-        public MyTimeRunnable(Player player, FileManager fileManager, NetworkManager networkManager, BottomPanel bottomPanel, LeftPanel leftPanel) {
+        public MyTimeRunnable(Player player, FileManager fileManager, NetworkManager networkManager,
+                              BottomPanel bottomPanel, LeftPanel leftPanel) {
             this.player = player;
             this.bottomPanel = bottomPanel;
             this.leftPanel = leftPanel;
@@ -115,12 +98,12 @@ public class GUI {
                 cnt++;
                 try {
                     Thread.sleep(periodTime);
-                    this.bottomPanel.setMusicSlider((int) player.getElapsedTimeInPercent(), 0, 100);
+                    this.bottomPanel.setMusicSlider((int) Player.getElapsedTimeInPercent(), 0, 100);
 
                     if (cnt >= n) { // check network
                         cnt = 0;
                     }
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
         }

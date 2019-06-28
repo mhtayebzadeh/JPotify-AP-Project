@@ -2,6 +2,7 @@ package JPotifyGUI.LeftPanel;
 
 import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.GUI;
+import JPotifyLogic.FileManager;
 import JPotifyLogic.Player;
 import JPotifyLogic.Playlist.Playlist;
 
@@ -38,7 +39,7 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
         this.playlists.setForeground(GUI.captionColorGrey);
 
         list.addElement(leftPanel.getFileManager().getFavoritePlaylist().getTitle());
-        //list.addElement(leftPanel); //TODO: add shared playlist
+        list.addElement(FileManager.getSharedPlaylist().getTitle());
         for (Playlist playlist : leftPanel.getFileManager().getPlaylists())
             list.addElement(playlist.getTitle());
         this.playlists.addMouseListener(new PlaylistsMouseListener(playlists, leftPanel));
@@ -54,6 +55,8 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
     public void paint() {
         this.remove(this.playlists);
         DefaultListModel<String> list = new DefaultListModel<>();
+        list.addElement(leftPanel.getFileManager().getFavoritePlaylist().getTitle());
+        //list.addElement(leftPanel); //TODO: add shared playlist
         for (Playlist playlist : this.leftPanel.getFileManager().getPlaylists())
             list.addElement(playlist.getTitle());
         this.playlists = new JList<>(list);
@@ -89,8 +92,8 @@ public class LeftPanelsPlaylistsPanel extends JPanel {
                         playlist = this.leftPanel.getFileManager().getFavoritePlaylist();
                         break;
                     case "Shared Playlist":
+                        playlist = FileManager.getSharedPlaylist();
                         break;
-                    // playlist = this.leftPanel.get //TODO: return shared Playlist
                     default:
                         playlist = this.leftPanel.getFileManager().getPlaylistFromName(selectedValue);
                         break;

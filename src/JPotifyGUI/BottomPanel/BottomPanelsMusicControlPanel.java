@@ -21,7 +21,6 @@ public class BottomPanelsMusicControlPanel extends JPanel {
     private Player player;
     private boolean _mouseAction = false;
     private long sliderVal = 0;
-    private JButton[] controlButtons;
 
     /**
      * @param player gets an object from Player class to

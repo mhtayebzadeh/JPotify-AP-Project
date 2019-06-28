@@ -8,27 +8,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class NetworkManager {
-    private ArrayList<Friend> friendsList;
     private static SharedPlaylist sharedPlaylist;
-    private Server server;
+    private ArrayList<Friend> friendsList;
 
     public NetworkManager() {
         this.friendsList = new ArrayList<>();
-        this.server = new Server();
+        Server server = new Server();
         server.start(); // start server as threead ...
 
     }
 
+    public static SharedPlaylist getSharedPlaylist() {
+        sharedPlaylist = FileManager.getSharedPlaylist();
+        return sharedPlaylist;
+    }
+
+    public void setSharedPlaylist(SharedPlaylist sharedPlaylist) {
+        NetworkManager.sharedPlaylist = sharedPlaylist;
+        Server.setSharedPlaylist(sharedPlaylist);
+    }
+
     public void addFriend(Friend friend) {
-        friendsList.add(friend);
-    }
-
-    public ArrayList<Friend> getFriendsList() {
-        return friendsList;
-    }
-
-    public void setFriendsList(ArrayList<Friend> friendsList) {
-        this.friendsList = friendsList;
+        for (Friend f : this.friendsList)
+            if (f.getName().equals(friend.getName()))
+                return;
+        this.friendsList.add(friend);
     }
 
 //    public void setSharedPlaylist(SharedPlaylist sharedPlaylist_) {
@@ -38,18 +42,16 @@ public class NetworkManager {
 //
 //    }
 
-    public void updateSharedPlaylistFromFileManager()
-    {
-        sharedPlaylist = FileManager.getSharedPlaylist();
-    }
-    public static SharedPlaylist getSharedPlaylist() {
-        sharedPlaylist = FileManager.getSharedPlaylist();
-        return sharedPlaylist;
+    public ArrayList<Friend> getFriendsList() {
+        return friendsList;
     }
 
-    public void setSharedPlaylist(SharedPlaylist sharedPlaylist) {
-        this.sharedPlaylist = sharedPlaylist;
-        this.server.setSharedPlaylist(sharedPlaylist);
+    public void setFriendsList(ArrayList<Friend> friendsList) {
+        this.friendsList = friendsList;
+    }
+
+    public void updateSharedPlaylistFromFileManager() {
+        sharedPlaylist = FileManager.getSharedPlaylist();
     }
 
     public void updateFriendsLastSong() {
