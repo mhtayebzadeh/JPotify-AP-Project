@@ -20,9 +20,9 @@ public class TopPanel extends JPanel {
         this.fileManager = fileManager;
         this.searchField.setPreferredSize(new Dimension(GUI.dim.width / 10, GUI.dim.height / 30));
         this.searchField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        this.searchField.setBackground(GUI.sideColorBlack);
-        this.searchField.setForeground(Color.RED);
-
+        this.searchField.setBackground(GUI.bgColorBlack);
+        this.searchField.setForeground(Color.CYAN);
+        this.searchField.setCaretColor(GUI.captionColorGrey);
 
         this.searchField.getDocument().addDocumentListener(new DocumentListener() {
             private Playlist p;
@@ -72,6 +72,7 @@ public class TopPanel extends JPanel {
         });
 
         JLabel searchText = new JLabel("Search");
+        searchText.setForeground(GUI.captionColorGrey);
         this.add(searchText);
         this.add(searchField);
     }

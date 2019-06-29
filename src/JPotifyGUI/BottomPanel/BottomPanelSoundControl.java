@@ -28,7 +28,7 @@ public class BottomPanelSoundControl extends JPanel {
         slider.addMouseListener(new SoundControlListener());
         slider.setPreferredSize(new Dimension(dim.width / 10, 40));
         slider.setBorder(BorderFactory.createEmptyBorder(5, dim.width /120, 5, dim.width /120));
-
+        slider.setBackground(GUI.bottomColorBlack);
         try {
             int btnSize = GUI.dim.width / 60;
             imageIconSoundOn = new ImageIcon(new ImageIcon(ImageIO.read(new File(
