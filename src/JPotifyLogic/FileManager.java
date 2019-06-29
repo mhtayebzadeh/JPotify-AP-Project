@@ -16,7 +16,7 @@ public class FileManager implements Serializable {
     private static SharedPlaylist sharedPlaylist;
     private final String defaultSaveDir = "savedData";
     private FavoritePlaylist favoritePlaylist;
-    private ArrayList<Song> songs;
+    private static ArrayList<Song> songs;
     private ArrayList<Playlist> playlists;
     private ArrayList<Album> albums;
     private ArrayList<Artist> artists;
@@ -40,22 +40,39 @@ public class FileManager implements Serializable {
     //TODO: maybe better to move to Playlist class???!! without param or return, just void void. Add Javadoc
     public static Playlist sortByLastPlayed(Playlist playlist) {
         ArrayList<Song> newSongs = new ArrayList<>();
-        Song smaller;
-        long last = 0;
+        ArrayList<Song> temp = (ArrayList<Song>) playlist.getSongs().clone();
+        Song last = null;
+        if(playlist.getSongs().size()>0)
+            last = playlist.getSongs().get(0);
+        else
+            return playlist;
+
         for (Song s_ : playlist.getSongs()) {
-            smaller = s_;
-            for (Song s : playlist.getSongs()) {
-                if ((smaller.getTimeStampLastPlayed() > s.getTimeStampLastPlayed())
-                        && (smaller.getTimeStampLastPlayed() > last))
-                    smaller = s;
+            last = temp.get(0);
+            for(Song s:temp)
+            {
+                if(last.getTimeStampLastPlayed() < s.getTimeStampLastPlayed() )
+                    last = s;
             }
-            last = smaller.getTimeStampLastPlayed();
-            newSongs.add(smaller);
+            newSongs.add(last);
+            temp.remove(last);
         }
         playlist.setSongs(newSongs);
         return playlist;
     }
 
+    public void sortAllPlayLists()
+    {
+        for(Playlist p : playlists)
+            sortByLastPlayed(p);
+        for(Playlist p : albums)
+            sortByLastPlayed(p);
+        for(Playlist p : artists)
+            sortByLastPlayed(p);
+        sortByLastPlayed(favoritePlaylist);
+        sortByLastPlayed(sharedPlaylist);
+
+    }
     public static SharedPlaylist getSharedPlaylist() {
         return sharedPlaylist;
     }
@@ -173,6 +190,7 @@ public class FileManager implements Serializable {
         this.updateArtists();
         this.updateFavorite();
         this.updateShared();
+        this.sortAllPlayLists();
     }
 
     /**
@@ -242,11 +260,11 @@ public class FileManager implements Serializable {
     }
 
     //TODO: just search in songs, search in playlist should be added, Add Javadoc
-    public Playlist searchInSongs(String searchString) {
+    public static Playlist searchInSongs(String searchString) {
         Playlist p = new Playlist();
         p.setTypeOfPlaylist("search");
         p.setTitle("Search Playlist");
-        for (Song s : this.songs) {
+        for (Song s : songs) {
             if (s.getTitle().contains(searchString) || s.getCaption().contains(searchString))
                 p.addSong(s);
         }

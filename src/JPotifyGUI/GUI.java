@@ -4,11 +4,13 @@ import JPotifyGUI.BottomPanel.BottomPanel;
 import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.LeftPanel.LeftPanel;
 import JPotifyGUI.RightPanel.RightPanel;
+import JPotifyGUI.TopPanel.TopPanel;
 import JPotifyLogic.FileManager;
 import JPotifyLogic.NetworkManager;
 import JPotifyLogic.Player;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
@@ -49,18 +51,21 @@ public class GUI {
         frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
         frame.setBackground(GUI.bgColorBlack);
 
+
         BottomPanel bottomPanel = new BottomPanel(this.player);
         CenterPanel centerPanel = new CenterPanel(this.player, fileManager, bottomPanel, null);
         JScrollPane scrollPane = new JScrollPane(centerPanel);
         LeftPanel leftPanel = new LeftPanel(centerPanel);
         centerPanel.setLeftPanel(leftPanel);
         RightPanel rightPanel = new RightPanel(networkManager);
+        TopPanel topPanel = new TopPanel(centerPanel);
 
         frame.setLayout(new BorderLayout());
         frame.add(bottomPanel, BorderLayout.SOUTH);
         frame.add(scrollPane, BorderLayout.CENTER);
         frame.add(leftPanel, BorderLayout.WEST);
         frame.add(rightPanel, BorderLayout.EAST);
+        frame.add(topPanel , BorderLayout.NORTH);
 
         MyTimeRunnable myTimeRunnable = new MyTimeRunnable(centerPanel, networkManager, rightPanel);
         Thread timerThread = new Thread(myTimeRunnable);
