@@ -73,8 +73,10 @@ public class GUI {
 
         frame.setVisible(true);
         // intellij's optimization below
-        Runtime.getRuntime().addShutdownHook(new Thread(fileManager::saveData));
-        Runtime.getRuntime().addShutdownHook(new Thread(networkManager::saveData));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            fileManager.saveData();
+            networkManager.saveData();
+        }));
     }
 
     public void setPlayer(Player player) {

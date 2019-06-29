@@ -14,8 +14,8 @@ public class BottomPanelSoundControl extends JPanel {
     private JSlider slider;
     private ImageIcon imageIconSoundOn;
     private ImageIcon imageIconSoundOff;
-    private int btnSize = GUI.dim.height/40;
     private JLabel soundIcon;
+
     public BottomPanelSoundControl() {
         super();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -23,43 +23,43 @@ public class BottomPanelSoundControl extends JPanel {
 
         this.setBackground(GUI.bottomColorBlack);
 
-        slider = new JSlider(JSlider.HORIZONTAL,0,100,70);
+        slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 70);
         Audio.setMasterOutputVolume(0.7f);
         slider.addMouseListener(new SoundControlListener());
         slider.setPreferredSize(new Dimension(dim.width / 12, 40));
-        slider.setBorder(BorderFactory.createEmptyBorder(30,10,0,10));
+        slider.setBorder(BorderFactory.createEmptyBorder(30, 10, 0, 10));
 
         try {
+            int btnSize = GUI.dim.height / 40;
             imageIconSoundOn = new ImageIcon(new ImageIcon(ImageIO.read(new File(
                     "src/JPotifyGUI/images/multimedia/" + "speaker_on.png"))).getImage().getScaledInstance(
                     btnSize, btnSize, Image.SCALE_SMOOTH));
             imageIconSoundOff = new ImageIcon(new ImageIcon(ImageIO.read(new File(
                     "src/JPotifyGUI/images/multimedia/" + "speaker_off.png"))).getImage().getScaledInstance(
                     btnSize, btnSize, Image.SCALE_SMOOTH));
-        }catch (Exception e){}
+        } catch (Exception ignored) {
+        }
         soundIcon = new JLabel();
         soundIcon.setIcon(imageIconSoundOn);
-        soundIcon.setBorder(BorderFactory.createEmptyBorder(0,0,0,15));
+        soundIcon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 15));
         soundIcon.addMouseListener(new soundIconActionListener());
-        BorderLayout b = new BorderLayout();
-        this.add(slider,BorderLayout.CENTER);
-        this.add(soundIcon,BorderLayout.EAST);
+        this.add(slider, BorderLayout.CENTER);
+        this.add(soundIcon, BorderLayout.EAST);
     }
 
-    public class soundIconActionListener implements MouseListener{
+    public class soundIconActionListener implements MouseListener {
         private boolean mute = false;
         private int lastVolume = 0;
+
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             mute = !mute;
-            if(mute)
-            {
+            if (mute) {
                 lastVolume = slider.getValue();
                 Audio.setMasterOutputVolume(0.02f);
                 soundIcon.setIcon(imageIconSoundOff);
-            }
-            else {
-                Audio.setMasterOutputVolume((float) lastVolume/100f);
+            } else {
+                Audio.setMasterOutputVolume((float) lastVolume / 100f);
                 soundIcon.setIcon(imageIconSoundOn);
             }
         }
@@ -84,6 +84,7 @@ public class BottomPanelSoundControl extends JPanel {
 
         }
     }
+
     public class SoundControlListener implements MouseListener {
 
         @Override

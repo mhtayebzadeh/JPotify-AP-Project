@@ -86,10 +86,11 @@ public class NetworkManager {
             e.printStackTrace();
         }
     }
-    public void saveData()
-    {
-        saveData(this.defaultSaveDir);
+
+    public void saveData() {
+        this.saveData(this.defaultSaveDir);
     }
+
     public ArrayList<Friend> getFriendsList() {
         return friendsList;
     }

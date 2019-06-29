@@ -4,6 +4,7 @@ import JPotifyGUI.CenterPanel.CenterPanel;
 import JPotifyGUI.GUI;
 import JPotifyLogic.Entity.Entity;
 import JPotifyLogic.Entity.Song;
+import JPotifyLogic.FileManager;
 import JPotifyLogic.Playlist.Album;
 import JPotifyLogic.Playlist.Artist;
 import JPotifyLogic.Playlist.Playlist;
@@ -76,6 +77,10 @@ public class EntityPanelsRemovePanel extends JPanel {
                     this.centerPanel.getFileManager().getPlaylists().remove(playlist);
                     this.centerPanel.setLibraryFromPlaylists(this.centerPanel.getFileManager().getPlaylists());
                     this.centerPanel.getLeftPanel().getLeftPanelsPlaylistsPanel().paint();
+                }
+                else if (this.centerPanel.getLibraryKind().equals("Shared Playlist"))  {
+                    Song song = (Song) this.entity;
+                    FileManager.getSharedPlaylist().removeSong(song);
                 }
                 else {
                     Song song = (Song) this.entity;

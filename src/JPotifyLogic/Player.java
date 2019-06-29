@@ -20,18 +20,18 @@ public class Player extends Thread {
     private static boolean repeat;
     private static boolean shuffle;
     private static Thread playThread;
-	private static boolean playing;
+    private static boolean playing;
 
     public Player(String playerName) {
         super(playerName);
     }
 
-    private static void setPlaying(boolean playing) {
-        Player.playing = playing;
-    }
-
     public static boolean isPlaying() {
         return playing;
+    }
+
+    private static void setPlaying(boolean playing) {
+        Player.playing = playing;
     }
 
     private static void setCurrentSong(Song song_) {
@@ -44,10 +44,6 @@ public class Player extends Thread {
 
     public static boolean isRepeat() {
         return repeat;
-    }
-
-    public static boolean isShuffle() {
-        return shuffle;
     }
 
     public static void setRepeat(boolean repeat) {
@@ -67,6 +63,39 @@ public class Player extends Thread {
         return song.getTimeInSecond() - getRemainTimeInSecond();
     }
 
+    public static int getTotalTimeInSecond() {
+        return (int) song.getTimeInSecond();
+    }
+
+    public static long getRemainTimeInSecond() {
+        try {
+            return (long) ((float) song.getTimeInSecond() * (((float) _fis_.available()) / ((float) song.getTotalSongLength())));
+        } catch (IOException e) {
+//            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static void forceStop() {
+        if (playThread != null) {
+            playThread.stop();
+            setPlaying(false);
+        }
+    }
+
+    public static float getElapsedTimeInPercent() {
+        try {
+            return 100 - (float) (100.0 * (((float) _fis_.available()) / ((float) song.getTotalSongLength())));
+        } catch (IOException e) {
+//            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static Playlist getPlaylist() {
+        return playlist;
+    }
+
     // start music from first of lib
     public void setPlayList(Playlist playlist) {
         //TODO:
@@ -76,76 +105,74 @@ public class Player extends Thread {
         }
     }
 
-    public void setPlayListAndSong(Playlist playlist_, Song song) {
+    private void setPlayListAndSong(Playlist playlist_, Song song) {
         Iterator<Song> it = playlist_.getSongs().iterator();
         playlist = playlist_;
         while (it.next() != song) ;
-        this.song = song;
+        Player.song = song;
         this.stop_();
         MyRunnable myRunnable = new MyRunnable(song);
         myRunnable.setIterator(it); // add library iter to myRunnable
-        this.playThread = new Thread(myRunnable);
-        this.playThread.start();
+        playThread = new Thread(myRunnable);
+        playThread.start();
         //TODO: lastPlayed of all library songs not set
     }
-    public void setShufflePlaylistAndSong(Playlist playlist_)
-    {
+
+    public void setShufflePlaylistAndSong(Playlist playlist_) {
         if (playlist_ != null)
-            if(playlist_.getSongs().size() > 0)
-                setShufflePlaylistAndSong(playlist_,playlist_.getSongs().get(0));
+            if (playlist_.getSongs().size() > 0)
+                setShufflePlaylistAndSong(playlist_, playlist_.getSongs().get(0));
     }
 
-    public void setShufflePlaylistAndSong(Playlist playlist_ , Song song_)
-    {
+    public void setShufflePlaylistAndSong(Playlist playlist_, Song song_) {
         Playlist shuffle = new Playlist("shuffle");
         ArrayList<Song> songsArr = (ArrayList<Song>) playlist_.getSongs().clone();
         Random randomGenerator = new Random();
         int r = 0;
-        for (Song s:playlist_.getSongs())
-        {
+        for (Song s : playlist_.getSongs()) {
             r = randomGenerator.nextInt(songsArr.size());
             shuffle.addSong(songsArr.get(r));
             songsArr.remove(songsArr.get(r));
         }
-        setPlayListAndSong(shuffle , song_);
+        setPlayListAndSong(shuffle, song_);
     }
 
     //TODO: setShuffle this.playlist and this.song AND pause and resume
     public void setShuffle() {
         float t = getElapsedTimeInPercent();
-        setShufflePlaylistAndSong(playlist , song);
+        setShufflePlaylistAndSong(playlist, song);
         gotoPercent(t);
     }
 
     public void nextSong() {
-        if(playlist == null || song == null)
+        if (playlist == null || song == null)
             return;
 
         Iterator<Song> iter = playlist.getSongs().iterator();
         while (iter.hasNext())
-            if(iter.next().equals(song))
-                if(iter.hasNext())
-                    setPlayListAndSong(playlist,iter.next());
+            if (iter.next().equals(song))
+                if (iter.hasNext())
+                    setPlayListAndSong(playlist, iter.next());
     }
 
     public void previousSong() {
-        if(playlist == null || song == null)
+        if (playlist == null || song == null)
             return;
-        if(getElapsedTimeInSecond() > 4)
-            setPlayListAndSong(playlist,song);
+        if (getElapsedTimeInSecond() > 4)
+            setPlayListAndSong(playlist, song);
         else {
             Song last = null;
-            for(Song s:playlist.getSongs())
-            {
-                if(s.equals(song))
+            for (Song s : playlist.getSongs()) {
+                if (s.equals(song))
                     break;
                 last = s;
             }
-            if(last != null)
-                setPlayListAndSong(playlist,last);
+            if (last != null)
+                setPlayListAndSong(playlist, last);
         }
     }
-    public void setPlayListAndSongAndSkip(Playlist playlist_, Song song_ , long skip) {
+
+    public void setPlayListAndSongAndSkip(Playlist playlist_, Song song_, long skip) {
         Iterator<Song> it = playlist_.getSongs().iterator();
         playlist = playlist_;
         while (it.next() != song) ;
@@ -153,22 +180,16 @@ public class Player extends Thread {
         this.stop_();
         MyRunnable myRunnable = new MyRunnable(song, skip);
         myRunnable.setIterator(it); // add library iter to myRunnable
-        this.playThread = new Thread(myRunnable);
-        this.playThread.start();
+        playThread = new Thread(myRunnable);
+        playThread.start();
         //TODO: lastPlayed of all library songs not set
     }
 
     public void setSongAndSkip(Song song_, long skip) {
         song = song_;
         this.stop_();
-        this.playThread = new Thread(new MyRunnable(song_, skip));
-        this.playThread.start();
-    }
-
-
-    public static int getTotalTimeInSecond()
-    {
-        return (int) song.getTimeInSecond();
+        playThread = new Thread(new MyRunnable(song_, skip));
+        playThread.start();
     }
 
     public Song getSong() {
@@ -182,7 +203,7 @@ public class Player extends Thread {
     // TODO: using deprecated thread stop method
     public void stop_() {
         if (playThread != null) {
-            this.playThread.stop();
+            playThread.stop();
             setPlaying(false);
         }
     }
@@ -236,36 +257,6 @@ public class Player extends Thread {
         }
     }
 
-    public static long getRemainTimeInSecond() {
-        try {
-            return (long)((float)song.getTimeInSecond()*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
-        } catch (IOException e) {
-//            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    public static void forceStop()
-    {
-        if (playThread != null) {
-            playThread.stop();
-            setPlaying(false);
-        }
-    }
-
-    public static float getElapsedTimeInPercent() {
-        try {
-            return 100 - (float)(100.0*(((float)_fis_.available())/((float)song.getTotalSongLength())) );
-        } catch (IOException e) {
-//            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    public static Playlist getPlaylist() {
-        return playlist;
-    }
-
     //TODO: play at time ...
     private class MyRunnable implements Runnable {
         private AdvancedPlayer player;
@@ -314,19 +305,15 @@ public class Player extends Thread {
             song.setTimeStampLastPlayed(timeStampMillis);
         }
 
-        public Song selectNextSong()
-        {
-            if(shuffle)
-            {
-                if(shulePlaylist == null)
-                {
+        public Song selectNextSong() {
+            if (shuffle) {
+                if (shulePlaylist == null) {
                     Playlist shuffleP = new Playlist("shuffle");
                     Playlist playlist_ = Player.getPlaylist();
-                    ArrayList<Song> songsArr = (ArrayList<Song>)  playlist_.getSongs().clone();
+                    ArrayList<Song> songsArr = (ArrayList<Song>) playlist_.getSongs().clone();
                     Random randomGenerator = new Random();
                     int r = 0;
-                    for (Song s:playlist_.getSongs())
-                    {
+                    for (Song s : playlist_.getSongs()) {
                         r = randomGenerator.nextInt(songsArr.size());
                         shuffleP.addSong(songsArr.get(r));
                         songsArr.remove(songsArr.get(r));
@@ -336,8 +323,7 @@ public class Player extends Thread {
                     shuffleIter = shulePlaylist.getSongs().iterator();
                 }
 
-                if(shuffleIter.hasNext())
-                {
+                if (shuffleIter.hasNext()) {
                     Song s = shuffleIter.next();
                     s.reNewSong();
                     return s;
@@ -346,10 +332,8 @@ public class Player extends Thread {
 
                 return null;
 
-            }
-            else
-            {
-                if(it != null) {
+            } else {
+                if (it != null) {
                     if (it.hasNext()) {
                         this.song = it.next();
                         if (!this.song.isPaused()) {
@@ -370,8 +354,7 @@ public class Player extends Thread {
                 Player.setCurrentSong(song);
                 Player.setPlaying(true);
                 this.player.play();
-                while (isRepeat())
-                {
+                while (isRepeat()) {
                     this.song.reNewSong();
                     this.player = new AdvancedPlayer(this.song.getFis());
                     Player.setCurrentSong(song);
@@ -381,7 +364,7 @@ public class Player extends Thread {
 
                 while (true) {
                     Song newSong = selectNextSong();
-                    if(newSong == null)
+                    if (newSong == null)
                         break;
                     try {
                         this.song = newSong;

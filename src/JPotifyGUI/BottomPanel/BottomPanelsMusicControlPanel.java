@@ -30,7 +30,11 @@ public class BottomPanelsMusicControlPanel extends Container {
     private ImageIcon imageIconloopOff;
     private ImageIcon imageIconShuffleOn;
     private ImageIcon imageIconShuffleOff;
-    private int btnSize = GUI.dim.height/35;
+
+    /**
+     * @param player gets the player object to perform actions on it
+     *               using the control buttons
+     */
     public BottomPanelsMusicControlPanel(Player player) {
         super();
         this.player = player;
@@ -41,6 +45,7 @@ public class BottomPanelsMusicControlPanel extends Container {
         String shuffleOffIcon = "shuffle_off.png";
         String loopOnIcon = "loop_on.png";
         String loopOffIcon = "loop_off.png";
+        int btnSize = GUI.dim.height / 35;
         try {
             imageIconPlay = new ImageIcon(new ImageIcon(ImageIO.read(new File(
                     "src/JPotifyGUI/images/multimedia/" + playIcon))).getImage().getScaledInstance(
@@ -62,7 +67,6 @@ public class BottomPanelsMusicControlPanel extends Container {
             imageIconShuffleOn = new ImageIcon(new ImageIcon(ImageIO.read(new File(
                     "src/JPotifyGUI/images/multimedia/" + shuffleOnIcon))).getImage().getScaledInstance(
                     btnSize, btnSize, Image.SCALE_SMOOTH));
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,11 +94,9 @@ public class BottomPanelsMusicControlPanel extends Container {
                 this.controlButtons[i].setBackground(GUI.bottomColorBlack);
                 buttonsPanel.add(this.controlButtons[i]);
 
-            } catch (
-                    IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
 
         JPanel p = new JPanel();
@@ -104,7 +106,7 @@ public class BottomPanelsMusicControlPanel extends Container {
 //            musicSlider.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         musicSlider.setBackground(GUI.bottomColorBlack);
         musicSlider.addChangeListener(changeEvent -> {
-//TODO: problem of listener
+            //TODO: problem of listener
             if (_mouseAction)
                 sliderVal = musicSlider.getValue();
 //                        player.gotoPercent(100* (float)musicSlider.getValue()/(float)musicSlider.getMaximum());
@@ -112,8 +114,8 @@ public class BottomPanelsMusicControlPanel extends Container {
         });
         musicSlider.addMouseListener(new SliderMouseListener());
 
-        musicSlider.setPreferredSize(new Dimension(GUI.dim.width/3,40));
-        musicSlider.setBorder(BorderFactory.createEmptyBorder(5,0,10,0));
+        musicSlider.setPreferredSize(new Dimension(GUI.dim.width / 3, 40));
+        musicSlider.setBorder(BorderFactory.createEmptyBorder(5, 0, 10, 0));
         elapse = new JLabel("0:00");
         elapse.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 15));
         elapse.setForeground(GUI.captionColorGrey);
@@ -142,10 +144,6 @@ public class BottomPanelsMusicControlPanel extends Container {
 //        _mouseAction = false;
     }
 
-    public void setMusicSliderValue(float percent) {
-        this.musicSlider.setValue((int) percent);
-    }
-
     public void setElapse(String elapseStr) {
         elapse.setText(elapseStr);
     }
@@ -162,16 +160,18 @@ public class BottomPanelsMusicControlPanel extends Container {
             playPause.setIcon(imageIconPlay);
     }
 
+    /**
+     * mouse listener for the slider panel in the bottom
+     * mouse pressed and released methods are used here
+     */
     public class SliderMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
-
         }
 
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
             _mouseAction = true;
-
         }
 
         @Override
@@ -182,26 +182,24 @@ public class BottomPanelsMusicControlPanel extends Container {
 
         @Override
         public void mouseEntered(MouseEvent mouseEvent) {
-
         }
 
         @Override
         public void mouseExited(MouseEvent mouseEvent) {
-
         }
     }
 
     /**
      * this mouse listener is added as shuffle button's listener
      */
-    //TODO: implement
     private class ShuffleMouseListener implements MouseListener {
         private boolean shuffleState = false;
+
         @Override
         public void mouseClicked(MouseEvent e) {
             shuffleState = !shuffleState;
             Player.setShuffle(shuffleState);
-            if(shuffleState)
+            if (shuffleState)
                 controlButtons[0].setIcon(imageIconShuffleOn);
             else
                 controlButtons[0].setIcon(imageIconShuffleOff);
@@ -230,7 +228,6 @@ public class BottomPanelsMusicControlPanel extends Container {
     /**
      * this mouse listener is added as previous button's listener
      */
-    //TODO: implement
     private class PreviousMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -258,20 +255,13 @@ public class BottomPanelsMusicControlPanel extends Container {
      * this mouse listener is added as play/pause button's listener
      */
     private class PlayPauseMouseListener implements MouseListener {
-//        private Player player;
-//        private JButton playPauseButton;
-
-
         @Override
         public void mouseClicked(MouseEvent e) {
-
             if (Player.isPlaying())
                 player.pause();
-
             else
                 player.resume_();
             setIconPlayPause(Player.isPlaying());
-
         }
 
         @Override
@@ -294,7 +284,6 @@ public class BottomPanelsMusicControlPanel extends Container {
     /**
      * this mouse listener is added as next button's listener
      */
-    //TODO: implement
     private class NextMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -321,19 +310,18 @@ public class BottomPanelsMusicControlPanel extends Container {
     /**
      * this mouse listener is added as repeat button's listener
      */
-
     private class RepeatMouseListener implements MouseListener {
         private boolean repeatState = false;
+
         @Override
         public void mouseClicked(MouseEvent e) {
             repeatState = !repeatState;
             Player.setRepeat(repeatState);
-            if(repeatState)
+            if (repeatState)
                 controlButtons[4].setIcon(imageIconloopOn);
             else
                 controlButtons[4].setIcon(imageIconloopOff);
         }
-
 
         @Override
         public void mousePressed(MouseEvent e) {
