@@ -94,6 +94,10 @@ public class CenterPanel extends JPanel {
             case "Shared Playlist":
                 this.setLibraryFromSongs(FileManager.getSharedPlaylist().getSongs());
                 break;
+            case "Album":
+            case "Artist":
+            case "Search":
+                break;
             default:
                 this.setLibraryFromSongs(this.fileManager.getPlaylistFromName(this.libraryKind).getSongs());
                 break;
@@ -147,6 +151,7 @@ public class CenterPanel extends JPanel {
      */
     public void setLibraryFromPlaylists(ArrayList<Playlist> playlists) {
         this.library = new ArrayList<>();
+        this.libraryKind = "Playlists";
         this.library.addAll(playlists);
     }
 
@@ -156,6 +161,7 @@ public class CenterPanel extends JPanel {
      */
     public void setLibraryFromAlbums(ArrayList<Album> albums) {
         this.library = new ArrayList<>();
+        this.libraryKind = "Albums";
         this.library.addAll(albums);
     }
 
@@ -165,6 +171,7 @@ public class CenterPanel extends JPanel {
      */
     public void setLibraryFromArtists(ArrayList<Artist> artists) {
         this.library = new ArrayList<>();
+        this.libraryKind = "Artists";
         this.library.addAll(artists);
     }
 }

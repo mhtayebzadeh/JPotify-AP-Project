@@ -67,24 +67,29 @@ public class EntityPanelsImageButton extends JButton {
         public void mouseClicked(MouseEvent e) {
             if (e.getSource() == null)
                 return;
-
             if (this.entity instanceof Song) {
                 this.centerPanel.getPlayer().setSong((Song) entity);
                 this.centerPanel.getLeftPanel().setImageData(this.entity.getImageData());
+                this.centerPanel.getFileManager().update();
+                this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().setPlayer(this.centerPanel.getPlayer());
+                this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().paint();
             } else {
                 Player.setCurrentPlaylist((Playlist) entity);
-                if (this.entity instanceof Album)
+                if (this.entity instanceof Album) {
+                    this.centerPanel.setLibraryKind("Album");
                     this.centerPanel.setLibraryFromSongs(((Album) entity).getSongs());
-                else if (this.entity instanceof Artist)
+                }
+                else if (this.entity instanceof Artist) {
+                    this.centerPanel.setLibraryKind("Artist");
                     this.centerPanel.setLibraryFromSongs(((Artist) entity).getSongs());
+                }
                 else {
+                    this.centerPanel.setLibraryKind(entity.getTitle());
                     this.centerPanel.setLibraryFromSongs(((Playlist) entity).getSongs());
                 }
 //                centerPanel.getLeftPanel().setImageData(((Playlist) entity).getSongs().get(0).getImageData());
-                this.centerPanel.paint();
             }
-            this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().setPlayer(this.centerPanel.getPlayer());
-            this.centerPanel.getBottomPanel().getBottomPanelsCurrentMusicPanel().paint();
+            this.centerPanel.paint();
         }
 
         @Override
