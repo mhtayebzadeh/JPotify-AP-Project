@@ -19,18 +19,18 @@ public class BottomPanelSoundControl extends JPanel {
     public BottomPanelSoundControl() {
         super();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setPreferredSize(new Dimension(dim.width / 8, -1));
+        this.setPreferredSize(new Dimension(dim.width / 8, 40));
 
         this.setBackground(GUI.bottomColorBlack);
 
         slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 70);
         Audio.setMasterOutputVolume(0.7f);
         slider.addMouseListener(new SoundControlListener());
-        slider.setPreferredSize(new Dimension(dim.width / 12, 40));
-        slider.setBorder(BorderFactory.createEmptyBorder(30, 10, 0, 10));
+        slider.setPreferredSize(new Dimension(dim.width / 10, 40));
+        slider.setBorder(BorderFactory.createEmptyBorder(5, dim.width /120, 5, dim.width /120));
 
         try {
-            int btnSize = GUI.dim.height / 40;
+            int btnSize = GUI.dim.width / 60;
             imageIconSoundOn = new ImageIcon(new ImageIcon(ImageIO.read(new File(
                     "src/JPotifyGUI/images/multimedia/" + "speaker_on.png"))).getImage().getScaledInstance(
                     btnSize, btnSize, Image.SCALE_SMOOTH));
@@ -41,9 +41,10 @@ public class BottomPanelSoundControl extends JPanel {
         }
         soundIcon = new JLabel();
         soundIcon.setIcon(imageIconSoundOn);
-        soundIcon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 15));
+        soundIcon.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, dim.width /120));
         soundIcon.addMouseListener(new soundIconActionListener());
-        this.add(slider, BorderLayout.CENTER);
+        this.setLayout(new BorderLayout());
+        this.add(slider, BorderLayout.WEST);
         this.add(soundIcon, BorderLayout.EAST);
     }
 

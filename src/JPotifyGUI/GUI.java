@@ -55,10 +55,12 @@ public class GUI {
         BottomPanel bottomPanel = new BottomPanel(this.player);
         CenterPanel centerPanel = new CenterPanel(this.player, fileManager, bottomPanel, null);
         JScrollPane scrollPane = new JScrollPane(centerPanel);
+        scrollPane.setMinimumSize(new Dimension(-1,100));
+        scrollPane.setLayout(new ScrollPaneLayout());
         LeftPanel leftPanel = new LeftPanel(centerPanel);
         centerPanel.setLeftPanel(leftPanel);
         RightPanel rightPanel = new RightPanel(networkManager);
-        TopPanel topPanel = new TopPanel(centerPanel);
+        TopPanel topPanel = new TopPanel(centerPanel,fileManager);
 
         frame.setLayout(new BorderLayout());
         frame.add(bottomPanel, BorderLayout.SOUTH);
