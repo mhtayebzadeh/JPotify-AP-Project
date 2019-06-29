@@ -27,7 +27,7 @@ public class TopPanel extends JPanel {
         this.centerPanel = centerPanel;
         this.setBackground(GUI.bgColorBlack);
         this.setPreferredSize(new Dimension(-1,GUI.dim.height/20));
-//        searchField.setBorder( BorderFactory.createCompoundBorder( new RoundField.RoundedBorder(), searchField.getBorder() ) );
+
         searchField.setPreferredSize(new Dimension(GUI.dim.width/10,GUI.dim.height/30));
         searchField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         searchField.setBackground(GUI.bgColorBlack);
