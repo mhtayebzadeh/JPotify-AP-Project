@@ -132,6 +132,7 @@ public class GUI {
                     else
                         this.centerPanel.getBottomPanel().setTotal("" + min + ":" + sec);
                     this.centerPanel.getBottomPanel().setIconPlayPause(Player.isPlaying());
+                    
                     if (cnt >= n) // check network
                     {
                         this.networkManager.updateFriendsLastSong();
